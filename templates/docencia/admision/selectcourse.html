@@ -1,0 +1,85 @@
+{% extends './base.html' %}
+{% load static %}
+{% block titleHead %}Selección{% endblock titleHead %}
+{% block importCSS %}
+    <!-- View -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock importCSS %}
+
+{% block styleCSS %}
+    body {
+        padding: 1rem;
+    }
+{% endblock styleCSS %}
+    
+{% block contenido %} 
+    <div class="container">
+        <div class="mb-4 text-center">
+            <img data-aos="fade-up" data-aos-duration="500" class="text-mb-4" src="{% static 'img/cfbc.png' %}" alt="" height="150">
+            <h2 data-aos="fade-up" 
+                data-aos-delay="250"
+                data-aos-duration="800" class="mt-3">Seleccionar Curso</h2>
+        </div>
+
+        
+        {% if messages %}
+            
+            {% for message in messages %}
+                <div class="alert alert-danger lg" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+                
+        {% endif %}
+
+        {% comment %} <input data-aos="fade-up" 
+                data-aos-delay="500"
+                data-aos-duration="800"class="form-control mb-4" list="datalistOptions" id="id_buscador" placeholder="Buscar ...">
+        <datalist id="datalistOptions">
+            {% for course in courses %}
+                <option value="{{ course.name }}">
+            {% endfor %}            
+        </datalist> {% endcomment %}
+
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="id_courses_list">            
+            {% for course in courses %}
+                <div class="col" data-aos="fade-up" data-aos-delay="1{{ forloop.counter }}00" data-aos-duration="800" data-course-title="{{ course.name }}">
+                    <div class="card h-100">
+                        <img src="/{{ course.image }}" class="card-img-top" alt="Imagen Curso 1">
+                        <div class="card-body">
+                            {% comment %} <div class="d-flex flex-row">
+                                <img style="border: 3px solid #fff;" class="rounded rounded-lg rounded-circle" 
+                                src="t1.jpg" alt="" width="15%">
+                                <div class="align-self-center ml-2"><h6>Nombre Profesor</h6>
+                                
+                                </div>
+                            </div> {% endcomment %}
+                            <h3 class="card-title mt-1 ml-2 text-center">{{ course.name }}</h3>
+                            {% comment %} <small class="text-secondary text-center">{{ course.area.name }}</small> {% endcomment %}
+                            <p class="card-text ml-2">{{ course.description|truncatechars:100 }}</p>
+                            <a class="btn btn-block btn-primary" href="{% url 'admision_applicacion' course.id %}" type="button">Aplicar</a>
+                        </div>
+                        <!-- <div class="pl-2 pr-2">
+                            <hr>
+                            <p class="float-left text-secondary"><span class="text-warning align-middle material-icons">school</span> <b>{{ course.capacity }}  Estudiantes</b></p>
+                            <p class="float-right text-secondary"><span class="text-warning align-middle material-icons">event_available</span> <b>25 de Sep, 2020</b></p>
+                        </div> -->
+                    </div>
+                </div>
+            {% endfor %}                
+        </div>
+        
+        <p class="mt-4 text-muted text-center">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
+    </div>
+{% endblock %}
+
+{% block importScripts %}
+    <!-- View -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{% static 'letran/js/selectcourse.js'%}"></script>
+{% endblock  %}
+
+
+{% block scripts %}{% endblock scripts %}
+    
