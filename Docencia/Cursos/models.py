@@ -120,6 +120,13 @@ class CourseInformation(models.Model):
     adminteachers = models.ManyToManyField(TeacherPersonalInformation, related_name="teachers", related_query_name="teacher_admin", verbose_name="Profesores Encargados")
     sedes = models.ManyToManyField(Sede, related_name="sedes", related_query_name="sedes", verbose_name="Sede(s)")
 
+    programa = models.FileField(
+        verbose_name="Programa", 
+        upload_to=os.path.join('static', 'programas'), 
+        blank=True, 
+        null=True
+    )
+
     class Meta:
         """Meta definition for Curso."""
         verbose_name = 'Curso / Servicio'
@@ -139,7 +146,7 @@ class CourseInformation(models.Model):
     class Admin(ModelAdmin):
         fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements", "adminteachers", "sedes"]
+                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa"]
         ordering = ["area", "name", "capacity", "openregistre"]
         search_fields = ["name", "openregistre"]
         list_filter = ["sedes", "area", "isService", "haveApplication"]
