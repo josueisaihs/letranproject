@@ -7,6 +7,7 @@ admin.site.register(StudentPersonalInformation, StudentPersonalInformation.Admin
 admin.site.register(TeacherPersonalInformation, TeacherPersonalInformation.Admin)
 admin.site.register(Area, Area.Admin)
 admin.site.register(Edition, Edition.Admin)
+admin.site.register(Sede, Sede.Admin)
 admin.site.register(CourseInformation, CourseInformation.Admin)
 admin.site.register(EnrollmentApplication, EnrollmentApplication.Admin)
 admin.site.register(AnswerApplication, AnswerApplication.Admin)
