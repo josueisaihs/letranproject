@@ -8,6 +8,35 @@ from django.utils import timezone
 import os
 from datetime import date, timedelta
 
+from Docencia.DatosPersonales.models import TeacherPersonalInformation
+
+
+class Sede(models.Model):
+    """Model definition for Sede."""
+    name = models.CharField(verbose_name="Nombre", max_length=250, unique=True)
+    addr = models.CharField(verbose_name="Dirección", max_length=100, blank=True)
+    openhor = models.TimeField(verbose_name="Apertura")
+    closehor = models.TimeField(verbose_name="Cierre")
+
+    class Meta:
+        """Meta definition for Sede."""
+        verbose_name = 'Sede'
+        verbose_name_plural = 'Sedes'
+
+    def __str__(self):
+        """Unicode representation of Sede."""
+        return "%s" % self.name
+
+    def get_absolute_url(self):
+        """Return absolute url for Sede."""
+        return reverse('Sede.views.details', args=[str(self.id)])
+
+    class Admin(ModelAdmin):
+        '''Admin View for Edition'''    
+        list_display = ('name', 'addr', 'openhor', 'closehor')
+        search_fields = ('name',)
+        ordering = ('name',)
+
 
 class Edition(models.Model):
     """Model definition for Edition. Jul 2020-Jul 2021"""
@@ -72,11 +101,11 @@ class CourseInformation(models.Model):
     capacity = models.PositiveSmallIntegerField(default=12)
     openregistre = models.DateField(blank=True)
     deadline = models.DateField(blank=True)
-    description = models.TextField(max_length=1500, blank=True)
+    description = models.TextField(max_length=5000, blank=True)
     
     price = models.PositiveSmallIntegerField(default=20)
-    curriculum = models.TextField(max_length=2000, blank=True)
-    requirements = models.TextField(max_length=1000, blank=True)
+    curriculum = models.TextField(max_length=5000, blank=True)
+    requirements = models.TextField(max_length=5000, blank=True)
     
     haveApplication = models.BooleanField(default=False) 
 
@@ -87,6 +116,9 @@ class CourseInformation(models.Model):
 
     groups = []    
     subjects = []
+
+    adminteachers = models.ManyToManyField(TeacherPersonalInformation, related_name="teachers", related_query_name="teacher_admin", verbose_name="Profesores Encargados")
+    sedes = models.ManyToManyField(Sede, related_name="sedes", related_query_name="sedes", verbose_name="Sede(s)")
 
     class Meta:
         """Meta definition for Curso."""
@@ -107,8 +139,8 @@ class CourseInformation(models.Model):
     class Admin(ModelAdmin):
         fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements"]
+                  "price", "curriculum", "requirements", "adminteachers", "sedes"]
         ordering = ["area", "name", "capacity", "openregistre"]
         search_fields = ["name", "openregistre"]
-        list_filter = ["area", "isService", "haveApplication"]
+        list_filter = ["sedes", "area", "isService", "haveApplication"]
         list_display = ["name", "area", "isService", "capacity", "haveApplication", "openregistre", "deadline"]
