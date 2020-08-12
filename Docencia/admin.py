@@ -5,6 +5,7 @@ from .models import *
 
 admin.site.register(StudentPersonalInformation, StudentPersonalInformation.Admin)
 admin.site.register(TeacherPersonalInformation, TeacherPersonalInformation.Admin)
+admin.site.register(Colaboradores, Colaboradores.Admin)
 admin.site.register(Area, Area.Admin)
 admin.site.register(Edition, Edition.Admin)
 admin.site.register(Sede, Sede.Admin)
