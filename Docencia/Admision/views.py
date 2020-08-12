@@ -49,7 +49,7 @@ def application(req, coursePk):
         askApplication = []
     
         for ask in AskApplication.objects.filter(app=enrollement).order_by('order'):
-            if ask.askType == "o" or ask.askType == "r":
+            if ask.askType == "o" or ask.askType == "r" or ask.askType == "c":
                 ask.options = OptionAskApplication.objects.filter(askApp=ask.pk)
             askApplication.append(ask)
     except ObjectDoesNotExist as e:
@@ -90,6 +90,19 @@ def applicationAjax(req):
     try:
         if askType == "o" or askType == "r":
             answer = OptionAskApplication.objects.get(pk=answer).option
+
+        if askType == "c":
+            answers = []
+            for option in answer.split(";"):
+                if option != "0" and option != "":
+                    answers.append(OptionAskApplication.objects.get(pk=option).option)
+                else:
+                    if option == "0":
+                        answers.append("No respondió")
+                    break
+            answer = "; ".join(answers)
+            print(answer)
+            
 
         answerApp = AnswerApplication()
         answerApp.askApp = AskApplication.objects.get(pk=askPk)

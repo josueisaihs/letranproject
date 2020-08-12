@@ -32,12 +32,25 @@ class AskApplication(models.Model):
     app = models.ForeignKey('EnrollmentApplication', verbose_name="Aplicación", 
         on_delete=models.CASCADE)
     askBody = models.CharField(max_length=150, verbose_name="Pregunta", null=False, blank=False)
-    askType = models.CharField(max_length=1, verbose_name="Tipo", 
-        choices=(("t", "Texto"), ("o", "Opciones"), ("r", "Radio Botón")), default="t")
+    askType = models.CharField(max_length=2, verbose_name="Tipo", 
+        choices=(
+                ("t", "Texto"), 
+                ("o", "Opciones"),
+                ("r", "Radio Botón"),
+                ("c", "Check Botón"),
+                # ("ac", "Argumenta Respuesta Positiva (¿Cuál?)"),
+                # ("ad", "Argumenta Respuesta Positiva (¿Dónde?)"),
+                # ("ap", "Argumenta Respuesta Positiva (¿Por qué?)"),
+                # ("aa", "Argumenta Respuesta Positiva (Año)"),
+            ), 
+            default="t"
+        )
     order = models.PositiveIntegerField(verbose_name="Orden")
 
+    textMin = models.PositiveIntegerField(default=20, 
+    verbose_name="Cantidad Mínima de Caracteres en la Respuesta")
     textMax = models.PositiveIntegerField(default=200, 
-        verbose_name="Cantidad de Caracteres Permitidos en la Respuesta")
+        verbose_name="Cantidad Máxima de Caracteres Permitidos en la Respuesta")
 
     options = []
 
@@ -55,6 +68,7 @@ class AskApplication(models.Model):
     
     class Admin(ModelAdmin):
         list_display = ('app', 'askBody', 'askType', 'order', 'textMax')
+        search_fields = list_display
         fields = list_display   
 # <> fin AskApplication
 
@@ -62,6 +76,7 @@ class AskApplication(models.Model):
 class OptionAskApplication(models.Model):
     askApp = models.ForeignKey('AskApplication', verbose_name="Pregunta", on_delete=models.CASCADE)
     option = models.CharField(max_length=250, blank=False, verbose_name="Opción")
+    ispositive = models.BooleanField(default=False, verbose_name="¿Es Respuesta Positiva?")
 
     def __str__(self):
         return "%s %s" % (self.askApp, self.option)
@@ -72,7 +87,7 @@ class OptionAskApplication(models.Model):
         verbose_name_plural = 'Aplicación - Opciones'
 
     class Admin(ModelAdmin):
-        list_display = ('askApp', 'option')
+        list_display = ('askApp', 'option', 'ispositive')
         fields = list_display
 
     def get_absolute_url(self):
@@ -129,6 +144,8 @@ class Application(models.Model):
             ), 
         default="espera"
     )
+
+    answers = []
 
     class Meta:
         """Meta definition for Application."""
