@@ -94,23 +94,23 @@ class Area(models.Model):
 class CourseInformation(models.Model):
     """Model definition for Curso."""
     area = models.ForeignKey("Area", verbose_name="Area", on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True, verbose_name="Nombre")
     image = models.FileField(upload_to=os.path.join('static', 'image', 'perfil', 'course'),
                              default=os.path.join('static', 'image', 'perfil', 'course', 'perfildefault.jpg'), 
                              null=True, blank=True)
-    capacity = models.PositiveSmallIntegerField(default=12)
-    openregistre = models.DateField(blank=True)
-    deadline = models.DateField(blank=True)
-    description = models.TextField(max_length=5000, blank=True)
+    capacity = models.PositiveSmallIntegerField(default=12, verbose_name="Capacidad")
+    openregistre = models.DateField(blank=True, verbose_name="Inicio Admisión")
+    deadline = models.DateField(blank=True, verbose_name="Fin Admisión")
+    description = models.TextField(max_length=5000, blank=True, verbose_name="Descripión")
     
-    price = models.PositiveSmallIntegerField(default=20)
-    curriculum = models.TextField(max_length=5000, blank=True)
-    requirements = models.TextField(max_length=5000, blank=True)
+    price = models.PositiveSmallIntegerField(default=20, verbose_name="Precio")
+    curriculum = models.TextField(max_length=5000, blank=True, verbose_name="Curriculum")
+    requirements = models.TextField(max_length=5000, blank=True, verbose_name="Requisitos")
     
-    haveApplication = models.BooleanField(default=False) 
+    haveApplication = models.BooleanField(default=False, verbose_name="¿Tiene Formulario de Aplicación?") 
 
-    yearMin = models.PositiveSmallIntegerField(default=18)
-    yearMax = models.PositiveSmallIntegerField(default=40)
+    yearMin = models.PositiveSmallIntegerField(default=18, verbose_name="Edad Minima")
+    yearMax = models.PositiveSmallIntegerField(default=40, verbose_name="Edad Máxima")
     
     isService = models.BooleanField(default=False, verbose_name="¿Es un servicio?")
 
