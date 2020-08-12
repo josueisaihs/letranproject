@@ -3,6 +3,7 @@ from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+import os
 
 def eliminarTildes(txt):
         w = (
@@ -195,6 +196,59 @@ class TeacherPersonalInformation(models.Model):
     class Admin(ModelAdmin):
         fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                   "email", "nacionality", "pasaport", "dateinit", "dateend"]
+        ordering = ["numberidentification", "lastname", "name"]
+        search_fields = fields
+        list_display = fields
+
+
+class Colaboradores(models.Model):
+    """Model definition for Colaboradores."""
+
+    name = models.CharField(max_length=50, verbose_name="Nombre")
+    lastname = models.CharField(max_length=50, verbose_name="Apellido")
+
+    gender = models.CharField(verbose_name="Género", max_length=1, choices=(("m", "Masculino"), ("f", "Femenino")), default="m")
+
+    numberidentification = models.CharField(verbose_name="Carnet de Identidad", max_length=11, unique=True)
+
+    street = models.CharField(max_length=100, null=False, verbose_name="Calle")
+    city = models.CharField(max_length=50, null=False, verbose_name="Municipio")
+    state = models.CharField(max_length=50, null=False, verbose_name="Provincia")
+
+    cellphone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Móvil")
+    phone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Teléfono")
+
+    email = models.EmailField(blank=True, null=True, verbose_name="Email")
+
+    labor = models.CharField(max_length=1000, null=False, blank=False, verbose_name="Labor")
+
+    dateinit = models.DateField(blank=True, null=True, verbose_name="Fecha de Inicio")
+    dateend = models.DateField(blank=True, null=True, verbose_name="Fecha de Fin")
+
+    curriculum = models.FileField(
+        verbose_name="Curriculum", 
+        upload_to=os.path.join('static', 'curriculum', 'colaborador'), 
+        blank=True, 
+        null=True
+    )
+
+    class Meta:
+        """Meta definition for Colaboradores."""
+        unique_together = [('name', 'lastname', 'numberidentification', 'email')]
+        verbose_name = 'Datos Personales - Colaborador'
+        verbose_name_plural = 'Datos Personales - Colaboradores'
+
+    def __str__(self):
+        """Unicode representation of Colaboradores."""
+        return "%s %s" % (self.name, self.lastname)
+
+    def get_absolute_url(self):
+        """Return absolute url for Colaboradores."""
+        return reverse('Colaboradores.views.details', args=[str(self.id)])
+
+    class Admin(ModelAdmin):
+        fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", 
+                "cellphone", "phone", "email", "dateinit", "dateend", "labor", "curriculum"]
         ordering = ["numberidentification", "lastname", "name"]
         search_fields = fields
         list_display = fields
