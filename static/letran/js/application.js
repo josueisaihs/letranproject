@@ -11,10 +11,11 @@ $(document).ready(()=>{
         const askselects = $(".ask-select");
         const asktextareas = $(".ask-textarea");
         const askradio = $(".ask-radio");
+        const askcheck = $(".ask-check");
 
         let enviarForm = true;
 
-        askselects.map(function(iter, ask){
+        askselects.map((iter, ask)=>{
             if ($(ask).val() != 0){
                 asks.push([$(ask).attr("data-ask"), "o", $(ask).val()]);
             }else{
@@ -24,7 +25,7 @@ $(document).ready(()=>{
             }
         });
 
-        asktextareas.map(function(iter, ask){
+        asktextareas.map((iter, ask)=>{
             if ($(ask).val().length > 19){
                 asks.push([$(ask).attr("data-ask"), "t", $(ask).val()]);
             }else{
@@ -33,14 +34,35 @@ $(document).ready(()=>{
             }
         });
 
-        askradio.map(function(iter, ask){
+        askradio.map((iter, ask)=>{
             const pk = $(ask).attr("data-ask");
             const radioValue = $("input[name='radio_" + pk + "']:checked").val();
             asks.push([$(ask).attr("data-ask"), "r", radioValue]);
         });
 
+        askcheck.map((iter, ask)=>{
+            const pk = $(ask).attr("data-ask");
+
+            let options = []
+
+            $("input[name='check_" + pk + "']:checked").map((iter, askop)=>{
+                options.push($(askop).val())
+            });            
+
+            if (options.length > 0){
+                options = options.join(";");
+                asks.push([$(ask).attr("data-ask"), "c", options]);    
+            } else {
+                options = "0;";
+                asks.push([$(ask).attr("data-ask"), "c", options]); 
+            }
+
+            console.log(options);
+            console.log(asks);
+        });
+
         if (enviarForm){
-            asks.map(function (ask, iter){
+            asks.map((ask, iter)=>{
                 $.ajax({
                     url: url.urlApi,
                     type: "POST",
@@ -49,7 +71,7 @@ $(document).ready(()=>{
                         askType: ask[1],
                         answer: ask[2]
                     },
-                    success: function(json){
+                    success: (json)=>{
                         if (json.Exito === 'True'){
                             console.log("OK");
                             window.location.replace(url.urlRes);
@@ -59,7 +81,7 @@ $(document).ready(()=>{
                             document.getElementById("id_error").style.display = "block";
                         }                        
                     },
-                    error: function(xhr, errmsg, err){
+                    error: (xhr, errmsg, err)=>{
                         console.log(errmsg, err);
                         document.getElementById("id_error").innerHTML = "Error de conexión. Revise su conexión de internet";
                         document.getElementById("id_error").style.display = "block";
@@ -70,6 +92,6 @@ $(document).ready(()=>{
             document.getElementById("id_error").innerHTML = "Complete los campos requeridos.";
             document.getElementById("id_error").style.display = "block";
             $("html, body").animate({scrollTop: 0}, 1000);
-        }      
+        } 
     });
 });
