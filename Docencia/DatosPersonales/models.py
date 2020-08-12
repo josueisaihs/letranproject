@@ -101,6 +101,9 @@ class StudentPersonalInformation(models.Model):
 
         return user
 
+    def fullname(self):
+        return "%s %s" % (self.name, self.lastname)
+
     class Admin(ModelAdmin):
         fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                   "email", "nacionality", "ocupation", "degree", "title"]
@@ -137,7 +140,9 @@ class TeacherPersonalInformation(models.Model):
                                        ("Ning.", "Ninguno")),
                               default="Lic.")
     title = models.CharField(max_length=100, blank=True, null=True, default="")
-
+    
+    dateinit = models.DateField(blank=True, null=True, verbose_name="Fecha de Inicio")
+    dateend = models.DateField(blank=True, null=True, verbose_name="Fecha de Fin")
 
     class Meta:
         unique_together = [('name', 'lastname', 'numberidentification', 'email')]
@@ -152,13 +157,15 @@ class TeacherPersonalInformation(models.Model):
         """Return absolute url for StudentPersonalInformation."""
         return reverse('TeacherPersonalInformation.views.details', args=[str(self.id)])
 
-    def save(self):
-        try:
-            # Crea el usuario, en caso que exista da error
-            self.user = self.createUser()
-        except IntegrityError:
-            pass
-        super().save()
+    # def save(self):
+    #     try:
+    #         # Crea el usuario, en caso que exista da error
+    #         self.user = self.createUser()
+    #     except ValueError:
+    #         pass
+    #     except IntegrityError:
+    #         pass
+    #     super().save()
 
     def createUser(self):
         """ Crea un usuario con una contraseña cualquiera, despues se cambia"""
@@ -187,7 +194,7 @@ class TeacherPersonalInformation(models.Model):
 
     class Admin(ModelAdmin):
         fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "pasaport"]
+                  "email", "nacionality", "pasaport", "dateinit", "dateend"]
         ordering = ["numberidentification", "lastname", "name"]
         search_fields = fields
         list_display = fields
