@@ -74,15 +74,36 @@
                                 </fieldset>
                             {% endifequal %}
 
+                            {% ifequal ask.askType "c" %}
+                                <fieldset class="ask-check" data-ask="{{ ask.pk }}">
+                                    <div id="id_ask_check_{{ ask.pk }}">
+                                        {% for option in ask.options %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" 
+                                                type="checkbox" name="check_{{ ask.pk }}" 
+                                                id="id_check_{{ ask.pk }}_{{ option.pk }}" 
+                                                value="{{ option.pk }}"                                                 
+                                                {% if forloop.first %}
+                                                    checked
+                                                {% endif %}>
+                                                <label class="form-check-label" for="id_check_{{ ask.pk }}_{{ option.pk }}">
+                                                    {{ option.option }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </fieldset>
+                            {% endifequal %}
+
                             {% ifequal ask.askType "t"%}
                                 <textarea data-ask="{{ ask.pk }}" id="id_ask_textarea_{{ ask.pk }}" 
                                     oninput="$('#id_ask_textarea_ind_{{ ask.pk }}').html($(this).val().length  + '/{{ ask.textMax }}')" 
                                     class="ask-textarea form-control" placeholder="Escriba su respuesta" 
-                                    maxlength="{{ ask.textMax }}" rows="4" cols="50"></textarea>
-                                <small class="form-text text-muted">Sea conciso solo tiene {{ ask.textMax }} caracteres. Al menos escriba 20 caracteres</small>
+                                    maxlength="{{ ask.textMax }}" minlength="{{ ask.textMin }}" rows="4" cols="50"></textarea>
+                                <small class="form-text text-muted">Sea conciso solo tiene {{ ask.textMax }} caracteres. Al menos escriba {{ ask.textMin }} caracteres</small>
                                 <small class="float-right form-text text-muted" id="id_ask_textarea_ind_{{ ask.pk }}">0/{{ ask.textMax }}</small>
                                 <div class="valid-feedback">
-                                    Debe completar este campo. Escriba al menos 20 caracteres.
+                                    Debe completar este campo. Escriba al menos {{ ask.textMin }} caracteres.
                                 </div>
                             {% endifequal %}
                         </div>
@@ -90,6 +111,13 @@
                 </div>
             </div>
         {% endfor %}
+
+        <p id="id_aceptar_txt" class="mt-4" data-aos="fade-up" data-aos-delay="700">
+            Al seleccionar <b>Enviar</b> a continuación, 
+            acepto 
+            <a href="#">Reglamento del Curso</a>.
+        </p>
+
         <button id="id_send" data-aos="fade-up" data-aos-delay="500" class="mt-4 mb-4 btn btn-lg btn-primary btn-block" type="submit">
             Enviar
         </button>
