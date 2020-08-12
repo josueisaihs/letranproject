@@ -113,33 +113,33 @@ class StudentPersonalInformation(models.Model):
 
 
 class TeacherPersonalInformation(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=2)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=2, verbose_name="Usuario")
 
-    name = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name="Nombre")
+    lastname = models.CharField(max_length=50, verbose_name="Apellido")
 
-    gender = models.CharField(max_length=1, choices=(("m", "Masculino"), ("f", "Femenino")), default="m")
+    gender = models.CharField(verbose_name="Género", max_length=1, choices=(("m", "Masculino"), ("f", "Femenino")), default="m")
 
-    numberidentification = models.CharField(max_length=11, unique=True)
+    numberidentification = models.CharField(verbose_name="Carnet de Identidad", max_length=11, unique=True)
 
-    street = models.CharField(max_length=100, null=False)
-    city = models.CharField(max_length=50, null=False)
-    state = models.CharField(max_length=50, null=False)
+    street = models.CharField(max_length=100, null=False, verbose_name="Calle")
+    city = models.CharField(max_length=50, null=False, verbose_name="Municipio")
+    state = models.CharField(max_length=50, null=False, verbose_name="Provincia")
 
-    cellphone = models.CharField(max_length=8, blank=True, null=True)
-    phone = models.CharField(max_length=8, blank=True, null=True)
+    cellphone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Móvil")
+    phone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Teléfono")
 
-    email = models.EmailField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True, verbose_name="Email")
 
-    nacionality = models.CharField(max_length=50, blank=False, null=False, default="cubana")
-    pasaport = models.CharField(max_length=10, blank=True, null=True)
+    nacionality = models.CharField(max_length=50, blank=False, null=False, default="cubana", verbose_name="Nacionalidad")
+    pasaport = models.CharField(max_length=10, blank=True, null=True, verbose_name="Pasaporte")
 
-    degree = models.CharField(max_length=20,
+    degree = models.CharField(max_length=20, verbose_name="Grado Científico",
                               choices=(("Ing.", "Ingeniero"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
                                        ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"),
                                        ("Ning.", "Ninguno")),
                               default="Lic.")
-    title = models.CharField(max_length=100, blank=True, null=True, default="")
+    title = models.CharField(max_length=100, blank=True, null=True, default="", verbose_name="Título")
     
     dateinit = models.DateField(blank=True, null=True, verbose_name="Fecha de Inicio")
     dateend = models.DateField(blank=True, null=True, verbose_name="Fecha de Fin")
