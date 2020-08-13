@@ -3,8 +3,12 @@ $(document).ready(()=>{
 
     document.getElementById("id_error").style.display = "none";
 
-    $("#id_send").on("click", function(e){
+    $("#id_send").on("click", (e)=>{
         e.preventDefault();
+
+        $("#id_send").prop("disabled", true);
+        $(".spinner-border").removeClass("invisible");
+        $(".btn-text").html("Enviando ...")
 
         let asks = [];
 
@@ -56,9 +60,6 @@ $(document).ready(()=>{
                 options = "0;";
                 asks.push([$(ask).attr("data-ask"), "c", options]); 
             }
-
-            console.log(options);
-            console.log(asks);
         });
 
         if (enviarForm){
@@ -79,12 +80,19 @@ $(document).ready(()=>{
                         else{
                             document.getElementById("id_error").innerHTML = "Error interno. Por favor, espere un tiempo y vuelva a intentar.";                            
                             document.getElementById("id_error").style.display = "block";
-                        }                        
+                        } 
+                        
+                        $("#id_send").prop("disabled", false);
+                        $(".spinner-border").addClass("invisible");
+                        $(".btn-text").html("Enviar")                   
                     },
                     error: (xhr, errmsg, err)=>{
                         console.log(errmsg, err);
                         document.getElementById("id_error").innerHTML = "Error de conexión. Revise su conexión de internet";
                         document.getElementById("id_error").style.display = "block";
+                        $("#id_send").prop("disabled", false);
+                        $(".spinner-border").addClass("invisible");
+                        $(".btn-text").html("Enviar")
                     }
                 });
             });
@@ -92,6 +100,10 @@ $(document).ready(()=>{
             document.getElementById("id_error").innerHTML = "Complete los campos requeridos.";
             document.getElementById("id_error").style.display = "block";
             $("html, body").animate({scrollTop: 0}, 1000);
+            
+            $("#id_send").prop("disabled", false);
+            $(".spinner-border").addClass("invisible");
+            $(".btn-text").html("Enviar")
         } 
     });
 });
