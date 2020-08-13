@@ -1,0 +1,165 @@
+{% extends './dashboard.html' %}
+{% block contenidoAdmin %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm justify-content-center">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Aspirantes {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Curso</th>
+                    <th>Estudiante</th>
+                    <th>Edición</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>                
+                {% for app in page_obj %}
+                    <tr id="id_app_{{ app.pk }}" data-show="1">
+                        <td>{{ forloop.counter }}</td>
+                        <td class="course-name">{{ app.course.name }}</td>
+                        <td class="app-student"><a href="{% url 'admision_admin_student_detail' app.pk %}">{{ app.student.fullname }}</a></td>
+                        <td>{{ edition.name }}</td>          
+                        
+                        {% ifequal app.status "espera" %}
+                            <td class="app-status"> 
+                                En espera     
+                            </td>
+                            <td>
+                                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark procesar" 
+                                        data-toggle="modal" 
+                                        data-target="#id_accion" 
+                                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'proceso');">
+                                        Procesar
+                                    </button>
+                                
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_eliminar" 
+                                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                                        Denegar
+                                    </button>
+                                </div>
+                            </td>
+                        {% endifequal %}
+
+                        {% ifequal app.status "proceso" %}
+                            <td class="app-status"> 
+                                En proceso      
+                            </td>
+                            <td>
+                                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_accion" 
+                                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'aceptado');">
+                                        Aceptar
+                                    </button>
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_accion" 
+                                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'reserva');">
+                                        Reservar
+                                    </button>
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_eliminar" 
+                                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                                        Denegar
+                                    </button>
+                                </div>
+                            </td>
+                        {% endifequal %}
+                        
+                        {% ifequal app.status "reserva" %}
+                            <td class="app-status"> 
+                                En reserva
+                            </td>
+                            <td>
+                                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_accion" 
+                                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'aceptado');">
+                                        Aceptar
+                                    </button>
+                                    <button 
+                                        class="btn btn-sm btn-outline-dark" 
+                                        data-toggle="modal" 
+                                        data-target="#id_eliminar" 
+                                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                                        Denegar
+                                    </button>
+                                </div>
+                            </td>
+                        {% endifequal %}
+
+                        {% ifequal app.status "aceptado" %}
+                            <td class="app-status"> 
+                                Aceptado     
+                            </td>
+                            <td>
+                                <button 
+                                    class="btn btn-sm btn-outline-dark" 
+                                    data-toggle="modal" 
+                                    data-target="#id_eliminar" 
+                                    onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                                    Denegar
+                                </button>
+                            </td>
+                        {% endifequal %}
+
+                        {% ifequal app.status "denegado" %}
+                            <td class="app-status"> 
+                                Denegado
+                            </td>
+                            <td>
+                                <button 
+                                    class="btn btn-sm btn-outline-dark" 
+                                    data-toggle="modal" 
+                                    data-target="#id_accion" 
+                                    onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'espera');">
+                                    Reiniciar
+                                </button>
+                            </td>
+                        {% endifequal %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock contenidoAdmin %}
+    

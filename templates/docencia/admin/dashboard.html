@@ -1,0 +1,187 @@
+
+{% extends './base.html' %}
+{% load static %}
+{% block titleHead %}Administración{% endblock titleHead %}
+{% block importCSS %}
+    <!-- View -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/dashboard.css' %}">
+    {% comment %} <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> {% endcomment %}
+{% endblock importCSS %}
+{% block contenido %}
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">
+            CFBC
+        </a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% ifequal VIEW 'LIST' %}
+        <input id="id_buscar" list="datalistOptions" class="form-control form-control-dark w-100" type="text" placeholder="Buscar ..." aria-label="Buscar">
+        <datalist id="datalistOptions">
+            {% for app in apps %}
+                <option value="{{ app.course.name }}">
+            {% endfor %}            
+        </datalist>
+        {% endifequal %}
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'logout' %}">Cerrar Sessión</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            Inicio
+                        </a>
+                    </li>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>APLICACIONES</span>
+                    </h6>
+
+                    <ul class="nav flex-column mb-2">          
+                        {% for course_ in courses %}                            
+                            <li class="nav-item">
+                                <a class="nav-link {% ifequal course.pk course_.pk %}active{% endifequal %}" id="id_courselink_{{ course_.pk }}" href="{% url 'admision_admin_course' course_.pk %}">
+                                    {{ course_.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Usuario</span>
+                    </h6>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pwdreset' %}">
+                            <span data-feather="bookmark"></span>
+                            Gestión Contraseña
+                        </a>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Hola {{ teacher.name }}</h1>
+                    {% ifequal VIEW 'LIST' %}
+                        <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                            <div id="id_status_filtro" class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox" aria-label="Filtro Estado">
+                                <button type="button" class="btn btn-secondary active">Todos</button>
+                                <button type="button" class="btn btn-secondary">En espera</button>
+                                <button type="button" class="btn btn-secondary">En proceso</button>
+                                <button type="button" class="btn btn-secondary">En reserva</button>
+                                <button type="button" class="btn btn-secondary">Aceptado</button>
+                                <button type="button" class="btn btn-secondary">Denegado</button>
+                            </div>
+                        </div>
+                    {% endifequal %}
+                </div>
+                
+
+                 {% if messages%}
+                    {% for message in messages %}
+                                                    
+                        {% ifequal message.level 40 %}
+                            <div class="alert alert-danger lg" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endifequal %}
+                            
+                    {% endfor %}
+                {% endif %}
+
+                <div class="d-flex border-bottom mb-4">
+                    <h2 class="flex-grow-1" id="misAplicaciones">Aplicaciones</h2>
+                    <div class="p-2 btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                        <div id="id_view" class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox" aria-label="Filtro Estado">
+                            <a id="id_btn_list" href="{% url 'admision_admin_course' coursepk %}" type="button" class="btn btn-secondary {% ifequal VIEW 'LIST' %}active{% endifequal %}"><i class="fa fa-list"></i></a>
+                            <a id="id_btn_detail" href="{% url 'admision_admin_detail' coursepk %}" type="button" class="btn btn-secondary {% ifequal VIEW 'DETAIL' %}active{% endifequal %}"><i class="fa fa-window-maximize"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+               {% block contenidoAdmin %}{% endblock contenidoAdmin %}                   
+
+                <!-- Modal -->
+                <div class="modal fade" id="id_eliminar" tabindex="-1" 
+                role="dialog" aria-labelledby="id_eliminarLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="id_eliminarTxt">¿Desea denegar esta aplicación?</h5>
+                                <button type="button" class="close" 
+                                data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body"> 
+                                <p id="modal_body_text">Esta acción es irreversible</p>                                
+                                <br>
+                                <small class="text-muted">
+                                Al presionar sobre "Aplicar" se hará efectiva esta acción.
+                                </small>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" 
+                                id="id_eliminar_btn" 
+                                data-app="" onclick="eliminar()">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="modal fade" id="id_accion" tabindex="-1" 
+                role="dialog" aria-labelledby="id_accionLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="id_accionTxt">¿Desea realizar esta acción?</h5>
+                                <button type="button" class="close" 
+                                data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body"> 
+                                <p id="modal_body_text">Esta acción es irreversible</p>                                
+                                <br>
+                                <small class="text-muted">
+                                Al presionar sobre "Aplicar" se hará efectiva esta acción.
+                                </small>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" 
+                                id="id_accion_btn" 
+                                data-app="" data-accion="" onclick="accion()">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+{% endblock contenido %}
+
+{% block importScripts %}
+    <!-- View -->
+    <script src="{% static 'letran/js/ajaxdjango.js' %}"></script>
+    <script src="{% static 'letran/js/admin.js'%}"></script>
+{% endblock importScripts %}
+
+
+{% block scripts %}
+    const urls = {
+        "delete": "{% url 'api_admision_denegar' %}",
+        "accion": "{% url 'api_admision_accion' %}"
+    }
+{% endblock scripts %}
+    
+    
+    

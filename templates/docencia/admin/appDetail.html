@@ -1,0 +1,231 @@
+{% extends './dashboard.html' %}
+{% block contenidoAdmin %} 
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm justify-content-center">
+            
+            {% ifequal VIEW "DETAIL" %} 
+                <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                    </a>
+                </li>
+                <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                    </a>
+                </li>
+            {% endifequal %}                
+            
+            <li class="page-item disabled">
+                <a class="page-link" href="#">                    
+                    {% ifequal VIEW "DETAIL" %} 
+                        Aspirante {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    {% else %}
+                        Detalle Estudiante                        
+                    {% endifequal %}                        
+                </a>
+            </li>
+            
+            {% ifequal VIEW "DETAIL" %} 
+                <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                    </a>
+                </li>
+                <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                        <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                    </a>
+                </li>
+            {% endifequal %}               
+            
+        </ul>
+    </nav>
+        
+    {% for app in page_obj %}
+        <div class="card bg-light mb-3">
+            <div class="card-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3">
+                <h5>
+                    {% ifnotequal app.student.degree "Ning." %} 
+                        {{ app.student.degree }}
+                    {% endifnotequal %}
+                    {{ app.student.fullname }}
+                </h5>
+                <div class="app-status alert alert-dark" role="alert">
+                    {% ifequal app.status "espera" %}                 
+                        En espera  
+                    {% endifequal %}
+                    {% ifequal app.status "proceso" %}
+                        En proceso
+                    {% endifequal %}
+                    {% ifequal app.status "reserva" %}
+                        En reserva
+                    {% endifequal %}
+                    {% ifequal app.status "aceptado" %}
+                        Aceptado
+                    {% endifequal %}
+                    {% ifequal app.status "denegado" %}
+                        Denegado
+                    {% endifequal %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-4">
+                    <div class="col mb-3">
+                        <p>{{ app.student.nacionality }}<br><small class="text-muted">Nacionalidad</small></p>
+                    </div>
+                    <div class="col mb-3">
+                        <p>
+                        {% ifequal app.student.gender 'm' %}
+                            Masculino
+                        {% endifequal %}
+                        {% ifequal app.student.gender 'f' %}
+                            Femenino
+                        {% endifequal %}
+                        {% ifequal app.student.gender 'n' %}
+                            No declaro
+                        {% endifequal %}
+                        <br><small class="text-muted">Género</small></p>                        
+                    </div>
+                    <div class="col">
+                        <p>                        
+                        {% ifequal app.student.ocupation 'te' %} 
+                            Trabajador Estatal
+                        {% endifequal %}
+
+                        {% ifequal app.student.ocupation 'tp' %} 
+                            Trabajador Privado
+                        {% endifequal %}
+
+                        {% ifequal app.student.ocupation 'ac' %} 
+                            Am{% ifequal app.student.gender 'm' %}o{% endifequal %}{% ifequal app.student.gender 'f' %}a{% endifequal %}{% ifequal app.student.gender 'n' %}o/a{% endifequal %} de casa
+                        {% endifequal %}
+
+                        {% ifequal app.student.ocupation 'de' %} 
+                            Desocupad{% ifequal app.student.gender 'm' %}o{% endifequal %}{% ifequal app.student.gender 'f' %}a{% endifequal %}{% ifequal app.student.gender 'n' %}o/a{% endifequal %}
+                        {% endifequal %}
+
+                        {% ifequal app.student.ocupation 'es' %} 
+                            Estudiante
+                        {% endifequal %}
+                            
+                        <br><small class="text-muted">Ocupación</small></p>
+                    </div>
+                    <div class="col">
+                        <p>{{ app.student.title }}<br><small class="text-muted">Título</small></p>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-md-1 g-4 border-top mt-4">
+                    {% for answer in app.answers %}
+                        <div class="col">
+                            <div class="mb-3">
+                                <div class="">
+                                    {% ifequal answer.askApp.askType "t"  %}
+                                        <p class="text-muted">{{ answer.askApp.order }} - {{ answer.askApp.askBody }}</p>
+                                        <textarea class="form-control" readonly rows="5">{{ answer.answer }}</textarea>
+                                    {% else %}
+                                        <p class="text-muted">{{ answer.askApp.order }} - {{ answer.askApp.askBody }}</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input"  id="id_radio_{{ answer.pk }}"
+                                            type="radio" value="" checked readonly>
+                                            <label class="form-check-label" for="id_radio_{{ answer.pk }}">
+                                                {{ answer.answer }}
+                                            </label>
+                                        </div>
+                                    {% endifequal %}
+                                </div>
+                            </div> 
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 mb-5">
+            {% ifequal app.status "espera" %}
+                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                    <button 
+                        class="btn btn-sm btn-outline-dark procesar" 
+                        data-toggle="modal" 
+                        data-target="#id_accion" 
+                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'proceso');">
+                        Procesar
+                    </button>
+                
+                    <button 
+                        class="btn btn-sm btn-outline-dark" 
+                        data-toggle="modal" 
+                        data-target="#id_eliminar" 
+                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                        Denegar
+                    </button>
+                </div>
+            {% endifequal %}
+
+            {% ifequal app.status "proceso" %}
+                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                    <button 
+                        class="btn btn-sm btn-outline-dark"
+                        data-toggle="modal" 
+                        data-target="#id_accion" 
+                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'aceptado');">
+                        Aceptar
+                    </button>
+                    <button 
+                        class="btn btn-sm btn-outline-dark"
+                        data-toggle="modal" 
+                        data-target="#id_accion" 
+                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'reserva');">
+                        Reservar
+                    </button>
+                    <button 
+                        class="btn btn-sm btn-outline-dark"
+                        data-toggle="modal" 
+                        data-target="#id_eliminar" 
+                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                        Denegar
+                    </button>
+                </div>
+            {% endifequal %}
+            
+            {% ifequal app.status "reserva" %}
+                <div class="btn-group mr-2 btn-group-sm" role="group" data-toggle="buttons-checkbox"">
+                    <button 
+                        class="btn btn-sm btn-outline-dark" 
+                        data-toggle="modal" 
+                        data-target="#id_accion" 
+                        onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'aceptado');">
+                        Aceptar
+                    </button>
+                    <button 
+                        class="btn btn-sm btn-outline-dark" 
+                        data-toggle="modal" 
+                        data-target="#id_eliminar" 
+                        onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                        Denegar
+                    </button>
+                </div>
+            {% endifequal %}
+
+            {% ifequal app.status "aceptado" %}
+                <button 
+                    class="btn btn-sm btn-outline-dark" 
+                    data-toggle="modal" 
+                    data-target="#id_eliminar" 
+                    onclick="$('#id_eliminar_btn').attr('data-app', {{ app.pk }})">
+                    Denegar
+                </button>
+            {% endifequal %}
+
+            {% ifequal app.status "denegado" %}
+                <button 
+                    class="btn btn-sm btn-outline-dark" 
+                    data-toggle="modal" 
+                    data-target="#id_accion" 
+                    onclick="$('#id_accion_btn').attr('data-app', {{ app.pk }}); $('#id_accion_btn').attr('data-accion', 'espera');">
+                    Reiniciar
+                </button>
+            {% endifequal %}            
+        </div>
+    {% endfor %}
+{% endblock contenidoAdmin %}
+    
