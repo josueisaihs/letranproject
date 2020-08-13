@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import EmailMessage, BadHeaderError
 from smtplib import SMTPException
 from django.conf import settings
@@ -17,6 +17,7 @@ from validate_email import validate_email
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition
 from Docencia.Admision.models import Application
+from Docencia.decorators import isStudent
 
 
 TEMPLETE_PATH = "docencia/admision/%s.html"
@@ -38,10 +39,10 @@ def dashboard(req):
             messages.add_message(req, settings.MESSAGES_INFO, courses[0].deadline.strftime("%d de %b"))
         del courses
 
-        return render(
-            req, TEMPLETE_PATH % "dashboard", locals())
+        return render(req, TEMPLETE_PATH % "dashboard", locals())
     except:
-        raise Http404("No existe")
+        messages.error(req, "Este usuario no tiene acceso a este servicio")
+        return HttpResponseRedirect("/login/?next=/admision/dashboard/")
 
 def registro(req):
     if req.method == "POST":

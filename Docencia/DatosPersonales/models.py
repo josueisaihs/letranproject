@@ -220,7 +220,7 @@ class Colaboradores(models.Model):
 
     email = models.EmailField(blank=True, null=True, verbose_name="Email")
 
-    labor = models.CharField(max_length=1000, null=False, blank=False, verbose_name="Labor")
+    labor = models.TextField(max_length=1000, null=False, blank=False, verbose_name="Labor")
 
     dateinit = models.DateField(blank=True, null=True, verbose_name="Fecha de Inicio")
     dateend = models.DateField(blank=True, null=True, verbose_name="Fecha de Fin")

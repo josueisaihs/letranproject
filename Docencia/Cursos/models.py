@@ -122,7 +122,14 @@ class CourseInformation(models.Model):
 
     programa = models.FileField(
         verbose_name="Programa", 
-        upload_to=os.path.join('static', 'programas'), 
+        upload_to=os.path.join('static', 'cursos', 'programas'), 
+        blank=True, 
+        null=True
+    )
+
+    reglamento = models.FileField(
+        verbose_name="Reglamento", 
+        upload_to=os.path.join('static', 'cursos', 'programas'), 
         blank=True, 
         null=True
     )
@@ -146,7 +153,7 @@ class CourseInformation(models.Model):
     class Admin(ModelAdmin):
         fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa"]
+                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento"]
         ordering = ["area", "name", "capacity", "openregistre"]
         search_fields = ["name", "openregistre"]
         list_filter = ["sedes", "area", "isService", "haveApplication"]
