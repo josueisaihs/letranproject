@@ -1,0 +1,163 @@
+.header {
+    background-color: #555;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;   
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+a:hover {
+  color: #555;
+}
+
+.header::before {
+  content:"";
+	position: absolute;
+  top: 0;
+	bottom: 0;
+	left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.62);
+}
+
+.registarse {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 75vh;
+}
+
+.registarse::before {
+  content:"";
+	position: absolute;
+  top: 0;
+	bottom: 0;
+	left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.opiniones {
+  background-position: center;
+  background-size: initial;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 75vh;
+}
+
+.opiniones::before {
+  content:"";
+	position: absolute;
+  top: 0;
+	bottom: 0;
+	left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.header > h1, h6, img, div { 
+  position: relative;
+}
+
+.nav-item a:hover {
+  color: #010101;
+}
+
+.dropdown-menu a:hover {
+  color: #555 !important;
+}
+
+.dropdown-menu a {
+  color: #000 !important;
+}
+
+.text-roboto-slab {
+  font-family: Roboto Slab;
+}
+
+.navbar-nav-trans {
+  background-color: transparent !important;
+}
+
+.btn-inicio {
+  min-width: 40vw;
+}
+
+.h-33 {
+  height: 20vh;
+}  
+
+@media (min-width: 480px) {
+  .btn-inicio {
+    min-width: 15vw;
+  }  
+
+  .hor-cont {
+    max-height: 100vh;
+    overflow: auto;
+  }
+
+  .hor-cont-100 {
+    max-height: 100vh;
+    overflow: auto;
+  }
+  
+}
+
+.text-small {
+  font-size: 0.6rem;
+}
+
+.text-small-90 {
+  font-size: 0.9rem;
+}
+
+.text-small-80 {
+  font-size: 0.8rem;
+}
+
+.bg-black {
+  background-color: #010101;
+}
+
+.google-maps {
+  position: relative;
+  padding-bottom: 100%;
+  height: 0;
+  overflow: hidden;
+}
+
+.google-maps iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.activo {
+  border-bottom: 1px #007bff;
+  color: #007bff;
+}
+
+.hor-cont {
+  max-height: 75vh;
+  overflow: auto;
+}
+
+.hor-cont-100 {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+
+.img-75 {
+  max-height: 50%;
+}
