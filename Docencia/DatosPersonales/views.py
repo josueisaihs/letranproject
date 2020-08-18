@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.views.decorators.cache import cache_page
 
 from hashlib import blake2s
 from datetime import datetime
@@ -62,8 +63,10 @@ def registro(req):
             )
 
             try:
-                # if validate_email(username, verify=True):
-                if (True):
+                # La verificación del correo debe ser en tiempo real para evitar usuarios
+                # no válidos, en otro caso usar background
+                if validate_email(username, verify=True):
+                # if (True):
                     email.send(fail_silently=False)
 
                     form.save()

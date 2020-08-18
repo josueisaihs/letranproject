@@ -195,7 +195,7 @@ class TeacherPersonalInformation(models.Model):
 
     class Admin(ModelAdmin):
         fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "pasaport", "dateinit", "dateend"]
+                  "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
         ordering = ["numberidentification", "lastname", "name"]
         search_fields = fields
         list_display = fields
