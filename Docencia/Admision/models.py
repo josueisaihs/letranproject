@@ -150,8 +150,8 @@ class Application(models.Model):
     class Meta:
         """Meta definition for Application."""
         unique_together = [('course', 'student', 'edition')]
-        verbose_name = 'Applicación - Aplicación Estudiante'
-        verbose_name_plural = 'Applicación - Aplicaciones Estudiante'
+        verbose_name = 'Aplicación - Aplicación Estudiante'
+        verbose_name_plural = 'Aplicación - Aplicaciones Estudiante'
 
     def __str__(self):
         """Unicode representation of Application."""

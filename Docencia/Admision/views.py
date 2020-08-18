@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.db.utils import IntegrityError
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
+from django.views.decorators.cache import cache_page
 
 from datetime import datetime, date
 
@@ -16,6 +17,7 @@ from Docencia.Admision.models import *
 
 TEMPLETE_PATH = "docencia/admision/%s.html"
 
+@cache_page(60 * 15)
 @login_required(login_url="/login/", redirect_field_name="next")
 def selectcourse(req):
     courses = CourseInformation.objects.filter(openregistre__lte=datetime.today(),
@@ -40,6 +42,7 @@ def selectcourse(req):
 
     return render(req, TEMPLETE_PATH % "selectcourse", locals())
 
+@cache_page(60 * 15)
 @login_required(login_url="/login/", redirect_field_name="next")
 def application(req, coursePk):
     course = CourseInformation.objects.get(pk=coursePk)
@@ -149,7 +152,6 @@ def applicationAjax(req):
 
     return JsonResponse(response_data)    
 # <> fin applicationAjax
-
 
 @require_POST
 def applicationCancelAjax(req):
