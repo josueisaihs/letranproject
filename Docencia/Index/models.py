@@ -2,8 +2,14 @@ from django.db import models
 from django.contrib.admin import ModelAdmin
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from django.contrib.auth.models import User, Group
+from django.utils.timezone import now
+
+from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
+
+from django.db.models import ImageField
 
 class Suscriptor(models.Model):
     """Model definition for Suscriptor."""
@@ -36,7 +42,7 @@ class News(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
     body = models.TextField(verbose_name="Cuerpo")
     link = models.URLField(verbose_name="Enlace", blank=True)
-    image = models.FileField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True)
+    image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True)
 
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
 
@@ -53,7 +59,7 @@ class News(models.Model):
         return reverse('News.views.details', args=[str(self.id)])
 
     class Admin(ModelAdmin):   
-        list_display = ('title', 'body', 'link', 'date', 'image')
+        list_display = ('title', 'link', 'date', 'image')
         search_fields = ('title',)
         ordering = ('title',)
 
@@ -63,7 +69,7 @@ class Post(models.Model):
     body = models.TextField(verbose_name="Cuerpo")
     link = models.URLField(verbose_name="Enlace", blank=True)
     autor = models.CharField(max_length=200)
-    image = models.FileField(upload_to=os.path.join('static', 'image', 'blog'), null=True, blank=True)
+    image = ImageField(upload_to=os.path.join('static', 'image', 'blog'), null=True, blank=True)
 
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
 
@@ -80,34 +86,193 @@ class Post(models.Model):
         return reverse('Post.views.details', args=[str(self.id)])
 
     class Admin(ModelAdmin):   
-        list_display = ('title', 'autor', 'body', 'link', 'date', 'image')
+        list_display = ('title', 'autor', 'link', 'date', 'image')
         search_fields = ('title',)
         ordering = ('title',)
 
+class EventsDate(models.Model):
+    name = models.CharField(verbose_name="Nombre", max_length=50, unique=True)
+    dateEnv = models.DateTimeField(verbose_name="Fecha Inicio")
+    dateFin = models.DateTimeField(verbose_name="Fecha Fin", default=now)
+
+    class Meta:
+        verbose_name = 'Index - Evento Fecha'
+        verbose_name_plural = 'Index - Eventos Fechas'
+
+    def __str__(self):
+        return "%s" % self.name
+
+    class Admin(ModelAdmin):
+        list_display = ('name', 'dateEnv', 'dateFin')
+        search_fields = ('name', 'dateEnv', 'dateFin')
+        ordering = ('dateEnv',)
 
 class Events(models.Model):
     """Model definition for Events."""
     name = models.CharField(verbose_name="Nombre", max_length=100)
     body = models.TextField(verbose_name="Descripción", max_length=1000)
     date = models.DateTimeField(verbose_name="Fecha Publicación")
-    dateEnv = models.DateTimeField(verbose_name="Fecha Evento")
+    dateEnvs = models.ManyToManyField("EventsDate", verbose_name="Fecha(s)")
     place = models.CharField(verbose_name="Lugar", max_length=500)
+    image = ImageField(upload_to=os.path.join('static', 'event', 'image'), null=True, blank=True)
+    file = models.FileField(upload_to=os.path.join('static', 'event', 'file'), null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario", default=1, limit_choices_to={'is_staff': True})
+    google_maps = models.TextField(max_length=1000, verbose_name="Embeber Google Maps", blank=True)
 
     class Meta:
         """Meta definition for Events."""
-        unique_together = [("name", "dateEnv")]
-        verbose_name = 'Index - Evento'
+        unique_together = [("name", "date")]
+        verbose_name = 'Evento'
         verbose_name_plural = 'Index - Eventos'
 
     def __str__(self):
         """Unicode representation of Events."""
-        return "%s - %s" % (self.name, self.dateEnv)
+        return "%s - %s" % (self.name, self.date)
 
     def get_absolute_url(self):
         """Return absolute url for Events."""
         return reverse('Events.views.details', args=[str(self.id)])
     
     class Admin(ModelAdmin):
-        list_display = ('name', 'body', 'date', 'dateEnv', 'place')
+        fields = ('user', 'name', 'date', 'place', 'image', 'file', 'dateEnvs', 'body', 'google_maps')
+        list_display = ('name', 'date', 'place', 'image', 'file')
         search_fields = ('name', 'place')
-        ordering = ('dateEnv',)
+        ordering = ('date',)
+
+
+class Links(models.Model):
+    """Model definition for Links."""
+    name = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
+    section = models.CharField(verbose_name="Sección", max_length=3, choices=(("enl", "Enlaces Útiles"), ("opr", "Orden Predicadores")), default="enl")
+    link = models.URLField(verbose_name="Enlace")
+
+    class Meta:
+        """Meta definition for Links."""
+        verbose_name = 'Index - Link'
+        verbose_name_plural = 'Index - Links'
+
+    def __str__(self):
+        """Unicode representation of Links."""
+        return "%s" % self.name
+
+    def get_absolute_url(self):
+        """Return absolute url for Links."""
+        return reverse('Links.views.details', args=[srt(self.id)])
+
+    class Admin(ModelAdmin):
+        list_display = ('name', 'link')
+        search_fields = ('name',)
+
+
+class Comments(models.Model):
+    """Model definition for Comments."""
+
+    author = models.CharField(max_length=100, verbose_name="Autor", unique=True)
+    image = ImageField(upload_to=os.path.join('static', 'image', 'comment'), null=True, blank=True, verbose_name="Foto Perfil")
+    body = models.TextField(max_length=1000, verbose_name="Comentario")
+
+    class Meta:
+        """Meta definition for Comments."""
+        verbose_name = 'Index - Comentario'
+        verbose_name_plural = 'Index - Comentario'
+
+    def __str__(self):
+        """Unicode representation of Comments."""
+        return "%s" % self.author
+
+    def get_absolute_url(self):
+        """Return absolute url for Comments."""
+        return reverse('Comments.views.details', args=[str(self.id)])
+
+    class Admin(ModelAdmin):
+        list_display = ('author', 'body', 'image')
+        search_fields = ('author',)
+
+class HeaderIndex(models.Model):
+    """Model definition for HeaderIndex."""
+    name = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
+    background = ImageField(upload_to=os.path.join('static', 'image', 'index', 'bg'), null=True, blank=True, verbose_name="Background Image")
+    icon = ImageField(upload_to=os.path.join('static', 'image', 'index', 'icon'), null=True, blank=True, verbose_name="Icon")
+    titleLine1 = models.CharField(max_length=20, verbose_name="Título Línea 1")
+    titleLine2 = models.CharField(max_length=20, verbose_name="Título Línea 2", blank=True)
+    titleLine3 = models.CharField(max_length=20, verbose_name="Título Línea 3", blank=True)
+    subtitle = models.CharField(max_length=32, verbose_name="Subtítulo", blank=True)
+    
+    hadBtn1 = models.BooleanField(verbose_name="Añadir Botón 1", default=False)
+    btn1 = models.CharField(verbose_name="Botón 1 Texto", max_length=10, blank=True)
+    linkBtn1 = models.CharField(verbose_name="Botón 1 Enlace", blank=True, max_length=25)
+    
+    hadBtn2 = models.BooleanField(verbose_name="Añadir Botón 2", default=False)
+    btn2 = models.CharField(verbose_name="Botón 2 Texto", max_length=10, blank=True)
+    linkBtn2 = models.CharField(verbose_name="Botón 2 Enlace", blank=True, max_length=25)
+
+    isVisible = models.BooleanField(default=False, verbose_name="Visible")
+
+    class Meta:
+        """Meta definition for ImgenHeaderIndex."""
+        verbose_name = 'Index - Header'
+        verbose_name_plural = 'Index - Header'
+
+    def __str__(self):
+        """Unicode representation of ImgenHeaderIndex."""
+        return "%s" % self.name
+
+    def get_absolute_url(self):
+        """Return absolute url for SectionSuscribete."""
+        return reverse('HeaderIndex.views.details' % self.id)
+
+    class Admin(ModelAdmin):
+        fields = ["name", "background", "icon", "titleLine1", "titleLine2", "titleLine3", "subtitle",
+                  "hadBtn1", "btn1", "linkBtn1", "hadBtn2", "btn2", "linkBtn2", "isVisible"]
+        list_display = ('name',)
+        search_fields = ('name',)
+
+
+class SectionSuscribete(models.Model):
+    """Model definition for SectionSuscribete."""
+    name = models.CharField(max_length=20, verbose_name="Sección Suscribete")
+    students = models.PositiveSmallIntegerField(default=0, verbose_name="Cantidad de Estudiantes [mil]")
+    graduados = models.PositiveIntegerField(default=0, verbose_name="Cantidad de Graduados [mil]")
+    cursos = models.PositiveIntegerField(default=0, verbose_name="Cantidad Cursos")
+    background = ImageField(upload_to=os.path.join('static', 'image', 'index', 'bg'), null=True, blank=True, verbose_name="Background Image")
+
+    class Meta:
+        """Meta definition for SectionSuscribete."""
+
+        verbose_name = 'Index - Sección Suscríbete'
+        verbose_name_plural = 'Index - Sección Suscríbete'
+
+    def __str__(self):
+        """Unicode representation of SectionSuscribete."""
+        return "%s" % self.name
+
+    def get_absolute_url(self):
+        """Return absolute url for SectionSuscribete."""
+        return reverse('SectionSuscribete.views.details', args=[str(self.id)])
+
+    class Admin(ModelAdmin):
+        list_display = ('name', 'background', 'students', 'graduados', 'cursos')
+        search_fields = ('name',)
+
+class SectionComments(models.Model):
+    """Model definition for SectionComments."""
+    name = models.CharField(max_length=20, verbose_name="Nombre", unique=True)
+    background = ImageField(upload_to=os.path.join('static', 'image', 'index', 'bg'), null=True, blank=True, verbose_name="Background Image")       
+
+    class Meta:
+        """Meta definition for SectionComments."""
+        verbose_name = 'Index - Sección Comentario'
+        verbose_name_plural = 'Index - Sección Comentarios'
+
+    def __str__(self):
+        """Unicode representation of SectionComments."""
+        return "%s" % self.name
+
+    def get_absolute_url(self):
+        """Return absolute url for SectionComments."""
+        return reverse('SectionComments.views.details', args=[str(self.id)])
+
+    class Admin(ModelAdmin):
+        list_display = ('name',)
+        search_fields = ('name',)
+
