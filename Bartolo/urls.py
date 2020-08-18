@@ -14,13 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 from django.conf import settings
+from django.contrib.sitemaps.views import sitemap
+from django.views.generic.base import TemplateView
+from django.views.decorators.cache import cache_page
+
+import debug_toolbar
 
 from Docencia.views import pag_404_not_found
+from Docencia.sitemaps import Dynamic
+
+sitemaps = {
+    "dynamic": Dynamic
+}
 
 
 urlpatterns = [
@@ -42,6 +52,10 @@ urlpatterns = [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done',),
     path('password_reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm',),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete',),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('__debug__/', include(debug_toolbar.urls)),
+
+    path('sitemap.xml', cache_page(60 * 60)(sitemap), {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('robots.txt', cache_page(60 * 60)(TemplateView.as_view(template_name="robots.txt", content_type="text/plain"))),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = pag_404_not_found
