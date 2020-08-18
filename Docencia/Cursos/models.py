@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.timezone import now
+
+from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
 from datetime import date, timedelta
@@ -14,9 +17,14 @@ from Docencia.DatosPersonales.models import TeacherPersonalInformation
 class Sede(models.Model):
     """Model definition for Sede."""
     name = models.CharField(verbose_name="Nombre", max_length=250, unique=True)
-    addr = models.CharField(verbose_name="Dirección", max_length=100, blank=True)
     openhor = models.TimeField(verbose_name="Apertura")
     closehor = models.TimeField(verbose_name="Cierre")
+    isprincipal = models.BooleanField(verbose_name="¿Es la Sede Principal?", default=False)
+    street = models.CharField(max_length=100, null=True, blank=True, verbose_name="Calle")
+    city = models.CharField(max_length=50, null=True, blank=True, verbose_name="Municipio")
+    state = models.CharField(max_length=50, null=True, blank=True, verbose_name="Provincia")
+    cellphone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Móvil")
+    email = models.EmailField(blank=True, null=True, verbose_name="Email")
 
     class Meta:
         """Meta definition for Sede."""
@@ -33,7 +41,7 @@ class Sede(models.Model):
 
     class Admin(ModelAdmin):
         '''Admin View for Edition'''    
-        list_display = ('name', 'addr', 'openhor', 'closehor')
+        list_display = ('name', 'isprincipal', 'openhor', 'closehor', 'street', 'city', 'state', 'cellphone', 'email')
         search_fields = ('name',)
         ordering = ('name',)
 
@@ -90,14 +98,42 @@ class Area(models.Model):
         ordering = ('name',)
 # <> Fin Area
 
+class CourseSchedule(models.Model):
+    """Model definition for CourseSchedule."""
+    name = models.CharField(verbose_name="Nombre", max_length=50, unique=True)
+    weekday = models.CharField(max_length=14, choices=(
+        ("Lun.", "Lunes"),
+        ("Mar.", "Martes"),
+        ("Mié.", "Miércoles"),
+        ("Jue.", "Jueves"),
+        ("Vie.", "Viernes"),
+        ("Sáb.", "Sábado"),
+        ("Lun.-Vie.", "Lunes a Viernes"),
+        ("Lun.-Sáb.", "Lunes a Sábado"),
+        ("Lun.,Mié.,Vie.", "Lunes, Miércoles, Viernes"),
+        ("Mar.,Jue.", "Martes, Jueves"),
+    ), default="Lun.")
+    dateIni = models.TimeField(verbose_name="Fecha Inicio")
+    dateFin = models.TimeField(verbose_name="Fecha Fin", default=now)
+
+    class Meta:
+        verbose_name = 'Horario'
+        verbose_name_plural = 'Cursos - Horarios'
+
+    def __str__(self):
+        return "%s" % self.name
+
+    class Admin(ModelAdmin):
+        list_display = ('name', 'dateIni', 'dateFin')
+        search_fields = ('name', 'dateIni', 'dateFin')
+        ordering = ('dateIni',)
+
 
 class CourseInformation(models.Model):
     """Model definition for Curso."""
     area = models.ForeignKey("Area", verbose_name="Area", on_delete=models.CASCADE)
     name = models.CharField(max_length=50, unique=True, verbose_name="Nombre")
-    image = models.FileField(upload_to=os.path.join('static', 'image', 'perfil', 'course'),
-                             default=os.path.join('static', 'image', 'perfil', 'course', 'perfildefault.jpg'), 
-                             null=True, blank=True)
+    image = ImageField(upload_to=os.path.join('image', 'perfil', 'course'), null=True, blank=True)
     capacity = models.PositiveSmallIntegerField(default=12, verbose_name="Capacidad")
     openregistre = models.DateField(blank=True, verbose_name="Inicio Admisión")
     deadline = models.DateField(blank=True, verbose_name="Fin Admisión")
@@ -122,7 +158,7 @@ class CourseInformation(models.Model):
 
     programa = models.FileField(
         verbose_name="Programa", 
-        upload_to=os.path.join('static', 'cursos', 'programas'), 
+        upload_to=os.path.join('media', 'static', 'cursos', 'programas'), 
         blank=True, 
         null=True
     )
@@ -133,6 +169,8 @@ class CourseInformation(models.Model):
         blank=True, 
         null=True
     )
+
+    schedules = models.ManyToManyField("CourseSchedule", verbose_name="Horario(s)")
 
     class Meta:
         """Meta definition for Curso."""
@@ -150,10 +188,13 @@ class CourseInformation(models.Model):
     def getHaveApplication(self):
         return self.haveApplication
 
+    def isAvailableRegistre(self):
+        return self.openregistre <= date.today() <= self.deadline
+
     class Admin(ModelAdmin):
         fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento"]
+                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules"]
         ordering = ["area", "name", "capacity", "openregistre"]
         search_fields = ["name", "openregistre"]
         list_filter = ["sedes", "area", "isService", "haveApplication"]
