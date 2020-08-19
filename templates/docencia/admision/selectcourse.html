@@ -29,10 +29,14 @@
         
         {% if messages %}
             
-            {% for message in messages %}
-                <div class="alert alert-danger lg" role="alert">
-                    {{ message }}
-                </div>
+            {% for message in messages %}               
+                
+                {% ifequal message.level 40 %} 
+                    <div class="alert alert-danger lg" role="alert">
+                        {{ message }}
+                    </div>
+                {% endifequal %}
+
             {% endfor %}
                 
         {% endif %}
@@ -50,13 +54,13 @@
             {% for course in courses %}
                 <div class="col" data-course-title="{{ course.name }}" onclick="window.location.href='{% url 'admision_applicacion' course.id %}'">
                     <div class="card">
-                        {% if device_is_mobile %}
-                        <!--Vista Movil -->
-                        <img src="{{ course.image | thumbnail_url:'card'}}" class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
-                        {% else %}
-                        <!-- Vista Normal -->
-                        <img src="{{ course.image | thumbnail_url:'card-desk'}}" class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
-                        {% endif %}
+                        <img loading="lazy" src="{{ course.image|thumbnail_url:'img-200'}}" 
+                            srcset="
+                            {{ course.image|thumbnail_url:'img-200' }} 320w,
+                            {{ course.image|thumbnail_url:'img-400' }} 400w,
+                            {{ course.image|thumbnail_url:'img-600' }} 600w,
+                            {{ course.image|thumbnail_url:'img-640' }} 800w
+                            " class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
                         <div class="card-body">
                             <h3 class="card-title mt-1 ml-2 text-center">{{ course.name }}</h3>
                             <p class="card-text ml-2">{{ course.description|truncatechars:100 }}</p>

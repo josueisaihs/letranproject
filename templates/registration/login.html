@@ -16,9 +16,13 @@
 
         {% if messages%}                
             {% for message in messages %}
-                <div class="alert alert-danger lg" role="alert">
-                    {{ message }}
-                </div>
+                
+                {% ifequal message.level 40 %}
+                    <div class="alert alert-danger lg" role="alert">
+                        {{ message }}
+                    </div>
+                {% endifequal %}                    
+               
             {% endfor %}                   
         {% endif %}
 

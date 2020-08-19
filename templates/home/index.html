@@ -1,8 +1,65 @@
 {% extends './base.html' %}
 {% load static %}
+{% load thumbnail %}
+
+{% block styles %}
+    .header{
+        background-image: url({{ header.background|thumbnail_url:'img-400'}});
+    }
+
+    .registarse {
+        background-image: url({{ suscribete.background|thumbnail_url:'img-400' }});
+    }
+
+    .opiniones {
+        background-image: url({{ seccion_coment.background|thumbnail_url:'img-400' }});
+    }
+
+    @media screen and (max-width: 800px){
+        .header{
+            background-image: url({{ header.background|thumbnail_url:'img-640'}});
+        }
+
+        .registarse {
+            background-image: url({{ suscribete.background|thumbnail_url:'img-640' }});
+        }
+
+        .opiniones {
+            background-image: url({{ seccion_coment.background|thumbnail_url:'img-640' }});
+        }
+    };
+
+    @media screen and (max-width: 640px){
+        .header{
+            background-image: url({{ header.background|thumbnail_url:'img-600'}});
+        }
+
+        .registarse {
+            background-image: url({{ suscribete.background|thumbnail_url:'img-600' }});
+        }
+
+        .opiniones {
+            background-image: url({{ seccion_coment.background|thumbnail_url:'img-600' }});
+        }
+    }
+
+    @media screen and (max-width: 480px){
+        .header{
+            background-image: url({{ header.background|thumbnail_url:'img-400'}});
+        }
+
+        .registarse {
+            background-image: url({{ suscribete.background|thumbnail_url:'img-400' }});
+        }
+
+        .opiniones {
+            background-image: url({{ seccion_coment.background|thumbnail_url:'img-400' }});
+        }
+    }
+{% endblock styles %}
 
 {% block contenido %}
-<header class="header" id="inicio" style="background-image: url('{{ header.background.url }}')">
+<header class="header" id="inicio">
     {% include './menu.html' %}
     <img
         data-aos="fade-right"
@@ -72,7 +129,16 @@
                         <div class="col h-100">
                             <div class="card shadow" 
                             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                                <img class="card-img-top" src="{{ new.image.url }}" alt="Noticia">
+                                <img class="card-img-top" 
+                                src="{{ new.image.url }}"
+                                srcset="
+                                {{ new.image|thumbnail_url:'img-200' }} 320w,
+                                {{ new.image|thumbnail_url:'img-400' }} 400w,
+                                {{ new.image|thumbnail_url:'img-600' }} 600w,
+                                {{ new.image|thumbnail_url:'img-640' }} 800w,
+                                {{ new.image|thumbnail_url:'img-1100' }} 2000w
+                                "
+                                 alt="Noticia">
                                 
                                 <div class="card-body">
                                 <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
@@ -91,7 +157,7 @@
                             {% ifnotequal forloop.counter 1 %}
                                 <div class="d-flex h-50 my-2" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
                                     <div class="w-75" 
-                                    style="background-image: url('{{ new.image.url }}'); background-position: center center; background-size: cover;">
+                                    style="background-image: url('{{ new.image|thumbnail_url:'img-200' }}'); background-position: center center; background-size: cover;">
                                     </div>
                                     <div class="bg-white container py-1">                                        
                                         <h6 class=" font-weight-bold"><a href="#">{{ new.title }}</a></h6>
@@ -109,7 +175,7 @@
 <!-- Fin Noticias -->
 
 <!-- Registrarse -->
-    <div id="registro" class="p-4 registarse h-75" style="background-image: url('{{ suscribete.background.url }}')">
+    <div id="registro" class="p-4 registarse h-75">
         <p class="text-white text-center text-uppercase display-6" 
             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
                 Suscríbete AHORA
@@ -252,7 +318,7 @@
 <!-- Fin Eventos -->
 
 <!-- Opiniones -->
-    <div id="opiniones" class="opiniones p-4 h-100" style="background-image: url('{{ seccion_coment.background.url }}');">
+    <div id="opiniones" class="opiniones p-4 h-100">
         <p class="text-white text-roboto-slab text-center text-uppercase display-6" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
             ¿Qué dicen los estudiantes?
         </p>
@@ -295,60 +361,60 @@
                 {% endfor %}
             </ul>
             <br>
-            <div class="row row-cols-1 row-cols-md-3 g-4 mx-lg-5 mx-md-5 hor-cont">      
+            <div class="row row-cols-1 row-cols-md-3 gx-5 mx-lg-5 mx-md-5 hor-cont">      
                 {% regroup courses by area as courses_list %}          
                 {% for course in courses %}                                
-                    <div data-course="{{ course.area }}" class="pe-auto curso-contenedor col">
-                        <a href="#">
-                        <div class="card h-100">
-                            <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
-                            <div class="card-body">
-                                <small class="mr-auto text-primary text-small">
-                                    <b>                                                                                 
-                                        {{ course.openregistre|date:"d M Y" }}                                        
-                                    </b> - 
-                                    <b>
-                                        {{ course.deadline|date:"d M Y" }}
-                                    </b>
-                                    {% if course.isAvailableRegistre %}
-                                        · <b>Admisión Abierta</b>
-                                    {% endif %}
-                                    · {{ course.capacity }} Estudiantes
-                                </small>
-                                <div class="d-flex mt-2 align-middle">
-                                    <h5 class="card-title font-weight-bold">{{ course.name }}</h5>
-                                    <h5 class="text-primary ml-auto font-weight-bold">4.0</h5>
-                                </div>
-                                <p class="card-text">{{ course.description|truncatechars:100 }}</p>
-                                
-                                <div class="d-flex align-items-stretch mt-2">
-                                    {% for fecha in course.schedules.all %}
-                                        
-                                        {% if forloop.counter < 3 %}
-                                            <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
-                                                <div class="d-flex flex-column text-center text-small py-1">
-                                                    <div class="text-primary">
-                                                        {{ fecha.weekday }}
+                    <a href="#">
+                        <div data-course="{{ course.area }}" class="pe-auto curso-contenedor col mt-2">
+                            <div class="card h-100">
+                                <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                                <div class="card-body">
+                                    <small class="mr-auto text-primary text-small">
+                                        <b>                                                                                 
+                                            {{ course.openregistre|date:"d M Y" }}                                        
+                                        </b> - 
+                                        <b>
+                                            {{ course.deadline|date:"d M Y" }}
+                                        </b>
+                                        {% if course.isAvailableRegistre %}
+                                            · <b>Admisión Abierta</b>
+                                        {% endif %}
+                                        · {{ course.capacity }} Estudiantes
+                                    </small>
+                                    <div class="d-flex mt-2 align-middle">
+                                        <h5 class="card-title font-weight-bold">{{ course.name }}</h5>
+                                        <h5 class="text-primary ml-auto font-weight-bold">4.0</h5>
+                                    </div>
+                                    <p class="card-text">{{ course.description|truncatechars:100 }}</p>
+                                    
+                                    <div class="d-flex align-items-stretch mt-2">
+                                        {% for fecha in course.schedules.all %}
+                                            
+                                            {% if forloop.counter < 3 %}
+                                                <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
+                                                    <div class="d-flex flex-column text-center text-small py-1">
+                                                        <div class="text-primary">
+                                                            {{ fecha.weekday }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-2 flex-fill align-self-center text-small">
+                                                        {{ fecha.dateIni|date:"h:i"}}
                                                     </div>
                                                 </div>
-                                                <div class="ml-2 flex-fill align-self-center text-small">
-                                                    {{ fecha.dateIni|date:"h:i"}}
-                                                </div>
-                                            </div>
-                                        {% else %}                                        
-                                            {% if forloop.counter == 3 %}
-                                                <div class="d-inline-flex border rounded px-1 text-small ml-2">
-                                                    <div class="flex-fill align-self-center">+ {{ forloop.revcounter }}</div>
-                                                </div>
-                                            {% endif %}
-                                        {% endif %}                                        
-                                        
-                                    {% endfor %}
+                                            {% else %}                                        
+                                                {% if forloop.counter == 3 %}
+                                                    <div class="d-inline-flex border rounded px-1 text-small ml-2">
+                                                        <div class="flex-fill align-self-center">+ {{ forloop.revcounter }}</div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}                                        
+                                            
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        </a>
-                    </div>                    
+                        </div>    
+                    </a>                
                 {% endfor %}
             </div>
         </div>

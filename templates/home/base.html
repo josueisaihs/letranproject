@@ -6,13 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio · CFBC</title>
     <link rel="icon" href="{% static 'img/faviconwhite.svg' %}" sizes="50x50" type="image/svg">
-
     <!-- Meta -->
     <meta property="og:title" content="Centro Fray Bartolomé de las Casas"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://bartolo.org"/>
-    <meta property="og:image:url" content="{% static 'img/faviconwhite.svg' %}"/>
+    <meta property="og:image" content="{% static 'img/faviconwhite.svg' %}"/>
     <meta property="og:description" content="Espacio de Reflexión" />
+    <meta name="keywords" content="educa, dominicos, orden de predicadores, educación, idioma, iglesia" />
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-167003377-1"></script>
+    <script defer>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-167003377-1');
+    </script>
 
     <!-- CSS only -->
     <link
@@ -44,6 +54,10 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="{% static 'letran/css/index.css' %}" />
+    <style>
+      {% block styles %}
+      {% endblock styles %}
+    </style>
   </head>
   <body>
     
