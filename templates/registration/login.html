@@ -14,6 +14,14 @@
             </div>
         {% endif %}
 
+        {% if messages%}                
+            {% for message in messages %}
+                <div class="alert alert-danger lg" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}                   
+        {% endif %}
+
         <div class="form-label-group" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
             <input type="text" id="id_username" name="username" class="form-control" placeholder="Usuario" required autofocus>
             <label for="id_username">Usuario</label>

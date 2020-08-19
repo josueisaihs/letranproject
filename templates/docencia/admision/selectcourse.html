@@ -1,6 +1,10 @@
-
 {% extends './base.html' %}
 {% load static %}
+{% load thumbnail %}
+
+{% load extras %}
+{% device_is_mobile req as device_is_mobile %}
+
 {% block titleHead %}Selección{% endblock titleHead %}
 {% block importCSS %}
     <!-- View -->
@@ -22,7 +26,6 @@
                 data-aos-delay="250"
                 data-aos-duration="800" class="mt-3">Seleccionar Curso</h2>
         </div>
-
         
         {% if messages %}
             
@@ -47,25 +50,17 @@
             {% for course in courses %}
                 <div class="col" data-course-title="{{ course.name }}" onclick="window.location.href='{% url 'admision_applicacion' course.id %}'">
                     <div class="card">
-                        <img src="{{ course.image.url }}" class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
+                        {% if device_is_mobile %}
+                        <!--Vista Movil -->
+                        <img src="{{ course.image | thumbnail_url:'card'}}" class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
+                        {% else %}
+                        <!-- Vista Normal -->
+                        <img src="{{ course.image | thumbnail_url:'card-desk'}}" class="card-img-top" alt="Imagen Curso 1" style="min-height: 10vh;">
+                        {% endif %}
                         <div class="card-body">
-                            {% comment %} <div class="d-flex flex-row">
-                                <img loading="lazy" style="border: 3px solid #fff;" class="rounded rounded-lg rounded-circle" 
-                                src="t1.jpg" alt="" width="15%">
-                                <div class="align-self-center ml-2"><h6>Nombre Profesor</h6>
-                                
-                                </div>
-                            </div> {% endcomment %}
                             <h3 class="card-title mt-1 ml-2 text-center">{{ course.name }}</h3>
-                            {% comment %} <small class="text-secondary text-center">{{ course.area.name }}</small> {% endcomment %}
                             <p class="card-text ml-2">{{ course.description|truncatechars:100 }}</p>
-                            <!-- <a class="link-secondary" href="{% url 'admision_applicacion' course.id %}" type="button">Aplicar</a> -->
                         </div>
-                        <!-- <div class="pl-2 pr-2">
-                            <hr>
-                            <p class="float-left text-secondary"><span class="text-warning align-middle material-icons">school</span> <b>{{ course.capacity }}  Estudiantes</b></p>
-                            <p class="float-right text-secondary"><span class="text-warning align-middle material-icons">event_available</span> <b>25 de Sep, 2020</b></p>
-                        </div> -->
                     </div>
                 </div>
             {% endfor %}                
