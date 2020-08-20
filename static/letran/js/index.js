@@ -77,8 +77,13 @@ $(document).ready(()=>{
         }
     });
 
-    var toastError = new bootstrap.Toast(document.getElementById("id_toastError"), 'autohide');
-    var toastSuccess = new bootstrap.Toast(document.getElementById("id_toastSuccess"), 'autohide');
+    try {
+        var toastError = new bootstrap.Toast(document.getElementById("id_toastError"), 'autohide');
+        var toastSuccess = new bootstrap.Toast(document.getElementById("id_toastSuccess"), 'autohide');
+    } catch (error) {
+        
+    }
+    
 
     $(".cursos .nav-item .nav-link").click(function() {
         $(".cursos .nav-item .activo").map((iter, el)=>{
@@ -90,7 +95,11 @@ $(document).ready(()=>{
         filtroCursos();
     });
 
-    filtroCursos();
+    try {
+        filtroCursos();
+    } catch (error) {
+        
+    }    
 });
 
 function valueTop(element){
