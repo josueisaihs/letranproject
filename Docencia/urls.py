@@ -7,6 +7,10 @@ __email__ = "josueisaihs@gmail.com"
 urlpatterns = [
     path('', views.index, name='index'),
     path('api/suscribir', views.suscribeteAjax, name='api_index_suscribete'),
+    path("eventos/", views.eventos, name="eventos"),
+    path("evento/<int:pk>/", views.evento, name="evento"),
+    path("cursos/", views.cursos, name="cursos"),
+    path("noticias/", views.noticias, name="noticias"),
 
     path('admision/dashboard/', views.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.registro, name='admision_registro'),
