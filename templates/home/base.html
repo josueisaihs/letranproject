@@ -1,12 +1,16 @@
 {% load static %}
+{% load thumbnail %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inicio · CFBC</title>
+    <title>{% block titulo %}{% endblock titulo %} · CFBC</title>
     <link rel="icon" href="{% static 'img/faviconwhite.svg' %}" sizes="50x50" type="image/svg">
     <!-- Meta -->
+    <meta name="description" content="Sitio Web del Centro Fray Bartolomé de las Casas. {% block metadescripcion %}
+    {% endblock metadescripcion %}">
+    <meta name="author" content="Josué Isai Hernández Sánchez">
     <meta property="og:title" content="Centro Fray Bartolomé de las Casas"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://bartolo.org"/>
@@ -55,78 +59,137 @@
 
     <link rel="stylesheet" href="{% static 'letran/css/index.css' %}" />
     <style>
+      .header, .header-min{
+          background-image: url({{ header.background|thumbnail_url:'img-400'}});
+      }
+
+      .registarse {
+          background-image: url({{ suscribete.background|thumbnail_url:'img-400' }});
+      }
+
+      .opiniones {
+          background-image: url({{ seccion_coment.background|thumbnail_url:'img-400' }});
+      }
+
+      @media screen and (max-width: 800px){
+          .header, .header-min{
+              background-image: url({{ header.background|thumbnail_url:'img-640'}});
+          }
+
+          .registarse {
+              background-image: url({{ suscribete.background|thumbnail_url:'img-640' }});
+          }
+
+          .opiniones {
+              background-image: url({{ seccion_coment.background|thumbnail_url:'img-640' }});
+          }
+      };
+
+      @media screen and (max-width: 640px){
+          .header, .header-min{
+              background-image: url({{ header.background|thumbnail_url:'img-600'}});
+          }
+
+          .registarse {
+              background-image: url({{ suscribete.background|thumbnail_url:'img-600' }});
+          }
+
+          .opiniones {
+              background-image: url({{ seccion_coment.background|thumbnail_url:'img-600' }});
+          }
+      }
+
+      @media screen and (max-width: 480px){
+          .header, header-min {
+              background-image: url({{ header.background|thumbnail_url:'img-400'}});
+          }
+
+          .registarse {
+              background-image: url({{ suscribete.background|thumbnail_url:'img-400' }});
+          }
+
+          .opiniones {
+              background-image: url({{ seccion_coment.background|thumbnail_url:'img-400' }});
+          }
+      }
+
       {% block styles %}
       {% endblock styles %}
     </style>
   </head>
   <body>
-    
-    {% block contenido %}{% endblock contenido %}  
-    <!-- Footer -->
-    <div id="id_footer" class="bg-dark text-white p-4 h-100">
-      <div class="container h-100 my-5">
-          <div class="row row-cols-1 row-cols-md-3 gx-5 my-5">
-              <div class="col">
-                  <h6>Centro Fray Bartolomé de las Casas</h6>
-                  <div class="text-secondary text-small-90">
-                    <a href="#id_footer" data-toggle="modal" data-target="#google-maps">
-                      <address class="text-secondary text-small-90" >
-                        {{ sede.street }}<br>
-                        {{ sede.city }}<br>
-                        {{ sede.state }}
-                      </address>
-                    </a>
-                    <p>
-                      <b>Teléfono: </b>
-                      <a class="link-secondary pe-auto" href="tel:{{ sede.cellphone }}">
-                        {{ sede.cellphone }}
+
+    <div class="spinner-wrapper">
+      <span class="spinner"></span>
+    </div>
+
+    <div id="content">
+      {% block contenido %}{% endblock contenido %}  
+      <!-- Footer -->
+      <div id="id_footer" class="bg-dark bg-gradient text-white p-4 h-100">
+        <div class="container h-100 my-5">
+            <div class="row row-cols-1 row-cols-md-3 gx-5 my-5">
+                <div class="col">
+                    <h6>Centro Fray Bartolomé de las Casas</h6>
+                    <div class="text-secondary text-small-90">
+                      <a href="#id_footer" data-toggle="modal" data-target="#google-maps">
+                        <address class="text-secondary text-small-90" >
+                          {{ sede.street }}<br>
+                          {{ sede.city }}<br>
+                          {{ sede.state }}
+                        </address>
                       </a>
-                    </p>
-                    <p>
-                      <b>Email: </b>
-                      <a class="link-secondary pe-auto" target="_blank" href="mailto:{{ sede.email }}?Subject=Solicito%20información">
-                        {{ sede.email }}
-                      </a>
-                    </p>
-                  </div>
-              </div>
-              <div class="col">
-                <h6>Enlaces Útiles</h6>
-                <nav class="nav flex-column">                    
-                    {% for link in enl %}
-                        <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
-                    {% endfor %}                       
-                </nav>
-              </div>
-              <div class="col">
-                <h6>Órden de Predicadores</h6>
-                <nav class="nav flex-column">
-                    {% for link in pre %}
-                        <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
-                    {% endfor %}                     
-                </nav>
-              </div>
-          </div>
-      </div>
-      <div class="modal" tabindex="-1" id="google-maps">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-dark">¿Cómo encontrarnos?</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                      <p>
+                        <b>Teléfono: </b>
+                        <a class="link-secondary pe-auto" href="tel:{{ sede.cellphone }}">
+                          {{ sede.cellphone }}
+                        </a>
+                      </p>
+                      <p>
+                        <b>Email: </b>
+                        <a class="link-secondary pe-auto" target="_blank" href="mailto:{{ sede.email }}?Subject=Solicito%20información">
+                          {{ sede.email }}
+                        </a>
+                      </p>
+                    </div>
+                </div>
+                <div class="col">
+                  <h6>Enlaces Útiles</h6>
+                  <nav class="nav flex-column">                    
+                      {% for link in enl %}
+                          <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
+                      {% endfor %}                       
+                  </nav>
+                </div>
+                <div class="col">
+                  <h6>Órden de Predicadores</h6>
+                  <nav class="nav flex-column">
+                      {% for link in pre %}
+                          <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
+                      {% endfor %}                     
+                  </nav>
+                </div>
             </div>
-            <div class="modal-body">
-              <div class="google-maps">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d771.274879678454!2d-82.38760429613252!3d23.140169774475822!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scu!4v1597612281336!5m2!1ses-419!2scu" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        </div>
+        <div class="modal" tabindex="-1" id="google-maps">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-dark">¿Cómo encontrarnos?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="google-maps">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d771.274879678454!2d-82.38760429613252!3d23.140169774475822!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scu!4v1597612281336!5m2!1ses-419!2scu" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-  </div>
-  <!-- Fin Footer -->    
+    </div>
 
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer src="https://unpkg.com/tippy.js@6"></script>
@@ -152,7 +215,14 @@
     <script defer src="{% static 'letran/js/ajaxdjango.js'%}"></script>
     <script defer src="{% static 'letran/js/index.js' %}"></script>
 
+    {% block importScripts %}            
+    {% endblock %}
+
     <script>
+      let spinnerwrapper = document.querySelector('.spinner-wrapper');
+      window.addEventListener('load', function(){
+        spinnerwrapper.parentElement.removeChild(spinnerwrapper)
+      });
         
         {% block scripts %}            
         {% endblock scripts %}
