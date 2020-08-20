@@ -58,7 +58,7 @@ def registro(req):
 
             email = EmailMessage(
                 "Centro Fray Bartolomé de las Casas", 
-                "%s %s,\nSu cuenta ha sido creada en el CFBC.\nUsuario: %s\nContraseña: %s\n\nPara continuar siga el siguiente enlace:\n%s" % (name, lastname, username, pwd, "http://localhost:8000/admision/dashboard/"), 
+                "%s %s,\nSu cuenta ha sido creada en el CFBC.\nUsuario: %s\nContraseña: %s\n\nPara continuar siga el siguiente enlace:\n%s" % (name, lastname, username, pwd, "https://bartolo.org/admision/dashboard/"), 
                 to=[username],
             )
 

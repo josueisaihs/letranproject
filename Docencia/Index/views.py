@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.http import JsonResponse
 from django.views.decorators.cache import cache_page
+from django.core.paginator import Paginator
 
 from datetime import datetime
 
@@ -20,27 +21,29 @@ TEMPLETE_PATH = "home/%s.html"
 import Docencia.tasks as tasks
 
 # @cache_page(60 * 15)
-def index(request):
-    header = HeaderIndex.objects.get(isVisible=True)
-
+def index(request):  
+    navindex = "active"
     news = News.objects.filter(date__lte=datetime.today())[:4]
 
     events = Events.objects.filter(date__lte=datetime.today())[:4]
 
     suscribete = SectionSuscribete.objects.all().first()
 
-    areas = Area.objects.all().order_by("name")
-    courses = CourseInformation.objects.filter(isService=False).order_by("name")
-    services = CourseInformation.objects.filter(isService=True).order_by("name")
-
     seccion_coment = SectionComments.objects.all().first()
 
     comments = Comments.objects.all().order_by("?")[:2]
 
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
     sede = Sede.objects.get(isprincipal=True)
 
     enl = Links.objects.filter(section="enl").order_by("name")
-    pre = Links.objects.filter(section="opr").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
 
     return render(request, TEMPLETE_PATH % "index", locals())
 
@@ -64,3 +67,79 @@ def suscribeteAjax(req):
             'Exito': "False"
         }
     return JsonResponse(response_data)
+
+def eventos(req):
+    naveventos = "active"
+    paginador = Paginator( Events.objects.filter(date__lte=datetime.today()), 2)    
+    page_number = req.GET.get('page')
+    page_obj = paginador.get_page(page_number)
+
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "eventos", locals())
+
+def evento(req, pk):
+    naveventos = "active"
+    event = Events.objects.get(pk=pk)
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "evento", locals())
+
+def cursos(req):
+    navcursos = "active"
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+
+    paginador = Paginator(courses, 4)    
+    page_number = req.GET.get('page')
+    page_obj = paginador.get_page(page_number)
+
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    # courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "cursos", locals())
+
+
+def noticias(req):
+    navnoticias = "active"
+    paginador = Paginator( News.objects.filter(date__lte=datetime.today()), 3)    
+    page_number = req.GET.get('page')
+    page_obj = paginador.get_page(page_number)
+
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "noticias", locals())

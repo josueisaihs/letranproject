@@ -91,20 +91,20 @@ class Post(models.Model):
         ordering = ('title',)
 
 class EventsDate(models.Model):
-    name = models.CharField(verbose_name="Nombre", max_length=50, unique=True)
     dateEnv = models.DateTimeField(verbose_name="Fecha Inicio")
     dateFin = models.DateTimeField(verbose_name="Fecha Fin", default=now)
 
     class Meta:
+        unique_together = [('dateEnv', 'dateFin')]
         verbose_name = 'Index - Evento Fecha'
         verbose_name_plural = 'Index - Eventos Fechas'
 
     def __str__(self):
-        return "%s" % self.name
+        return "%s - %s" % (self.dateEnv, self.dateFin)
 
     class Admin(ModelAdmin):
-        list_display = ('name', 'dateEnv', 'dateFin')
-        search_fields = ('name', 'dateEnv', 'dateFin')
+        list_display = ('dateEnv', 'dateFin')
+        search_fields = ('dateEnv', 'dateFin')
         ordering = ('dateEnv',)
 
 class Events(models.Model):
@@ -118,6 +118,8 @@ class Events(models.Model):
     file = models.FileField(upload_to=os.path.join('static', 'event', 'file'), null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario", default=1, limit_choices_to={'is_staff': True})
     google_maps = models.TextField(max_length=1000, verbose_name="Embeber Google Maps", blank=True)
+
+    #TODO Añadir suscribirse al evento
 
     class Meta:
         """Meta definition for Events."""

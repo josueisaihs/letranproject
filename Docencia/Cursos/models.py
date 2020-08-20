@@ -100,7 +100,6 @@ class Area(models.Model):
 
 class CourseSchedule(models.Model):
     """Model definition for CourseSchedule."""
-    name = models.CharField(verbose_name="Nombre", max_length=50, unique=True)
     weekday = models.CharField(max_length=14, choices=(
         ("Lun.", "Lunes"),
         ("Mar.", "Martes"),
@@ -117,15 +116,16 @@ class CourseSchedule(models.Model):
     dateFin = models.TimeField(verbose_name="Fecha Fin", default=now)
 
     class Meta:
+        unique_together = [('weekday', 'dateIni', 'dateFin')]
         verbose_name = 'Horario'
         verbose_name_plural = 'Cursos - Horarios'
 
     def __str__(self):
-        return "%s" % self.name
+        return "%s (%s-%s)" % (self.weekday, self.dateIni, self.dateFin)
 
     class Admin(ModelAdmin):
-        list_display = ('name', 'dateIni', 'dateFin')
-        search_fields = ('name', 'dateIni', 'dateFin')
+        list_display = ('weekday', 'dateIni', 'dateFin')
+        search_fields = ('weekday', 'dateIni', 'dateFin')
         ordering = ('dateIni',)
 
 
@@ -170,8 +170,9 @@ class CourseInformation(models.Model):
         null=True
     )
 
-    schedules = models.ManyToManyField("CourseSchedule", verbose_name="Horario(s)")
+    schedules = models.ManyToManyField("CourseSchedule", verbose_name="Horario(s)", blank=True)
 
+    # TODO:  la puntuacion
     class Meta:
         """Meta definition for Curso."""
         verbose_name = 'Curso / Servicio'
