@@ -99,7 +99,11 @@ $(document).ready(()=>{
         filtroCursos();
     } catch (error) {
         
-    }    
+    }   
+    
+    try{
+    getPreview($(".enlace").attr('href'))
+    } catch(errr){}
 });
 
 function valueTop(element){
@@ -157,6 +161,21 @@ function filtroCursos(){
             $(el).show();
         }else{
             $(el).hide();
+        }
+    });
+}
+
+function getPreview(externalUrl){
+    var target = externalUrl;
+    $.ajax({
+        url: "http://api.linkpreview.net",
+        dataType: 'jsonp',
+        data: {q: target, key: 'ff55066756cdd0c5f063bd3c7d33c138'},
+        success: function (data) {
+            $(".enlace-title").html(data.title);
+            $(".enlace-url").html(data.url);
+            $(".enlace-img").attr("src", data.image);
+            $(".enlace-card").removeClass("invisible");
         }
     });
 }
