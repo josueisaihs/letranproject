@@ -1,0 +1,118 @@
+{% extends './base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block titulo %}Cursos{% endblock titulo %}
+
+{% block metadescripcion %}Página de Cursos{% endblock metadescripcion %}
+
+{% block contenido %}
+<header class="header-min" id="inicio">
+    {% include './menu.html' %}
+
+    <div class="d-lg-flex ml-md-5 ml-sm-2 ml-2 text-white" style="padding-top: 10vh;">
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="350"
+            class="text-roboto-slab font-weight-bold text-uppercase display-2">
+            Cursos
+        </h1>
+        <nav class="align-self-center ml-auto" aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item"><a class="link-light link-primary-hover" href="{% url 'index' %}">Inicio</a></li>
+                <li class="breadcrumb-item active text-secondary" aria-current="page">Cursos</li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<div class="py-4 bg-white">
+    <nav class="mt-2">
+        <ul class="pagination pagination-sm justify-content-center">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                </a>
+            </li>              
+            <li class="page-item disabled">
+                <a class="page-link" href="#">    
+                    Cursos {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}                                          
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                </a>
+            </li>          
+        </ul>
+    </nav>
+
+    <div class="row row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">
+        {% for course in page_obj %}
+            <div data-course="{{ course.area }}" class="col">
+                <div class="card">
+                    <div class="image-box">
+                        <img src="{{ course.image.url }}" 
+                        class="card-img-top img-fluid" alt="Imagen Curso 0" />
+                    </div>
+                    <div class="card-body">
+                        <small class="mr-auto text-primary text-small">
+                            <b>                                                                                 
+                                {{ course.openregistre|date:"d M Y" }}                                        
+                            </b> - 
+                            <b>
+                                {{ course.deadline|date:"d M Y" }}
+                            </b>
+                            {% if course.isAvailableRegistre %}
+                                · <b>Admisión Abierta</b>
+                            {% endif %}
+                            · {{ course.capacity }} Estudiantes
+                        </small>
+                        <div class="d-flex mt-2 align-middle">
+                            <h5 class="card-title font-weight-bold">{{ course.name }}</h5>
+                            <h5 class="text-primary ml-auto font-weight-bold">4.0</h5>
+                        </div>
+                        <p class="card-text">{{ course.description|truncatechars:100 }}</p>
+                        
+                        <div class="d-flex align-items-stretch mt-2">
+                            {% for fecha in course.schedules.all %}
+                                
+                                {% if forloop.counter < 3 %}
+                                    <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
+                                        <div class="d-flex flex-column text-center text-small py-1">
+                                            <div class="text-primary">
+                                                {{ fecha.weekday }}
+                                            </div>
+                                        </div>
+                                        <div class="ml-2 flex-fill align-self-center text-small">
+                                            {{ fecha.dateIni|date:"h:i"}}
+                                        </div>
+                                    </div>
+                                {% else %}                                        
+                                    {% if forloop.counter == 3 %}
+                                        <div class="d-inline-flex border rounded px-1 text-small ml-2">
+                                            <div class="flex-fill align-self-center">+ {{ forloop.revcounter }}</div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}                                        
+                                
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}                
+    </div>
+</div>
+{% endblock contenido %}

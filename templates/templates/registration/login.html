@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends './base.html' %}
+{%  load static %}
+{% block contenido %}
+    <form class="form-signin" method="POST">
+        {% csrf_token %}
+        <div class="mb-4 text-center">
+            <img data-aos="fade-up" data-aos-duration="500" class="text-mb-4" src="{% static 'img/cfbc.png' %}" alt="" height="150">
+            <h2 data-aos="fade-up" data-aos-duration="800" data-aos-delay="500" class="mt-5">Inicio Sesión</h2>
+        </div>
+        {% if form.errors %}
+            <div class="alert alert-danger lg" role="alert">
+                No encontramos coincidencias para el Usuario y la Contraseña brindado. Intente nuevamente.
+            </div>
+        {% endif %}
+
+        {% if messages%}                
+            {% for message in messages %}
+                
+                {% ifequal message.level 40 %}
+                    <div class="alert alert-danger lg" role="alert">
+                        {{ message }}
+                    </div>
+                {% endifequal %}                    
+               
+            {% endfor %}                   
+        {% endif %}
+
+        <div class="form-label-group" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
+            <input type="text" id="id_username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+            <label for="id_username">Usuario</label>
+        </div>
+
+        <div class="form-label-group" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1200">
+            <input type="password" id="id_password" name="password" class="form-control" placeholder="Contraseña" required>
+            <label for="id_password">Contraseña</label>
+        </div>            
+
+        <div class="mt-4 text-center">
+            <div class="checkbox float-left mt-1" data-aos="fade-right" data-aos-duration="800" data-aos-delay="1500">
+                <label>
+                    <input type="checkbox" value="remember-me"> Recuerdame
+                </label>
+            </div>
+            <a data-aos="fade-left" data-aos-duration="800" data-aos-delay="1500" class="float-right btn btn-link" href="{% url 'pwdreset' %}">Olvidé mi contraseña</a>
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}" />
+
+        <button data-aos="fade-up" data-aos-duration="800" data-aos-delay="1700" class="mt-4 mb-4 btn btn-lg btn-primary btn-block" type="submit">
+            Autenticar
+        </button>
+
+        <div class="mt-4 text-center">
+            <p>No soy estudiante. <a href="{% url 'admision_registro' %}">Registrarme</a></p>
+        </div>            
+
+        <p class="mt-4 text-muted text-center">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
+    </form>
+{% endblock %}
