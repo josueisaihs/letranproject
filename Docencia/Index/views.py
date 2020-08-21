@@ -17,13 +17,14 @@ from Docencia.Cursos.models import CourseInformation, Area, Sede
 from Docencia.Index.models import HeaderIndex, News, SectionSuscribete, Suscriptor, SectionComments, Comments, Links, Events
 
 TEMPLETE_PATH = "home/%s.html"
+cantpaginator = 5
 
 import Docencia.tasks as tasks
 
 # @cache_page(60 * 15)
 def index(request):  
     navindex = "active"
-    news = News.objects.filter(date__lte=datetime.today())[:4]
+    news = News.objects.filter(date__lte=datetime.today()).order_by("-date")[:4]
 
     events = Events.objects.filter(date__lte=datetime.today())[:4]
 
@@ -70,7 +71,10 @@ def suscribeteAjax(req):
 
 def eventos(req):
     naveventos = "active"
-    paginador = Paginator( Events.objects.filter(date__lte=datetime.today()), 2)    
+    paginador = Paginator( 
+        Events.objects.filter(date__lte=datetime.today()), 
+        cantpaginator
+    )    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
 
@@ -107,7 +111,7 @@ def cursos(req):
     navcursos = "active"
     courses = CourseInformation.objects.filter(isService=False).order_by("name")
 
-    paginador = Paginator(courses, 4)    
+    paginador = Paginator(courses, cantpaginator)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
 
@@ -127,7 +131,7 @@ def cursos(req):
 
 def noticias(req):
     navnoticias = "active"
-    paginador = Paginator( News.objects.filter(date__lte=datetime.today()), 3)    
+    paginador = Paginator( News.objects.filter(date__lte=datetime.today()), cantpaginator)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
 
@@ -143,3 +147,22 @@ def noticias(req):
     pre = Links.objects.filter(section="opr").order_by("name") 
 
     return render(req, TEMPLETE_PATH % "noticias", locals())
+
+
+def noticia(req, pk):
+    navnoticias = "active"
+    new = News.objects.get(pk=pk)
+    news = News.objects.filter(date__lte=datetime.today()).exclude(pk=pk).order_by('-date')[:6]
+
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "noticia", locals())
