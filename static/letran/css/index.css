@@ -2,6 +2,14 @@ body {
   background-color: #fff;
 }
 
+.bg-mi-gris {
+  background-color: rgba(240, 236, 236, 0.904);
+}
+
+.bg-whatsapp {
+  background-color: #6FD468;
+}
+
 .spinner-wrapper {
   width: 100%;
   height: 100%;
@@ -176,6 +184,8 @@ div {
     max-height: 100vh;
     overflow: auto;
   }
+
+  .whatsapp { display: none }
 }
 
 .text-small {
@@ -207,6 +217,21 @@ div {
   left: 0;
   width: 100% !important;
   height: 100% !important;
+}
+
+.v-container {
+	position: relative;
+	padding-bottom: 56.25%; /* proporción 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+
+.v-container iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .activo {
@@ -264,41 +289,4 @@ div {
 
 .image-box:hover img {
   transform: scale(1.1);
-}
-
-.scrolling-wrapper {
-  overflow-x: scroll;
-  overflow-y: hidden;
-  white-space: nowrap;
-}
-
-.scrolling-wrapper .card {
-  display: inline-block;
-}
-
-.scrolling-wrapper-flexbox {
-  display: -webkit-box;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-.scrolling-wrapper-flexbox .card {
-  -webkit-box-flex: 0;
-  flex: 0 0 auto;
-  margin-right: 3px;
-}
-
-.scrolling-wrapper,
-.scrolling-wrapper-flexbox {
-  height: auto;
-  max-height: 50vh;
-  margin-bottom: 20px;
-  width: 100%;
-  -webkit-overflow-scrolling: touch;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
-.scrolling-wrapper::-webkit-scrollbar,
-.scrolling-wrapper-flexbox::-webkit-scrollbar {
-  display: none;
 }

@@ -168,7 +168,7 @@ function filtroCursos(){
 function getPreview(externalUrl){
     var target = externalUrl;
     $.ajax({
-        url: "http://api.linkpreview.net",
+        url: "https://api.linkpreview.net",
         dataType: 'jsonp',
         data: {q: target, key: 'ff55066756cdd0c5f063bd3c7d33c138'},
         success: function (data) {
