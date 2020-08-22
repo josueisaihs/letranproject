@@ -16,7 +16,7 @@
             data-aos-duration="700"
             data-aos-delay="350"
             class="text-roboto-slab font-weight-bold text-uppercase display-2">
-            {{ event.name|truncatechars:15}}
+            Evento
         </h1>
         <nav class="align-self-center ml-auto" aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent">
@@ -29,16 +29,21 @@
 </header>
 
 <div class="p-4 bg-white">
-    <div class="row">
-        <div class="col-lg-8">            
-            <img src="{{ event.image.url }}" class="img-fluid rounded"/>
+    <div class="row mt-4">
+        <div class="col-lg-8 shadow">            
+            <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>    
             
-            <div class="pt-4">
-                <h5>{{ event.name }}</h5><p>{{ event.body }}</p>
-            </div>            
+            <img src="{{ event.image.url }}" class="img-fluid mt-1"/>
+            
+            <div class="pt-4 mb-2">
+                <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>    
+                <p>{{ event.body }}</p>
+                <br>
+                <div class="sharethis-inline-share-buttons"></div>
+            </div>       
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 p-3">
             <div class="mb-3">
                 <a href="#" class="d-flex" data-toggle="modal" data-target="#google-maps-event">
                     <span class="material-icons text-primary">room</span> 
@@ -68,10 +73,14 @@
                 {% endfor %}
             </div>
 
-            <a class="d-flex" href="{{ event.file.url }}" download>
+            <a class="d-flex mb-3" href="{{ event.file.url }}" download>
                 <span class="material-icons text-primary">cloud_download</span> 
                 <span class="align-self-center"> Descargar</span>
-            </a>
+            </a>   
+            
+            <!-- ShareThis BEGIN -->
+            <div class="sharethis-inline-follow-buttons"></div>
+            <!-- ShareThis END -->
         </div>
     </div>
     <div class="modal" tabindex="-1" id="google-maps-event">
@@ -93,3 +102,11 @@
       </div>
 </div>
 {% endblock %}
+{% block headerScripts%}
+<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
+<script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
+{% endblock headerScripts%}
+
+{% block importScripts %}
+{% endblock importScripts %}
+    

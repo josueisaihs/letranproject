@@ -52,20 +52,24 @@
 
     <div class="ml-md-5 ml-sm-2 ml-2 d-flex mt-3">    
         {% if header.hadBtn1 %}
-            <a href="{% url header.linkBtn1 %}"><button type="button" class="btn btn-primary btn-inicio text-uppercase">
-                {{ header.btn1 }}
-            </button></a>
+            <a href="{% url header.linkBtn1 %}">
+                <button type="button" class="btn btn-primary btn-inicio text-uppercase">
+                    {{ header.btn1 }}
+                </button>
+            </a>
         {% endif %}           
         {% if header.hadBtn2 %}
-            <button type="button" class="btn btn-outline-light text-uppercase ml-2 btn-inicio">
-                {{ header.btn2 }}
-            </button>
+            <a href="{% url header.linkBtn2 %}">
+                <button type="button" class="btn btn-outline-light text-uppercase ml-2 btn-inicio">
+                    {{ header.btn2 }}
+                </button>
+            </a>
         {% endif %}
     </div>
 </header>
 
 <!-- Noticias -->
-    <div id="noticias" style="background-color: rgba(240, 236, 236, 0.904);" class="p-4">
+    <div id="noticias" style="background-color: rgba(240, 236, 236, 0.904);" class="py-4">
         <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
         data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Noticias</p>
 
@@ -73,7 +77,6 @@
             <div class="row row-cols-1 row-cols-md-2 g-1 ml-lg-5 ml-md-5">                
                 {% for new in news %}                    
                     {% if forloop.first %}
-                    <a href="#">
                         <div class="col h-100">
                             <div class="card shadow" 
                             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
@@ -97,12 +100,11 @@
                                 </div>
                             </div>
                         </div>
-                    </a>
                     {% endif %}                      
                 {% endfor %}                    
                 
-                <div class="col d-none d-sm-none d-md-block">
-                    <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-3">                        
+                <div class="col">
+                    <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">                        
                         {% for new in news %}                            
                             {% ifnotequal forloop.counter 1 %}
                                 <div class="card mb-3">
@@ -205,30 +207,32 @@
 <!-- Fin Registrarse -->
 
 <!-- Eventos -->
-    <div id="eventos" style="background-color: rgba(240, 236, 236, 0.904);" class="p-4">
+    <div id="eventos" class="p-1 bg-mi-gris">
         <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Eventos
         </p>
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-5 hor-cont-100 p-4">                
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">                
                 {% for event in events %}
                     <div class="col" onclick="window.location.href='{% url 'evento' event.pk %}'">
                         <div class="card h-100">
                             <div class="image-box">
                                 <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
                             </div>
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    {% with event.dateEnvs.all|first as fecha %}  
-                                    <small class="mr-auto text-primary text-small">
-                                        <b>{{ event.dateEnvs.all|length }} fecha{{ event.dateEnvs.all|pluralize:"s" }}</b> ·
-                                        <b>                                                                                 
-                                            {{ fecha.dateEnv|date:"d M Y gA" }}                                        
-                                        </b> - <b>{{ fecha.dateFin|date:"d M Y gA" }}</b>
-                                    </small>
-                                    {% endwith %}                                    
-                                    
-                                </div>
+                            <div class="card-body">                                
+                                {% if event.dateEnvs.all %}
+                                    <div class="d-flex">
+                                        {% with event.dateEnvs.all|first as fecha %}  
+                                        <small class="mr-auto text-primary text-small">
+                                            <b>{{ event.dateEnvs.all|length }} fecha{{ event.dateEnvs.all|pluralize:"s" }}</b> ·
+                                            <b>                                                                                 
+                                                {{ fecha.dateEnv|date:"d M Y gA" }}                                        
+                                            </b> - <b>{{ fecha.dateFin|date:"d M Y gA" }}</b>
+                                        </small>
+                                        {% endwith %}                                   
+                                    </div>
+                                {% endif %}                                   
+                               
                                 <h5 class="my-1 font-weight-bold">{{ event.name }}</h5>
                                 
                                 <small class="mr-auto text-secondary">{{ event.place|truncatechars:50 }}</small>
@@ -272,12 +276,12 @@
 <!-- Fin Eventos -->
 
 <!-- Opiniones -->
-    <div id="opiniones" class="opiniones p-4 h-100">
+    <div id="opiniones" class="opiniones py-4 h-100">
         <p class="text-white text-roboto-slab text-center text-uppercase display-6" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
             ¿Qué dicen los estudiantes?
         </p>
         <div class="container">
-            <div class="row row-cols-1 row-cols-md-2 gx-5 my-5 hor-cont-100">                
+            <div class="row row-cols-1 row-cols-md-2 g-1 g-md-2 p-1">                
                 {% for comment in comments %}
                 <div class="col my-5">
                     <div class="p-4 bg-white rounded">
@@ -301,25 +305,25 @@
 <!-- Fin Opiniones -->
 
 <!-- Cursos -->
-    <div id="cursos" class="p-4">
+    <div id="cursos" class="py-4">
         <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
         data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestros cursos</p>
 
         
         <div class="container">
-            <ul class="nav nav-dark justify-content-center text-roboto-slab cursos">
+            <ul class="nav nav-dark justify-content-center text-roboto-slab cursos mb-2">
                 {% for area in areas %}
                     <li class="nav-item">
                         <a href="#cursos" class="pe-auto nav-link {% if forloop.first %}link-primary border-bottom border-primary activo{% else %}link-secondary{% endif %} text-uppercase">{{ area }}</a>
                     </li>
                 {% endfor %}
             </ul>
-            <br>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 hor-cont-100 p-4">      
+            
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">      
                 {% regroup courses by area as courses_list %}          
                 {% for course in courses %}  
                         <div data-course="{{ course.area }}" class="curso-contenedor col">
-                            <div class="card h-100">
+                            <div class="card">
                                 <div class="image-box">
                                     <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
                                 </div>
@@ -374,6 +378,13 @@
         </div>
     </div>
 <!-- Fin Cursos -->
+<!-- Que Hacemos -->
+<div class="bg-mi-gris">
+    <div class="container v-container">
+      <iframe  src="https://www.youtube.com/embed/DKDjPaD3tp8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+<!-- Fin Que Hacemos-->
 {% endblock contenido %}
     
     

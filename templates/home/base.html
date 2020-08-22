@@ -28,6 +28,8 @@
         gtag('config', 'UA-167003377-1');
     </script>
 
+    {% block headerScripts%}{% endblock %}
+
     <!-- CSS only -->
     <link
       rel="stylesheet"
@@ -123,73 +125,82 @@
       <span class="spinner"></span>
     </div>
 
-    <div id="content">
-      {% block contenido %}{% endblock contenido %}  
-      <!-- Footer -->
-      <div id="id_footer" class="bg-dark bg-gradient text-white p-4 h-100">
-        <div class="container h-100 my-5">
-            <div class="row row-cols-1 row-cols-md-3 gx-5 my-5">
-                <div class="col">
-                    <h6>Centro Fray Bartolomé de las Casas</h6>
-                    <div class="text-secondary text-small-90">
-                      <a href="#id_footer" data-toggle="modal" data-target="#google-maps">
-                        <address class="text-secondary text-small-90" >
-                          {{ sede.street }}<br>
-                          {{ sede.city }}<br>
-                          {{ sede.state }}
-                        </address>
+    <main class="content" style="display: none;">
+      {% block contenido %}{% endblock contenido %}        
+    </main>
+    <footer id="id_footer" class="bg-dark bg-gradient text-white">
+      <div class="container h-100 my-5 p-4">
+          <div class="row row-cols-1 row-cols-md-3 gx-5 my-5">
+              <div class="col">
+                  <h6>Centro Fray Bartolomé de las Casas</h6>
+                  <div class="text-secondary text-small-90">
+                    <a href="#id_footer" data-toggle="modal" data-target="#google-maps">
+                      <address class="text-secondary text-small-90" >
+                        {{ sede.street }}<br>
+                        {{ sede.city }}<br>
+                        {{ sede.state }}
+                      </address>
+                    </a>
+                    <p>
+                      <b>Teléfono: </b>
+                      <a class="link-secondary pe-auto" href="tel:{{ sede.cellphone }}">
+                        {{ sede.cellphone }}
                       </a>
-                      <p>
-                        <b>Teléfono: </b>
-                        <a class="link-secondary pe-auto" href="tel:{{ sede.cellphone }}">
-                          {{ sede.cellphone }}
-                        </a>
-                      </p>
-                      <p>
-                        <b>Email: </b>
-                        <a class="link-secondary pe-auto" target="_blank" href="mailto:{{ sede.email }}?Subject=Solicito%20información">
-                          {{ sede.email }}
-                        </a>
-                      </p>
-                    </div>
-                </div>
-                <div class="col">
-                  <h6>Enlaces Útiles</h6>
-                  <nav class="nav flex-column">                    
-                      {% for link in enl %}
-                          <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
-                      {% endfor %}                       
-                  </nav>
-                </div>
-                <div class="col">
-                  <h6>Órden de Predicadores</h6>
-                  <nav class="nav flex-column">
-                      {% for link in pre %}
-                          <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
-                      {% endfor %}                     
-                  </nav>
-                </div>
-            </div>
-        </div>
-        <div class="modal" tabindex="-1" id="google-maps">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title text-dark">¿Cómo encontrarnos?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                    </p>
+                    <p>
+                      <b>Email: </b>
+                      <a class="link-secondary pe-auto" target="_blank" href="mailto:{{ sede.email }}?Subject=Solicito%20información">
+                        {{ sede.email }}
+                      </a>
+                    </p>
+                  </div>
               </div>
-              <div class="modal-body">
-                <div class="google-maps">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d771.274879678454!2d-82.38760429613252!3d23.140169774475822!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scu!4v1597612281336!5m2!1ses-419!2scu" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                </div>
+              <div class="col">
+                <h6>Enlaces Útiles</h6>
+                <nav class="nav flex-column">                    
+                    {% for link in enl %}
+                        <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
+                    {% endfor %}                       
+                </nav>
+              </div>
+              <div class="col">
+                <h6>Orden de Predicadores</h6>
+                <nav class="nav flex-column">
+                    {% for link in pre %}
+                        <a class="nav-link link-light" target="_blank" href="{{ link.link }}">{{ link.name }}</a>
+                    {% endfor %}                     
+                </nav>
+              </div>
+          </div>          
+      </div>
+      <div class="modal" tabindex="-1" id="google-maps">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-dark">¿Cómo encontrarnos?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="google-maps">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d771.274879678454!2d-82.38760429613252!3d23.140169774475822!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2scu!4v1597612281336!5m2!1ses-419!2scu" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="bg-black text-secondary text-center">
+        &copy; 
+        <a href="https://bartolo.org" class="link-secondary">
+          CFBC 1998 - <script>document.write(new Date().getFullYear());</script>
+        </a> 
+        <!-- Power by 
+        <a target="_blank" class="link-secondary" href="https://www.djangoproject.com/foundation/">
+          Django
+        </a> -->
+      </div>
+    </footer>
 
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <script defer src="https://unpkg.com/tippy.js@6"></script>
@@ -220,8 +231,10 @@
 
     <script>
       let spinnerwrapper = document.querySelector('.spinner-wrapper');
+      let content = document.querySelector('.content');
       window.addEventListener('load', function(){
         spinnerwrapper.parentElement.removeChild(spinnerwrapper)
+        content.style.display = "block";
       });
         
         {% block scripts %}            
