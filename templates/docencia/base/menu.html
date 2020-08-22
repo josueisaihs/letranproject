@@ -1,0 +1,43 @@
+{% load static %}
+<nav class="w3-sidenav w3-collapse w3-white w3-animate-left w3-card-2" style="z-index:3;width:250px;" id="mySidenav">
+    <a href="#" class="w3-border-bottom w3-large"><img src='{% static "image/cfbc.png" %}' style="width:80%;"></a>
+    <a href="javascript:void(0)" onclick="w3_close()" 
+    class="w3-text-teal w3-hide-large w3-closenav w3-large">Close <i class="fa fa-remove"></i></a>
+    
+    
+    {% if user.is_authenticated %}
+      <a href="#" class="w3-light-grey w3-medium">Inicio</a>
+
+      <div class="w3-accordion">
+        <a onclick="acordion('profesores')" href="javascript:void(0)">Profesores <i class="fa fa-caret-down"></i></a>
+        <div id="profesores" class="w3-accordion-content w3-animate-left w3-padding">
+          <a href="#"><i class="fa fa-plus"></i> Agregar</a>
+          <a href="#"><i class="fa fa-plus"></i> Lista</a>
+        </div>
+      </div>
+
+      <div class="w3-accordion">
+        <a onclick="acordion('estudiantes')" href="javascript:void(0)">Estudiantes <i class="fa fa-caret-down"></i></a>
+        <div id="estudiantes" class="w3-accordion-content w3-animate-left w3-padding">
+          <a href="#"><i class="fa fa-plus"></i> Agregar</a>
+          <a href="#"><i class="fa fa-plus"></i> Lista</a>
+        </div>
+      </div>
+
+      <div class="w3-accordion">
+        <a onclick="acordion('cursos')" href="javascript:void(0)">Cursos <i class="fa fa-caret-down"></i></a>
+        <div id="cursos" class="w3-accordion-content w3-animate-left w3-padding">
+          <a href="#"><i class="fa fa-plus"></i> Agregar</a>
+          <a href="#"><i class="fa fa-plus"></i> Lista</a>
+        </div>
+      </div>
+
+      <br><br>
+      <hr>
+
+      <a href="{% url 'logout' %}">Cerrar Sesión</a>
+    {% else %}
+      <a href="{% url 'login' %}">Iniciar Sesión</a>
+    {% endif %}
+
+  </nav>

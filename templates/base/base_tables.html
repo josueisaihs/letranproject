@@ -1,0 +1,210 @@
+{%  load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Docencia {% block titulo %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'boostrap/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'elijosoft/elijosoft.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'w3/w3.css' %}">
+    <script src="{% static 'jquery/jquery-3.2.0.min.js' %}"></script>
+    <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'elijosoft/ajaxdjango.js' %}"></script>
+    <script src="{% static 'elijosoft/ControlWidget.js' %}"></script>
+</head>
+<body>
+    {% include 'base/menu.html' %}
+    <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" id="myOverlay"></div>
+
+    <div class="w3-container w3-padding-16" style="background-color: #4c4b4b;">
+        <span class="w3-opennav w3-xxlarge w3-text-white" onclick="w3_open()">☰</span>
+        <div class="w3-row">
+            <div class="w3-half w3-hide-small"><p></p></div>
+            <div class="w3-threequarter w3-hide-small">
+                <div class="w3-white" style="padding-bottom: 16px;">
+                    <h2 class="w3-teal w3-padding">{% block titulo_seccion %}{% endblock %}</h2>
+                    {% block seccion %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+
+        var datos, page;
+        page = 1;
+
+        function w3_open() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function w3_close() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("myOverlay").style.display = "none";
+        }
+
+        $('#id_search_teacher_form').on('submit', function(event){
+            event.preventDefault();
+            searching_teacher();
+        });
+
+        function searching_teacher() {
+            $.ajax({
+                url: "{% url 'view_listteacher' %}",
+                type: "POST",
+                data: {
+                    search: $("#id_search").val(),
+                },
+                success: function (json) {
+                    var jsoncontent = JSON.parse(json.data);
+
+                    var resp = "";
+                    if (jsoncontent.length > 1){
+                        resp = "Hemos encontrado " + jsoncontent.length + " coincidencias";
+                    }
+                    if (jsoncontent.length === 1){
+                        resp = "Hemos encontrado una coincidencia";
+                    }
+                    if (jsoncontent.length <= 0){
+                        resp = "No hemos encontrado coincidencias";
+                    }
+                    $('#id_search_result').html("<strong class='w3-text-teal'>" + resp + "</strong>");
+
+                    var i = 0;
+                    $('#id_container_teachers').empty();
+                    $('#id_paginator').hide();
+
+                    for (i; i < jsoncontent.length; i++){
+                        var li = '';
+                        var icono = "";
+                        if (jsoncontent[i]['fields']['gender'] === 'm'){
+                            icono = "fa-male";
+                        }else{
+                            icono = "fa-female";
+                        }
+
+                        var urledit = '/docencia/editteacher/' + jsoncontent[i]['pk'] + '/';
+                        var urldelete = '/docencia/delteacher/' + jsoncontent[i]['pk'] + '/';
+                        var degree = jsoncontent[i]['fields']['degree'];
+                        if (degree === "Ning."){
+                            degree = "";
+                        }
+                        var title = jsoncontent[i]['fields']['title'];
+                        if (!title){
+                            title = "";
+                        }
+
+                        li = "<li class=\"w3-padding-16\">\n" +
+                            "                    <span onclick=\"\n" +
+                            "                        document.getElementById('mensajeModaldelete').innerHTML = " +
+                            "'¿Desea eliminar permanentemente al profesor<br><strong>" +
+                            jsoncontent[i]['fields']['name'] + " " + jsoncontent[i]['fields']['lastname'] + "</strong> ?';\n" +
+                            "                        document.getElementById('aSiModalDelete').href = '" + urldelete + "';\n" +
+                            "                        document.getElementById('modalDelete').style.display = 'block';\n" +
+                            "                        \"\n" +
+                            "                      class=\"w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-red\"><i class=\"fa fa-remove\"></i>\n" +
+                            "                    </span>\n" +
+                            "                    <a href='" + urledit + "'\n" +
+                            "                      class=\"w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-teal\"><i class=\"fa fa-edit\"></i>\n" +
+                            "                    </a>\n<div class=\"w3-row\">\n" +
+                            "                        <div class=\"w3-col l1 m1 s2\">" +
+                            "                    <img src=\"/" + jsoncontent[i]['fields']['image'] + "\" class=\"w3-left w3-circle w3-margin-right\" style=\"height:50px\"></div>\n" +
+                            "                        <div class=\"w3-rest\">\n" +
+                            "                    <span class=\"w3-medium\"><i class=\"fa " + icono + " w3-large w3-opacity\"></i><b> " +
+                            degree + " " + jsoncontent[i]['fields']['name'] + " " + jsoncontent[i]['fields']['lastname'] + "</b></span><br>\n" +
+                            "                    <span class=\"w3-small\">" + title + "</span>\n</div></div>" +
+                            "                </li>";
+                        $("#id_container_teachers").append(li);
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    $('#id_search_result').html("<strong class='w3-text-red'>Error de conexión</strong>");
+                }
+            })
+        }
+
+        $('#id_search_studet_form').on('submit', function(event){
+            event.preventDefault();
+            searching_student();
+        });
+
+        function searching_student() {
+            $.ajax({
+                url: "{% url 'view_liststudent' %}",
+                type: "POST",
+                data: {
+                    search: $("#id_search").val(),
+                },
+                success: function (json) {
+                    var jsoncontent = JSON.parse(json.data);
+
+                    var resp = "";
+                    if (jsoncontent.length > 1){
+                        resp = "Hemos encontrado " + jsoncontent.length + " coincidencias";
+                    }
+                    if (jsoncontent.length === 1){
+                        resp = "Hemos encontrado una coincidencia";
+                    }
+                    if (jsoncontent.length <= 0){
+                        resp = "No hemos encontrado coincidencias";
+                    }
+                    $('#id_search_result').html("<strong class='w3-text-teal'>" + resp + "</strong>");
+
+                    var i = 0;
+                    $('#id_container_teachers').empty();
+                    $('#id_paginator').hide();
+
+                    for (i; i < jsoncontent.length; i++){
+                        var li = '';
+                        var icono = "";
+                        if (jsoncontent[i]['fields']['gender'] === 'm'){
+                            icono = "fa-male";
+                        }else{
+                            icono = "fa-female";
+                        }
+
+                        var urledit = '/docencia/editstudent/' + jsoncontent[i]['pk'] + '/';
+                        var urldelete = '/docencia/delstudent/' + jsoncontent[i]['pk'] + '/';
+                        var degree = jsoncontent[i]['fields']['degree'];
+                        if (degree === "Ning."){
+                            degree = "";
+                        }
+                        var title = jsoncontent[i]['fields']['title'];
+                        if (!title){
+                            title = "";
+                        }
+
+                        li = "<li class=\"w3-padding-16\">\n" +
+                            "                    <span onclick=\"\n" +
+                            "                        document.getElementById('mensajeModaldelete').innerHTML = " +
+                            "'¿Desea eliminar permanentemente al profesor<br><strong>" +
+                            jsoncontent[i]['fields']['name'] + " " + jsoncontent[i]['fields']['lastname'] + "</strong> ?';\n" +
+                            "                        document.getElementById('aSiModalDelete').href = '" + urldelete + "';\n" +
+                            "                        document.getElementById('modalDelete').style.display = 'block';\n" +
+                            "                        \"\n" +
+                            "                      class=\"w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-red\"><i class=\"fa fa-remove\"></i>\n" +
+                            "                    </span>\n" +
+                            "                    <a href='" + urledit + "'\n" +
+                            "                      class=\"w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-teal\"><i class=\"fa fa-edit\"></i>\n" +
+                            "                    </a>\n<div class=\"w3-row\">\n" +
+                            "                        <div class=\"w3-col l1 m1 s2\">" +
+                            "                    <img src=\"/" + jsoncontent[i]['fields']['image'] + "\" class=\"w3-left w3-circle w3-margin-right\" style=\"height:50px\"></div>\n" +
+                            "                        <div class=\"w3-rest\">\n" +
+                            "                    <span class=\"w3-medium\"><i class=\"fa " + icono + " w3-large w3-opacity\"></i><b> " +
+                            degree + " " + jsoncontent[i]['fields']['name'] + " " + jsoncontent[i]['fields']['lastname'] + "</b></span><br>\n" +
+                            "                    <span class=\"w3-small\">" + title + "</span>\n</div></div>" +
+                            "                </li>";
+                        $("#id_container_teachers").append(li);
+                    }
+                },
+                error: function (xhr, errmsg, err) {
+                    $('#id_search_result').html("<strong class='w3-text-red'>Error de conexión</strong>");
+                }
+            })
+        }
+    </script>
+</body>
+</html>

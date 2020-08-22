@@ -1,0 +1,26 @@
+{% extends 'base/base_tables.html' %}
+{% block titulo_seccion %}
+    Inicio | {{ user.username }}
+    <span class="w3-right">
+        <a class="w3-btn w3-white w3-round w3-small" target="_blank" href="{% url 'view_candidates' course.pk %}">Seleccionar Candidatos</a>
+        <a class="w3-btn w3-white w3-round w3-small" target="_blank" href="{% url 'view_candidate_to_group' course.pk %}">Administrar Grupo</a>
+    </span>
+{% endblock %}
+{% block seccion %}
+    <div class="w3-row-padding">
+    {% for group in groups %}
+        <div class="w3-quarter w3-card-4 w3-padding">
+            <h4>{{ group.course.name }}</h4>
+            <h5>{{ group.name }}</h5>
+            <a target="_blank" href="{% url 'view_assistence' group.pk %}">Asistencia</a>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="w3-row w3-padding">
+        <a href="{% url 'view_formularioApp' enrollmentApplication.pk %}">
+            <button class="w3-btn w3-green w3-right w3-round" tyoe="button">
+                <i class="fa fa-plus"></i> Editar Planilla
+            </button>
+        </a>
+    </div>
+{% endblock%}

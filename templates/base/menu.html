@@ -1,0 +1,52 @@
+{% load static %}
+<nav class="w3-sidenav w3-white w3-animate-left" style="display:none;z-index:5" id="mySidenav">
+    <div class="">
+        <img src="{% static 'image/pc.JPG' %}" width="100%">
+    </div>
+    <a href="javascript:void(0)" onclick="w3_close()"
+    class="w3-closenav w3-large w3-hover-red w3-padding-top">Cerrar &times;</a>
+    <a href="#"><i class="fa fa-home w3-large"></i> Inicio</a>
+    <div class="w3-accordion">
+        <a onclick="showMenu('id_menuTeacher');" class="w3-hover-green">Profesores <i class="fa fa-angle-down"></i></a>
+        <div class="w3-accordion-content w3-light-grey" id="id_menuTeacher">
+          <a href="{% url 'view_listteacher' %}" class="w3-hover-green"><i class="fa fa-list w3-large"></i> Listado</a>
+          <a href="{% url 'view_newteacher' %}" class="w3-hover-green"><i class="fa fa-plus w3-large"></i> Agregar</a>
+        </div>
+    </div>
+    <div class="w3-accordion">
+        <a onclick="showMenu('id_menuStudent');" class="w3-hover-green">Estudiantes <i class="fa fa-angle-down"></i></a>
+        <div class="w3-accordion-content w3-light-grey" id="id_menuStudent">
+          <a href="{% url 'view_liststudent' %}" class="w3-hover-green"><i class="fa fa-list w3-large"></i> Listado</a>
+          <a href="{% url 'view_newstudent' %}" class="w3-hover-green"><i class="fa fa-plus w3-large"></i> Agregar</a>
+        </div>
+    </div>
+    <div class="w3-accordion">
+        <a onclick="showMenu('id_menuCourse');" class="w3-hover-green">Cursos <i class="fa fa-angle-down"></i></a>
+        <div class="w3-accordion-content w3-light-grey" id="id_menuCourse">
+          <a href="{% url 'view_newcourse' %}" class="w3-hover-green"><i class="fa fa-plus w3-large"></i> Agregar</a>
+        </div>
+    </div>
+</nav>
+<header class="w3-container w3-top w3-white w3-xlarge w3-padding-16 w3-hide-small w3-card-2">
+    <span class="w3-opennav w3-xxlarge" onclick="w3_open()">☰</span>
+    
+    <span class="w3-right w3-padding">CFBC</span>
+    {% if user.is_authenticated %}
+        <span class="w3-right w3-padding w3-small">
+            <i class="fa fa-user"></i> {{ user.username }}
+            <span><a href="{% url 'logout' %}">Salir<i class="fa fa-sign-out"></i></a></span>
+        </span>
+    {% endif %}
+
+    <span class="w3-right w3-padding">{% block buscador %}{% endblock %}</span>
+</header>
+<script>
+    function showMenu(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") === -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>

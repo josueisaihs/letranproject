@@ -1,0 +1,247 @@
+{% extends 'docencia/academy/base.html' %}
+{% load static %}
+
+
+{% block titulo %}Inicio{% endblock titulo %}
+    
+
+{% block contenido %}
+    <!-- ##### Hero Area Start ##### -->
+    <section class="hero-area">
+        <div class="hero-slides owl-carousel">
+
+            {% for slideHero in slidesHero %}
+                <!-- Single Hero Slide -->
+                <div class="single-hero-slide bg-img bg-overlay" style="background-image: url(/{{ slideHero.image }});">
+                    <div class="container h-100">
+                        <div class="row h-100 align-items-center">
+                            <div class="col-12">
+                                <div class="hero-slides-content" style="margin-left: 30px;">
+                                    <h4 data-animation="fadeInUp" data-delay="100ms">{{ slideHero.subtitle }}</h4>
+                                    <h2 data-animation="fadeInUp" data-delay="400ms">{{ slideHero.title }}</h2>
+                                    {% if slideHero.showButton %}
+                                        <a href="#" class="btn academy-btn" data-animation="fadeInUp" data-delay="700ms">
+                                        {{ slideHero.textButton }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- ##### Hero Area End ##### -->
+
+    <!-- ##### Top Feature Area Start ##### -->
+    <div class="top-features-area wow fadeInUp" data-wow-delay="300ms">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="features-content">
+                        <div class="row no-gutters">
+                            <!-- Single Top Features -->
+                            <div class="col-12 col-md-4">
+                                <div class="single-top-features d-flex align-items-center justify-content-center">
+                                    <i class="icon-agenda-1"></i>
+                                    <h5>Cursos de Excelencia</h5>
+                                </div>
+                            </div>
+                            <!-- Single Top Features -->
+                            <div class="col-12 col-md-4">
+                                <div class="single-top-features d-flex align-items-center justify-content-center">
+                                    <i class="icon-assistance"></i>
+                                    <h5>Claustro</h5>
+                                </div>
+                            </div>
+                            <!-- Single Top Features -->
+                            <div class="col-12 col-md-4">
+                                <div class="single-top-features d-flex align-items-center justify-content-center">
+                                    <i class="icon-telephone-3"></i>
+                                    <h5>Soporte de TICs</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Top Feature Area End ##### -->
+
+    <!-- ##### Course Area Start ##### -->
+    <div class="academy-courses-area section-padding-100-0">
+        <div class="container">
+            <div class="row">
+                <!-- Single Course Area -->
+                {% for area in areas %}
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="single-course-area d-flex align-items-center mb-100 wow fadeInUp"
+                            data-wow-delay="300ms">
+                            <div class="course-icon">
+                                <i class="icon-id-card"></i>
+                            </div>
+                            <div class="course-content">
+                                <h5>{{ area.name }}</h5>
+                                {% comment %} <p>{{ area.description }}</p> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- ##### Course Area End ##### -->
+
+    <!-- ========== Milestones ========== -->
+    <div id="estadisticas" class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading text-center mx-auto wow fadeInUp" 
+                data-wow-delay="300ms">
+                    <span>Nuestras</span>
+                    <h3>Estadísticas</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="academy-cool-facts-area mb-50">
+                <div class="row">
+
+                    <!-- Single Cool Fact-->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="single-cool-fact text-center">
+                            <i class="icon-agenda-1"></i>
+                            <h3><span class="counter">13</span>k</h3>
+                            <p>Materiales Bibliográficos</p>
+                        </div>
+                    </div>
+
+                    <!-- Single Cool Fact-->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="single-cool-fact text-center">
+                            <i class="icon-assistance"></i>
+                            <h3><span class="counter">17</span>k</h3>
+                            <p>Egresados</p>
+                        </div>
+                    </div>
+
+                    <!-- Single Cool Fact-->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="single-cool-fact text-center">
+                            <i class="icon-id-card"></i>
+                            <h3><span class="counter">{{ courses|length }}</span></h3>
+                            <p>Cursos y Diplomados</p>
+                        </div>
+                    </div>
+
+                    <!-- Single Cool Fact-->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="single-cool-fact text-center">
+                            <i class="icon-message"></i>
+                            <h3><span class="counter">1.4</span>k</h3>
+                            <p>Alumnos Actuales</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- ========== Milestones ========== -->
+
+    <!-- ##### Testimonials Area Start ##### -->
+    <div id="testimonios" class="testimonials-area section-padding-100 bg-img bg-overlay"
+        style="background-image: url(/static/academy/img/bg-img/bg-2.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading text-center mx-auto white wow fadeInUp" data-wow-delay="300ms">
+                        <span>nuestro testimonio</span>
+                        <h3>Lee lo que nuestros estudiantes y profesores dicen</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Single Testimonials Area -->
+                {% for comentario in comments %}
+                    <div class="col-12 col-md-6">
+                        <div class="single-testimonial-area mb-100 d-flex wow fadeInUp" data-wow-delay="400ms">
+                             <!-- <div class="testimonial-thumb">
+                                <img src="{% static 'academy/img/bg-img/t1.jpg' %}" alt=""> 
+                            </div> -->
+                            <div class="testimonial-content">
+                                <h5>{{ comentario.title }}</h5>
+                                <p>{{ comentario.comment }}</p>
+                                <h6><span>{{ comentario.name }},</span> {{ comentario.typeOf}}</h6>
+                            </div>
+                        </div>
+                    </div> 
+                {% endfor %}               
+            </div>
+        </div>
+    </div>
+    <!-- ##### Testimonials Area End ##### -->
+
+    <!-- ##### Top Popular Courses Area Start ##### -->
+    <div id="cursos" class="top-popular-courses-area section-padding-100-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-heading text-center mx-auto wow fadeInUp" data-wow-delay="300ms">
+                        <span>Lo Mejor</span>
+                        <h3>Nuestros Cursos</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% for course in courses %}
+                    <!-- Single Top Popular Course -->
+                    <div class="col-12 col-lg-6">
+                        <div class="single-top-popular-course d-flex align-items-center flex-wrap mb-30 wow fadeInUp"
+                            data-wow-delay="400ms">
+                            <div class="popular-course-content">
+                                <h5>{{ course.name }}</h5>
+                                <span>{{ course.openregistre }} | {{course.deadline}}</span>
+                                <div class="course-ratings">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                                </div>
+                                <p>{{ course.description }}</p>
+                                <a href="{% url 'view_index_detail' course.pk %}" class="btn academy-btn btn-sm">Leer Más ...</a>
+                            </div>
+                            <div class="popular-course-thumb bg-img"
+                                style="background-image: url(/{{ course.image }});"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>                
+    </div>
+    <!-- ##### Top Popular Courses Area End ##### -->
+    
+
+    <!-- ##### Partner Area Start ##### -->
+    {% comment %} 
+    <div class="partner-area section-padding-0-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="partners-logo d-flex align-items-center justify-content-between flex-wrap">
+                        <a href="#"><img src="{% static 'academy/img/clients-img/partner-1.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'academy/img/clients-img/partner-2.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'academy/img/clients-img/partner-3.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'academy/img/clients-img/partner-4.png' %}" alt=""></a>
+                        <a href="#"><img src="{% static 'academy/img/clients-img/partner-5.png' %}" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    {% endcomment %}
+    <!-- ##### Partner Area End ##### -->
+    <!-- ##### CTA Area End ##### -->
+{% endblock contenido %}

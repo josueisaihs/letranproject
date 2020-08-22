@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Matricula{% endblock %}
+{% block seccion %}
+    <div class="w3-row-padding w3-container w3-center w3-white w3-round-large w3-padding" style="color: white; margin-top: 100px;">
+
+        <div class="w3-row-padding">
+            {% include 'docencia/steps.html' %}
+        </div>
+
+        <div class="w3-half w3-margin-top w3-margin-bottom">
+            <h2 class="w3-border-bottom w3-animate-top">Bienvenido al Centro</h2>
+            <div style="text-align: justify" class="w3-padding">
+                <h4 class="w3-animate-right">
+                    <i class="fa fa-angle-right"></i> Selecciona <span class="w3-tag w3-teal w3-padding">Nuevo Ingreso</span> en caso de nunca haberse inscrito
+                    para aspirar a un curso</h4>
+                <h4 class="w3-animate-left">
+                    <i class="fa fa-angle-right"></i> Para agilizar el proceso de matricula haznos saber
+                    si en algun momento te inscribiste. En ese caso selecciona
+                    <span class="w3-tag w3-teal w3-padding">Interno</span></h4>
+            </div>
+        </div>
+        <div class="w3-quarter es-container w3-margin-top w3-margin-bottom w3-animate-top">
+            <a href="{% url 'view_newstudent' %}">
+                <h4 class="w3-hide-large w3-hide-medium w3-animate-top w3-text-black">Nuevo Ingreso</h4>
+                <img src="{% static 'image/aspirante.jpg' %}" width="100%" class="es-image es-shadow-large w3-round-large">
+                <div class="es-middle">
+                    <div class="es-text">
+                        <button type="button" class="w3-btn w3-teal w3-padding w3-round-jumbo">
+                            Nuevo Ingreso <i class="fa fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="w3-quarter es-container w3-margin-top w3-margin-bottom w3-animate-bottom"
+             role="button" onclick="document.getElementById('modalCI').style.display ='block';">
+            <h4 class="w3-hide-large w3-hide-medium w3-animate-top">Interno</h4>
+            <img src="{% static 'image/estudiante.jpg' %}" width="100%" class="es-image es-shadow-large w3-round-large">
+            <div class="es-middle">
+                <div class="es-text">
+                    <button type="button" class="w3-btn w3-teal w3-padding w3-round-jumbo">
+                        Estudiante Interno <i class="fa fa-angle-double-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalCI" class="w3-modal">
+            <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:300px">
+                <div class="w3-center w3-padding"><br>
+                    <span onclick="document.getElementById('modalCI').style.display='none'"
+                          class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright"
+                          title="Close Modal">&times;</span>
+                    <br>
+                    <h4 class="w3-text-black">Su Carnet de Identidad</h4>
+                    {% if error %}
+                        <p class="w3-leftbar w3-border-red w3-padding w3-text-red">No hemos podido encontrar su carnet :(</p>
+                    {% endif %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="w3-row-padding">
+                            <div class="w3-quarter"><p> </p></div>
+                            <div class="w3-half">{{ studentCandidateForm.studentCI }}</div>
+                        </div>
+                        <div class="w3-container w3-margin-top">
+                            <input type="submit" id="id_nextSubmit" class="w3-center w3-btn w3-blue w3-round-jumbo" style="display: none;" value="Continuar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        {% if error %}
+            document.getElementById("modalCI").style.display = 'block';
+        {% endif %}
+    
+        function nextValidate(el) {
+            if (el.value.length > 10){
+                document.getElementById("id_nextSubmit").style.display = "block";
+            }else{
+                document.getElementById("id_nextSubmit").style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

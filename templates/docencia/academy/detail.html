@@ -1,0 +1,83 @@
+{% extends 'docencia/academy/base.html' %}
+
+{% block titulo %}Curso Detalle{% endblock titulo %}
+
+{% block contenido %}
+    <!-- ##### Breadcumb Area Start ##### -->
+    <div class="breadcumb-area bg-img" style="background-image: url(/{{ course.image }});">
+        <div class="bradcumbContent">
+            <h2>Curso</h2>
+        </div>
+    </div>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <section class="elements-area mt-50 section-padding-100-0">
+        <div class="container">
+            <h5>{{ course.name }}</h5><br>
+            <span>{{ course.openregistre }} | {{course.deadline}}</span>
+            <br>
+            <div class="course-ratings">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+            </div>
+            <br>
+            <div class="row">
+                <!-- ##### Tabs ##### -->
+                <div class="col-12 col-lg-12">
+                    <div class="academy-tabs-content">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tab--1" data-toggle="tab" href="#tab1" 
+                                    role="tab" aria-controls="tab1" aria-selected="false">
+                                    Descripción
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab--2" data-toggle="tab" 
+                                    href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">
+                                    Requisitos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab--3" data-toggle="tab" 
+                                    href="#tab3" role="tab" aria-controls="tab3" aria-selected="true">
+                                    Curriculum
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mb-100" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab--1">
+                                <div class="academy-tab-content">
+                                    <!-- Tab Text -->
+                                    <div class="academy-tab-text">
+                                        <p>{{ course.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab--2">
+                                <div class="academy-tab-content">
+                                    <!-- Tab Text -->
+                                    <div class="academy-tab-text">
+                                        <p>{{ course.requirements }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab--3">
+                                <div class="academy-tab-content">
+                                    <!-- Tab Text -->
+                                    <div class="academy-tab-text">
+                                        <p>{{ course.curriculum }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock contenido %}

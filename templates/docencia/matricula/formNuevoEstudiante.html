@@ -1,0 +1,25 @@
+{% extends '../base/base.html' %}
+{% load static %}
+{% block titulo %}
+  Nuevo Estudiante
+{% endblock %}
+{% block tituloHeaderSmall %}
+  Nuevo Estudiante
+{% endblock %}
+{% block tituloHeaderLarge %}
+  Nuevo Estudiante
+{% endblock %}
+{% block menu %}
+  {% include "../base/menu.html" %}
+{% endblock menu %}
+{% block footer %}
+  {% include "../base/footer.html" %}
+{% endblock footer %}
+
+{% block contenido %}
+    {% include '../matricula/form.html' %}
+{% endblock %}
+
+{% block scripts %}
+    {% include '../matricula/logica.js' %}
+{% endblock scripts %}

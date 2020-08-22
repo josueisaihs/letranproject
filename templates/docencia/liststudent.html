@@ -1,0 +1,87 @@
+{% extends 'base/base_tables.html' %}
+{% load static %}
+{% block titulo %}Listado Estudiantes{% endblock %}
+{% block titulo_seccion %}Estudiantes{% endblock %}
+{% block seccion %}
+    {% if students %}
+        <h6 class="w3-margin-left"><span class="w3-tag">{{ students_total|length }}</span> Estudiante{% ifequal students_total|length 1 %}{% else %}s{% endifequal %} registrado{% ifequal students_total|length 1 %}{% else %}s{% endifequal %} en el Centro</h6>
+        <form class="w3-form" method="post" id="id_search_studet_form">
+            {% csrf_token %}
+            <div class="w3-row w3-section">
+                <div class="w3-col" style="width:50px">
+                    <i class="w3-xxlarge fa fa-search w3-opacity"></i>
+                </div>
+                <div class="w3-rest">
+                    <input class="w3-input w3-round w3-animate-input w3-border" style="width:135px" name="search"
+                           id="id_search" type="search" placeholder="Buscar ...">
+                    <small class="w3-tiny w3-opacity" id="id_search_result"></small>
+                </div>
+            </div>
+        </form>
+        <ul class="w3-ul w3-card-4 w3-margin w3-animate-right" id="id_container_teachers">
+            {% for student in students %}
+                <li class="w3-padding-16 container">
+                    <a role="button" onclick="
+                        document.getElementById('mensajeModaldelete').innerHTML = '¿Desea eliminar permanentemente al estudiante<br><strong>{{ student.name }} {{ student.lastname }}</strong> ?';
+                        document.getElementById('aSiModalDelete').href = '{% url "view_delstudent" student.pk %}';
+                        document.getElementById('modalDelete').style.display = 'block';
+                        " class="w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-red">
+                        <i class="fa fa-remove"></i>
+                    </a>
+                    <a href="{% url 'view_editstudent' student.pk %}" class="w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-teal">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{% url 'view_studentCarnet' student.pk %}" class="w3-padding w3-margin-right w3-medium w3-closebtn w3-hover-text-teal">
+                        <i class="fa fa-address-card-o"></i>
+                    </a>
+                    <div class="w3-row">
+                        <div class="w3-col l1 m1 s2">
+                            <img src="/{{ student.image }}" class="w3-left w3-circle w3-margin-right" style="height:50px">
+                        </div>
+                        <div class="w3-rest">
+                            <span class="w3-medium"><i class="fa {% ifequal student.gender "m" %}fa-male{% else %}fa fa-female{% endifequal %} w3-large w3-opacity"></i><b> {% ifnotequal student.degree "Ning." %}{{ student.degree }}{% endifnotequal %} {{ student.name }} {{ student.lastname }}</b></span><br>
+                            <span class="w3-small">{% if student.title %}{{ student.title }}{% endif %}</span>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="w3-center w3-margin-top" id="id_paginator">
+            <ul class="w3-pagination w3-border w3-light-grey w3-round">
+                {% if students.has_previous %}
+                    <li><a href="?page=1"><i class="fa fa-home"></i> Inicio</a></li>
+                    {% ifnotequal students.previous_page_number 1 %}
+                        <li><a href="?page={{ students.previous_page_number }}">&#10094; Anterior</a></li>
+                    {% endifnotequal %}
+                {% endif %}
+                {% if students.has_next %}
+                    {% ifnotequal students.next_page_number students.paginator.num_pages %}
+                        <li><a href="?page={{ students.next_page_number }}">Siguiente &#10095;</a></li>
+                    {% endifnotequal %}
+                    <li><a href="?page={{ students.paginator.num_pages }}">Último <i class="fa fa-circle"></i></a></li>
+                {% endif %}
+            </ul>
+            <p class="w3-opacity">{{ students.number }} de {{ students.paginator.num_pages }}</p>
+        </div>
+    {% else %}
+        <div class="w3-panel w3-yellow w3-margin">
+          <h3>No existen Estudiantes</h3>
+          <p><a href="{% url 'view_newstudent' %}">No es posible encontrar referencias. Pruebe añadiendo nuevos estudiantes aquí.</a></p>
+        </div>
+    {% endif %}
+
+    <div id="modalDelete" class="w3-modal">
+        <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:600px">
+            <div class="w3-center w3-padding"><br>
+                <span onclick="document.getElementById('modalDelete').style.display='none'"
+                      class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright"
+                      title="Close Modal">&times;</span>
+                <br>
+                <h4 id="mensajeModaldelete"></h4>
+                <a id="aSiModalDelete" href=".">
+                <button type="button" class="w3-btn w3-red"><i class="fa fa-remove"></i> Eliminar</button>
+            </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

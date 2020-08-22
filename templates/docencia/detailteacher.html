@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+{% block titulo %}Detalle Profesor{% endblock %}
+{% block titulo_seccion %}Detalles{% endblock %}
+{% block menu %}
+    {% include 'base/menu.html' %}
+    <div class="w3-overlay w3-animate-opacity" onclick="w3_close()" id="myOverlay"></div>
+
+    <header class="w3-container w3-top w3-white w3-xlarge w3-padding-16 w3-hide-large w3-hide-medium">
+        <span class="w3-opennav w3-xxlarge" onclick="w3_open()">☰</span>
+    </header>
+{% endblock %}
+{% block seccion %}
+        <div class="w3-row-padding">
+            <div class="w3-quarter w3-padding">
+                    <img src="/{{ teacher.image }}" alt="Foto Perfil Profesor" style="width:100%">
+            </div>
+            <div class="w3-threequarter">
+                <div class="w3-row">
+                    <h4><b><i class="fa {% ifequal teacher.gender 'm' %}fa-male{% else %}fa-female{% endifequal %} w3-large"></i> {{ teacher.name }} {{ teacher.lastname }}</b></h4>
+
+                    <div class="w3-row">
+                        <div class="w3-half">
+                            <p><i class="fa fa fa-drivers-license-o w3-large"></i> {{ teacher.numberidentification }}</p>
+                        </div>
+                        <div class="w3-half">
+                            <p><i class="fa fa-flag-o w3-large"></i> {{ teacher.nacionality }}</p>
+                        </div>
+                    </div>
+
+                    <address><i class="fa fa-map-marker w3-large"></i> {{ teacher.street }}<br>{{ teacher.city }}<br>{{ teacher.state }}</address>
+
+                    <div class="w3-row">
+                        {% if teacher.phone %}
+                            <div class="w3-half">
+                                <p><i class="fa fa-phone w3-large"></i> {{ teacher.phone }}</p>
+                            </div>
+                        {% endif %}
+                        {% if teacher.cellphone %}
+                            <div class="w3-half">
+                                <p><i class="fa fa-mobile-phone w3-large"></i> {{ teacher.cellphone }}</p>
+                            </div>
+                        {% endif %}
+                        {% if teacher.email %}
+                            <div class="w3-half">
+                                <p><i class="fa fa-envelope-o w3-large"></i> {{ teacher.email }}</p>
+                            </div>
+                        {% endif %}
+                        {% if teacher.pasaport %}
+                            <div class="w3-half">
+                                <p><i class="fa fa-fighter-jet w3-large"></i> {{ teacher.pasaport }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

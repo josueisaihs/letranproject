@@ -1,0 +1,121 @@
+{%  load static %}
+<!DOCTYPE html>
+<html>
+    <title>
+        Docencia | 
+        {% block titulo %}{% endblock %}
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'w3/w3.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'w3/w3-theme-black.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'boostrap/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'boostrap/css/bootstrap.min.css' %}">    
+    <link rel="stylesheet" type="text/css" href="{% static 'elijosoft/elijosoft.css' %}">
+
+    {% block importCSS %}
+    {% endblock importCSS %}
+
+    <style>
+        body {font-family: "Roboto", sans-serif}
+        .w3-sidenav a {padding:16px;font-weight:bold}
+        a {color: black;}
+    </style>
+<body>
+    {% block menu%}
+    {% endblock %}
+
+    <div 
+        class="w3-overlay w3-hide-large w3-animate-opacity" 
+        onclick="w3_close()" 
+        style="cursor:pointer" 
+        id="myOverlay">
+    </div>
+
+    <div class="w3-main" style="margin-left:250px;">
+        <div id="myTop" class="w3-top w3-container w3-padding-16 w3-theme w3-large">
+            <i class="fa fa-bars w3-opennav w3-hide-large w3-xlarge w3-margin-left w3-margin-right" 
+            onclick="w3_open()"></i>
+            <span id="myIntro" class="w3-hide">
+                {% block tituloHeaderSmall %}{% endblock %}
+            </span>
+        </div>
+
+        <header class="w3-container w3-theme w3-padding-64" style="padding-left:32px">
+            <h1 class="w3-xxxlarge w3-padding-4">
+                {% block tituloHeaderLarge %}{% endblock %}
+            </h1>
+        </header>
+
+        {% block contenido %}
+        {% endblock %}
+
+        {% block footer %}
+        {% endblock %}
+    </div>
+    
+    <script src="{% static 'jquery/jquery-3.2.0.min.js' %}"></script>
+    <script src="{% static 'boostrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'elijosoft/ajaxdjango.js' %}"></script>    
+    <script src="{% static 'elijosoft/ControlWidget.js' %}"></script>
+
+    {% block importScripts %}
+    {% endblock  %}
+
+    <script>   
+        // Abrir y Cerrar el slidenav en medianas y pequeñas pantallas
+        function w3_open() {
+            document.getElementById("mySidenav").style.display = "block";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidenav").style.display = "none";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+
+
+        // Cambiar el estilo del top container
+        window.onscroll = function() {
+            esconderBarra()
+        };
+
+        function esconderBarra() {
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+                document.getElementById("myTop").classList.add("w3-card-4", "w3-animate-opacity");
+                document.getElementById("myIntro").classList.add("w3-show-inline-block");
+            } else {
+                document.getElementById("myIntro").classList.remove("w3-show-inline-block");
+                document.getElementById("myTop").classList.remove("w3-card-4", "w3-animate-opacity");
+            }
+        }
+
+
+        // Los acordiones
+        function acordion(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-theme";
+            } else { 
+                x.className = x.className.replace("w3-show", "");
+                x.previousElementSibling.className = 
+                x.previousElementSibling.className.replace(" w3-theme", "");
+            }
+        }
+
+        function acordionSimple(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else { 
+                x.className = x.className.replace("w3-show", "");
+            }
+        }
+
+        {% block scripts %}
+        {% endblock  %}
+    </script>
+</body>
+</html>

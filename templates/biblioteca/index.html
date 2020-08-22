@@ -1,0 +1,199 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Biblioteca{% endblock %}
+{% block seccion %}
+    <div class="w3-row w3-card-4 w3-responsive w3-white w3-round w3-padding w3-margin">
+        <div class="w3-col l12 m12 s12 w3-border w3-margin-bottom" style="height: 75vh; overflow-y: scroll; overflow-x: hidden;">
+            <table class="w3-table-all w3-hoverable w3-striped w3-bordered w3-border">
+                <thead>
+                    <th>Nº Registro</th>
+                    <th>Nombre</th>
+                    <th>Autor</th>
+                    <th>Año</th>
+                    <th>Editorial</th>
+                </thead>
+                <tbody id="id_documentos">
+                </tbody>
+            </table>
+        </div>
+        <div class="w3-col l12 m12 s12 w3-margin w3-container">
+            <div class="w3-left">
+                <small class="w3-opacity pag"></small>
+            </div>
+            <div class="w3-right">
+                <button class="w3-btn w3-round" type="button" onclick="leftPag(true);">
+                    <i class="fa fa-angle-double-left"></i>
+                </button>
+                <button class="w3-btn w3-round" type="button" onclick="leftPag();">
+                    <i class="fa fa-angle-left"></i>
+                </button>
+                <button class="w3-btn w3-round" type="button" onclick="rightPag();">
+                    <i class="fa fa-angle-right"></i>
+                </button>
+                <button class="w3-btn w3-round" type="button" onclick="rightPag(true);">
+                    <i class="fa fa-angle-double-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+    let pag;
+    let maxpag = 0;
+    let numPag = 1;
+    let timer;
+
+    function arreglar(res, antes, desp){
+        let index = res.indexOf(antes);
+        while (index > -1){
+            res = res.replace(antes, desp);
+            index = res.indexOf(antes);
+        }
+
+        return res; 
+    }
+
+    function leftPag(opc){
+        if (opc){
+            pag = 1;
+        }else{
+            if (pag > 2)
+                pag--;
+        }
+        
+        leer(pag);
+    }
+
+    function rightPag(opc){
+        if (opc){
+            pag = maxpag;
+        }else{
+            if (maxpag > pag)
+                pag++;
+        }
+        leer(pag);
+    }
+
+    $(document).ready(function(){
+            pag = 1;
+            leer();
+            timer = setInterval(leerDatos, 1000);
+        }
+    );
+
+    function leer(num=1){
+        $.ajax({
+            url: 'http://biblioteca.cfbc.org/documentoslist/?page=' + num + "&&limit=100",
+            success: function (res){
+                res = arreglar(res, "Gabriele D'", 'Gabriele D ');
+
+                res = arreglar(res, "{'", '{"');
+                res = arreglar(res, "'}", '"}');
+                res = arreglar(res, "':", '":');
+                res = arreglar(res, ": '", ': "');
+                res = arreglar(res, "',", '" ,');
+                res = arreglar(res, ", '", ', "');
+                res = arreglar(res, "['", '["');
+                res = arreglar(res, "']", '"]');
+                
+
+                let documentos = JSON.parse(res);
+
+                let doc = $("#id_documentos");
+                doc.empty();
+
+                maxpag = (new Number(documentos["total"]) / 50).toFixed(0);
+
+                $(".pag").html(pag + " de " + maxpag);
+
+                documentos['data'].map(function(item){
+                    doc.append(
+                        "<tr>" +
+                        "   <td>" + item.no_registro + "</td>" +
+                        "   <td>" + item.name + "</td>" +
+                        "   <td>" + item.autor_principal + "</td>" +
+                        "   <td>" + item.ano_publicacion + "</td>" +
+                        "   <td>" + item.editorial + "</td>" +
+                        "</tr>"
+                    );
+                });
+            },
+            error: function(){
+                console.log("Error");
+            }
+        });
+    }
+
+    function leerDatos(){
+        console.log("Pagina: " + numPag + " de " + maxpag);
+
+        if (numPag == maxpag){
+            console.log("Terminada la transferencia");
+            clearInterval(timer);
+        }
+            
+
+        $.ajax({
+            url: 'http://biblioteca.cfbc.org/documentoslist/?page=' + numPag,
+            success: function (res){
+                // 
+                res = arreglar(res, "Gabriele D'", 'Gabriele D ');
+
+                res = arreglar(res, "{'", '{"');
+                res = arreglar(res, "'}", '"}');
+                res = arreglar(res, "':", '":');
+                res = arreglar(res, ": '", ': "');
+                res = arreglar(res, "',", '" ,');
+                res = arreglar(res, ", '", ', "');
+                res = arreglar(res, "['", '["');
+                res = arreglar(res, "']", '"]');
+
+                let documentos = JSON.parse(res);
+
+                maxpag = (new Number(documentos["total"]) / 50).toFixed(0);
+
+                let datos = {
+                    'recursos': [],
+                };
+                
+                documentos['data'].map(function(item){
+                    let libro = {
+                        "tipo_recurso": 1, 
+                        "propietario_recurso": 2, 
+                        "titulo": item.name, 
+                        "autor": item.autor_principal, 
+                        "autor2": "", 
+                        "autor3": "",
+                        "resumen": item.resumen,
+                        "signatura_tipografica": item.sign_topo1 + "-" + item.sign_topo2 + "-" + item.sign_topo3,
+                        "ISBN": item.isbn
+                    };
+
+                    datos.recursos.push(libro);
+                });
+
+                enviarDatos(JSON.stringify(datos), numPag);
+                // console.log(JSON.stringify(datos));
+
+                numPag++;
+            },
+            error: function(){
+                console.log("Error");
+            }
+        });
+    }
+
+    function enviarDatos(strJSON, numPag){
+        $.ajax({
+            url: "{% url 'view_biblioteca2sqlite'%}",
+            method: 'POST',
+            data: {"libros": strJSON, "pag": numPag},
+            success: function(res){
+                console.log(res);
+            },
+            error: function(){
+                console.log('Error');
+            }
+        });
+    }
+    </script>
+{% endblock %}

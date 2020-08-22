@@ -1,0 +1,136 @@
+{% extends 'base/base_tables.html' %}
+{% block titulo_seccion %}Asistencia {{ group.name }}{% endblock %}
+{% block seccion %}
+    <div class="w3-row-padding">
+        <div class="w3-row-padding w3-card-2">
+            
+        </div>
+        <table class="w3-table-all w3-hoverable w3-small" id="id_candidate_table">
+            <tr class="w3-row w3-center">
+                <th class="w3-col l4">
+                    Nombre
+                </th>
+                <th class="w3-col l4">Apellidos
+                </th>
+                <th class="w3-col l2 w3-center">
+                    Inasistencias
+                </th>
+                <th class="w3-col l2 w3-center">
+                    Asistencia
+                </th>
+            </tr>
+            <tbody id="id_table_body">
+                {% for student in  groupList %}
+                    <tr>
+                        <td class="w3-col l4">{{ student.student.student.name }}</td>
+                        <td class="w3-col l4">{{ student.student.student.lastname }}</td>
+                        <td class="w3-col l2 w3-center">
+                        <button class="w3-btn w3-red w3-small w3-round" onclick="statusCheck({{ student.pk }}, 'i');">
+                            {{ student.inasistencias }}
+                            </button>
+                        </td>                       
+                        <td class="w3-col l2 w3-center" >
+                            <select 
+                                class="w3-select w3-border w3-round es-shadow" 
+                                onchange="changeAssistence({{ student.pk }},            this.options[this.selectedIndex].value)" id="id_student_{{ student.pk }}_asistencia">
+                                <option value="0" name="id_student_{{ student.pk }}_status_option_0" disable>
+                                    Asistencia Manual
+                                </option>
+                                <option value="a" name="id_student_{{ student.pk }}_status_option_a">
+                                    Asistencia
+                                </option>
+                                <option value="i" name="id_student_{{ student.pk }}_status_option_i">
+                                    Inasistencia
+                                </option>
+                            </select>                            
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+     <div id="modal_list" class="w3-modal">
+            <div class="w3-modal-content w3-card-8 w3-animate-zoom" style="max-width:300px">
+                <div class="w3-center w3-padding"><br>
+                    <span onclick="document.getElementById('modal_list').style.display='none'"
+                          class="w3-closebtn w3-hover-red w3-container w3-padding-8 w3-display-topright"
+                          title="Close Modal">&times;</span>
+                    <br>
+                    <div class="w3-container" id="id_modal_assistence_status">
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script>
+        setInterval(checkAssistence, 1500);
+
+        function statusCheck(groupListPk, status){
+            document.getElementById('modal_list').style.display='none';
+            $.ajax({
+                url: '{% url "view_assistence_status" %}',
+                type: 'POST',
+                data: {
+                    groupListPk: groupListPk,
+                    status: status, 
+                },
+                success: function(json){
+                    var div = $("#id_modal_assistence_status");
+                    div.empty();
+                    if (json.groupList.length > 0){
+                        div.append("<h4 class='w3-bottombar w3-border-gray'>" + ((status === 'i') ? 'Inasistencias' : 'Tardanzas') + "</h4>")
+                        json.groupList.map(
+                            function(item, index, arr){
+                                div.append("<p class='w3-small w3-hover-text-white w3-text-gray w3-border w3-round w3-margin w3-hover-teal'>" + item + "</p>");
+                            }
+                        );  
+                    }else{
+                        div.append("<p class='w3-leftbar w3-border-red'>No tiene " + ((status === 'i') ? 'Inasistencias' : 'Tardanzas') + "</p>");
+                    }
+                    
+                    document.getElementById('modal_list').style.display='block';
+                },
+                error: function(xhr, errmsg, err){
+                    console.log(errmsg, err);
+                }
+            });
+        }
+
+        function checkAssistence(){
+            $.ajax({
+                url: "{% url 'view_assistence_check' %}",
+                type: "POST",
+                data: {
+                    group: {{ group.pk }},
+                },
+                success: function(json){
+                    json.groupList.map(
+                        function(item, index, arr){
+                            document.getElementById('id_student_' + item[0] + '_asistencia').selectedIndex =
+                                document.getElementById('id_student_' + item[0] + '_asistencia').options.namedItem('id_student_' + item[0] + '_status_option_' + item[1]).index;
+                        }
+                    );
+                },
+                error: function(xhr, errmsg, err){
+                    console.log(errmsg, err);
+                }
+            });
+        }
+
+        function changeAssistence(groupListPk, status){
+            $.ajax({
+                url: "{% url 'view_assistence_change' %}",
+                type: "POST",
+                data: {
+                    groupList: groupListPk,
+                    status: status,
+                },
+                success: function (json) {
+                    console.log("O200 > code >");
+                },
+                error: function (xhr, errmsg, err) {
+                    console.log(errmsg, err);
+                }
+            });
+        }        
+    </script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carnet</title>
+    <script src="{% static 'jquery/jquery-3.2.0.min.js' %}"></script>
+    <style>
+        .saltopagina {
+            display:block;
+            page-break-inside:always;
+        } 
+    </style>
+</head>
+<body style="">
+    <div style="margin: 5px; width: 816px; height: 1056px; z-index: -1;">
+        <!-- Columna 1-->
+        <div style="background: white; position: absolute; margin-top: 10px; z-index: 1; margin-left: 10px; width: 321px;" id="id_columna_1">
+        </div>
+
+        <!-- Columna 2-->
+        <div style="background: white; position: absolute; z-index: 1; margin-top: 10px; margin-left: 341px; width: 321px;" id="id_columna_2">
+        </div>
+    </div>
+
+    <script>
+        var counter0 = 0;
+        var colIndex = 2;
+        var col1 = $("#id_columna_1");
+        var col2 = $("#id_columna_2");
+
+        col1.empty();
+        col2.empty();
+
+        {% for student in studentsGroup %}            
+            {% if forloop.counter0|divisibleby:"2" %}
+                col1.append("" +
+                    "<div style='position: absolute; width: 321px; height: 208px; border: 1px dashed white;'>" +          
+                        "<img style='position: absolute; z-index: -1;border: 1px dashed gray;'" +
+                        "src=\"{% static 'image/perfil/student/carnet/carnet.png' %}\">" +
+                        "<img src='/{{ student.student.student.qrcode }}' height='101px' style='z-index: 3; position: absolute; margin-left: 204px; margin-top: 93px; !important'>" +
+
+                        '<small style="position: absolute; z-index: 2; margin-left: 40px; font-size: 10px; margin-top: 100px;">Nombre:</small>' +
+
+                        '<p style="position: absolute; z-index: 2; margin-top:120px; margin-left: 40px; font-size: 12px;">{{ student.student.student.name }}<br>{{ student.student.student.lastname }}</p>' +
+
+                        '<small style="position: absolute; z-index: 2; margin-left: 40px; font-size: 10px; margin-top: 160px;">ID:</small>' +
+
+                        '<p style="z-index: 2; margin-top: 180px; margin-left: 40px; font-size: 12px;">{{ student.student.student.numberidentification }}</p>' +
+                    '</div>'
+                );
+            {% else %}
+                col2.append("" +
+                    "<div style='position: absolute; width: 321px; height: 208px; border: 1px dashed white;'>" +          
+                        "<img style='position: absolute; z-index: -1;border: 1px dashed gray;' width='100%'" +
+                        "src=\"{% static 'image/perfil/student/carnet/carnet.png' %}\">" +
+                        "<img src='/{{ student.student.student.qrcode }}' height='101px' style='z-index: 3; position: absolute; margin-left: 204px; margin-top: 93px; !important'>" +
+
+                        '<small style="position: absolute; z-index: 2; margin-left: 40px; font-size: 10px; margin-top: 100px;">Nombre:</small>' +
+
+                        '<p style="position: absolute; z-index: 2; margin-top:120px; margin-left: 40px; font-size: 12px;">{{ student.student.student.name }}<br>{{ student.student.student.lastname }}</p>' +
+
+                        '<small style="position: absolute; z-index: 2; margin-left: 40px; font-size: 10px; margin-top: 160px;">ID:</small>' +
+
+                        '<p style="z-index: 2; margin-top: 180px; margin-left: 40px; font-size: 12px;">{{ student.student.student.numberidentification }}</p>' +
+                    '</div>'
+                );
+            {% endif %}
+            
+            if (counter0 === 7) {
+                col1.append('<div style="margin-top: 321px;"><p>-- Salto de Pagina --</p></div>');
+                col2.append('<div style="margin-top: 321px;"><p> -- Salto de Pagina --</p></div>');
+                
+                counter0 = 0;
+            }
+
+            counter0++;
+        {% endfor %}
+
+        window.print();
+    </script>
+</body>
+</html>
