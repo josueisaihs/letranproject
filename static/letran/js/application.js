@@ -30,8 +30,8 @@ $(document).ready(()=>{
         });
 
         asktextareas.map((iter, ask)=>{
-            console.log($(ask).attr["minlength"], $(ask).val().length >= $(ask).attr["minlength"]);
-            if ($(ask).val().length >= $(ask).attr["minlength"]){
+            console.log($(ask).minlength, $(ask).val().length >= $(ask)minlength);
+            if ($(ask).val().length >= $(ask).minlength){
                 asks.push([$(ask).attr("data-ask"), "t", $(ask).val()]);
             }else{
                 $(ask).addClass("is-invalid");
