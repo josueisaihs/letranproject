@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}CFBC 
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a class="w3-text-white" href="{% url 'admin:index' %}">
+        <!-- <img src="{% static 'img/cfbc.png' %}" 
+        alt="Orden de Predicadores" height=20 /> -->
+        Centro Fray Bartolomé de las Casas
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

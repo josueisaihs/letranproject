@@ -1,0 +1,74 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">CFBC</a>
+        <button
+            class="navbar-toggler m-2 ml-auto"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto mr-lg-5">
+                <li class="nav-item">
+                    <a class="nav-link {{ navindex }}" href="{% url 'index' %}">Inicio <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ navnoticias }}" href="{% url 'noticias' %}">
+                        Noticias
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ naveventos }}" rel="canonical" href="{% url 'eventos' %}">
+                        Eventos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ navcursos}}" href="{% url 'cursos' %}">
+                        Cursos
+                    </a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                    <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        id="id_menu_servicio"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        Servicios
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for service in services %}<a class="dropdown-item" href="#">{{ service.name }}</a>{% endfor %}
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Recursos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Galería</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contacto</a>
+                </li> -->
+                <li class="nav-item border-left">
+                    <a class="nav-link mx-1" href="https://bit.ly/3dD0mGy" target="_blank"><i class="fa fa-facebook"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-1" href="https://bit.ly/3fAINsK" target="_blank"><i class="fa fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-1" href="https://bit.ly/3ewUEXl" target="_blank"><i class="fa fa-youtube"></i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

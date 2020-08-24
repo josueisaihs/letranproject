@@ -1,0 +1,402 @@
+{% extends './base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block titulo %}Inicio{% endblock titulo %}
+
+{% block metatitle %}Centro Fray Bartolomé de las Casas{% endblock %}
+{% block metadescription %}Espacio de Reflexión{% endblock %}
+{% block metaimg%}{{ header.background|thumbnail_url:'img-200'}}{% endblock %}
+{% block metaurl %}{% endblock metaurl %}
+{% block metadescripcion %}Página Principal{% endblock metadescripcion %}
+
+{% block contenido %}
+<header class="header" id="inicio">
+    {% include './menu.html' %}
+    <img
+        data-aos="fade-right"
+        data-aos-duration="800"
+        data-aos-delay="200"
+        class="ml-md-5 ml-sm-2 ml-2 mw-100"
+        style="margin-top: 10vh;"
+        src="{{ header.icon.url }}"
+        alt="Centro Fray Bartolomé de las Casas"
+        height="90vh"/>
+    <div class="ml-md-5 ml-sm-2 ml-2 text-white text-roboto-slab">
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="350"
+            class="font-weight-bold text-uppercase display-2">
+            {{ header.titleLine1 }}
+        </h1>
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="450"
+            class="font-weight-bold text-uppercase display-2">
+            {{ header.titleLine2 }}
+        </h1>
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="500"
+            class="font-weight-bold text-uppercase display-2">
+            {{ header.titleLine3 }}
+        </h1>
+    </div>
+
+    <h6
+        data-aos="fade-right"
+        data-aos-duration="800"
+        data-aos-delay="650"
+        class="ml-md-5 ml-sm-2 ml-2 mt-3 font-weight-bold display-6 text-uppercase text-white text-roboto-slab">
+        {{ header.subtitle }}
+    </h6>
+
+    <div class="ml-md-5 ml-sm-2 ml-2 d-flex mt-3">    
+        {% if header.hadBtn1 %}
+            <a href="{% url header.linkBtn1 %}">
+                <button type="button" class="btn btn-primary btn-inicio text-uppercase">
+                    {{ header.btn1 }}
+                </button>
+            </a>
+        {% endif %}           
+        {% if header.hadBtn2 %}
+            <a href="{% url header.linkBtn2 %}">
+                <button type="button" class="btn btn-outline-light text-uppercase ml-2 btn-inicio">
+                    {{ header.btn2 }}
+                </button>
+            </a>
+        {% endif %}
+    </div>
+</header>
+
+<!-- Noticias -->
+    <div id="noticias" style="background-color: rgba(240, 236, 236, 0.904);" class="py-4">
+        <a href="{% url 'noticias' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Noticias</p></a>
+
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 g-1 ml-lg-5 ml-md-5">                
+                {% for new in news %}                    
+                    {% if forloop.first %}
+                        <div class="col h-100">
+                            <div class="card shadow" 
+                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" onclick="window.location.href='{% url 'noticia' new.pk %}'">
+                                <div class="image-box">
+                                    <img class="card-img-top img-v"  loading="lazy"
+                                    src="{{ new.image.url }}"
+                                    srcset="
+                                    {{ new.image|thumbnail_url:'img-200' }} 320w,
+                                    {{ new.image|thumbnail_url:'img-400' }} 400w,
+                                    {{ new.image|thumbnail_url:'img-600' }} 600w,
+                                    {{ new.image|thumbnail_url:'img-640' }} 800w,
+                                    {{ new.image|thumbnail_url:'img-1100' }} 2000w
+                                    "
+                                    alt="Noticia {{ new.title }}" />
+                                </div>
+                                
+                                <div class="card-body">
+                                <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
+                                <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }}</small>
+                                <p class="card-text">{{ new.body|truncatechars:100 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}                      
+                {% endfor %}                    
+                
+                <div class="col">
+                    <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">                        
+                        {% for new in news %}                            
+                            {% ifnotequal forloop.counter 1 %}
+                                <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.pk %}'">
+                                    <div class="row g-0">
+                                        <div class="col-md-4 image-box">
+                                            <img loading="lazy" src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ new.title }}</h5>
+                                                <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }}</small>
+                                                <p class="card-text">{{ new.body|truncatechars:100 }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endifnotequal %}                                
+                        {% endfor %}                                               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Fin Noticias -->
+
+<!-- Registrarse -->
+    <div id="registro" class="p-4 registarse h-75">
+        <p class="text-white text-center text-uppercase display-6" 
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                Suscríbete AHORA
+        </p>
+        <div class="row g-2 row-cols-1 row-cols-md-2">
+            <div id="id_cifras" class="col">
+                <div class="row row-cols-1 row-cols-md-3 text-white text-center">
+                    <div class="col">
+                        <h6 class="display-6 font-weight-bold">
+                            <span class="counter">{{ suscribete.students }}</span>k
+                        </h6>
+                        <div data-aos="fade-in" data-aos-duration="800" data-aos-delay="300">
+                            <small class="text-uppercase">Estudiantes</small>
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <h6 class="display-6 font-weight-bold">
+                            <span class="counter">{{ suscribete.graduados }}</span>k
+                        </h6>
+                        <div data-aos="fade-in" data-aos-duration="800" data-aos-delay="200">
+                            <small class="text-uppercase">Graduados</small>
+                        </div>  
+                    </div>
+                    <div class="col">
+                        <h6 class="display-6 font-weight-bold">
+                            <span class="counter">{{ suscribete.cursos }}</span>
+                        </h6>
+                        <div data-aos="fade-in" data-aos-duration="800" data-aos-delay="100">
+                            <small class="text-uppercase">Cursos</small>
+                        </div>                            
+                    </div>
+                </div>
+            </div>
+
+           <div class="col h-50 p-4 bg-gradient rounded" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300"">
+                <form id="id_suscribirse" action="." method="post" data-url ="{% url 'api_index_suscribete' %}">
+                    {% csrf_token %}
+                    <label class="sr-only" for="id_email">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-text">@</div>
+                        <input type="email" class="form-control" id="id_email" placeholder="Correo">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>                    
+                </form>                
+            </div>
+        </div>
+    </div>   
+    <!-- Toast -->
+    <div id="id_toastError" class="toast fixed-bottom my-5 mx-2" data-delay="2000" data-animation="true" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <strong class="mr-auto"><i class="fa fa-exclamation-circle fa-lg mr-2"></i> Error</strong>
+            <small class="">Ahora</small>
+            <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body toast-error-text">
+            Su dirección de correo no es válida
+        </div>
+    </div>     
+    <div id="id_toastSuccess" class="toast fixed-bottom my-5 mx-2" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <strong class="mr-auto"><i class="fa fa-check fa-lg mr-2"></i> ¡Suscríto!</strong>
+            <small class="">Ahora</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Usted se ha suscrito a nuestra página.
+        </div>
+    </div> 
+<!-- Fin Registrarse -->
+
+<!-- Eventos -->
+    <div id="eventos" class="p-1 bg-mi-gris">
+        <a href="{% url 'eventos' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Eventos
+        </p></a>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">                
+                {% for event in events %}
+                    <div class="col" onclick="window.location.href='{% url 'evento' event.pk %}'">
+                        <div class="card">
+                            <div class="image-box">
+                                <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                            </div>
+                            <div class="card-body">                                
+                                {% if event.dateEnvs.all %}
+                                    <div class="d-flex">
+                                        {% with event.dateEnvs.all|first as fecha %}  
+                                        <small class="mr-auto text-primary text-small">
+                                            <b>{{ event.dateEnvs.all|length }} fecha{{ event.dateEnvs.all|pluralize:"s" }}</b> ·
+                                            <b>                                                                                 
+                                                {{ fecha.dateEnv|date:"d M Y gA" }}                                        
+                                            </b> - <b>{{ fecha.dateFin|date:"d M Y gA" }}</b>
+                                        </small>
+                                        {% endwith %}                                   
+                                    </div>
+                                {% endif %}                                   
+                               
+                                <h5 class="my-1 font-weight-bold">{{ event.name }}</h5>
+                                
+                                <small class="mr-auto text-secondary">{{ event.place|truncatechars:50 }}</small>
+                                
+                                <p class="card-text text-dark d-none d-sm-none d-md-block">{{ event.body|truncatechars:100 }}</p>
+
+                                <div class="d-flex align-items-stretch mt-2">
+                                {% for fecha in event.dateEnvs.all %}
+                                    
+                                    {% if forloop.counter < 3 %}
+                                        <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
+                                            <div class="d-flex flex-column text-center text-small py-1">
+                                                <div class="text-primary">
+                                                    {{ fecha.dateEnv|date:"N" }}
+                                                </div>
+                                                <div>
+                                                    {{ fecha.dateEnv|date:"d" }}
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 flex-fill align-self-center text-small">
+                                                {{ fecha.dateEnv|date:"D P A"}}
+                                            </div>
+                                        </div>
+                                    {% else %}                                        
+                                        {% if forloop.counter == 3 %}
+                                            <div class="d-inline-flex border rounded px-1 text-small ml-2">
+                                                <div class="flex-fill align-self-center">+ {{ forloop.revcounter }}</div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}                                        
+                                    
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                {% endfor %}                    
+            </div>
+        </div>
+    </div>
+<!-- Fin Eventos -->
+
+<!-- Opiniones -->
+    <div id="opiniones" class="opiniones py-4 h-100">
+        <p class="text-white text-roboto-slab text-center text-uppercase display-6" data-aos="fade-down" data-aos-duration="800" data-aos-delay="100">
+            ¿Qué dicen los estudiantes?
+        </p>
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 g-1 g-md-2 p-1">                
+                {% for comment in comments %}
+                <div class="col my-5">
+                    <div class="p-4 bg-white rounded">
+                        <div class="text-center">
+                            <img loading="lazy" class="rounded rounded-circle border img-face" src="{{ comment.image.url }}" alt="Cara" style="margin-top: -15%; max-height: 20vh;">
+                        </div>
+                        <div class="text-center">
+                            <p class="lead">
+                            {{ comment.body|truncatechars:250 }}
+                            </p>
+                            <p class="text-muted">
+                            {{ comment.author }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+<!-- Fin Opiniones -->
+
+<!-- Cursos -->
+    <div id="cursos" class="py-4 bg-mi-gris">
+        <a href="{% url 'cursos' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestros cursos</p></a>
+        
+        <div class="container">
+            <ul class="nav nav-dark justify-content-center text-roboto-slab cursos mb-2">
+                {% for area in areas %}
+                    <li class="nav-item">
+                        <a href="#cursos" class="pe-auto nav-link {% if forloop.first %}link-primary border-bottom border-primary activo{% else %}link-secondary{% endif %} text-uppercase">{{ area }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">      
+                {% regroup courses by area as courses_list %}          
+                {% for course in courses %}  
+                        <div data-course="{{ course.area }}" class="curso-contenedor col">
+                            <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
+                                <div class="image-box">
+                                    <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                                </div>
+                                <div class="card-body">
+                                    <small class="mr-auto text-primary text-small">
+                                        <b>                                                                                 
+                                            {{ course.openregistre|date:"d M Y" }}                                        
+                                        </b> - 
+                                        <b>
+                                            {{ course.deadline|date:"d M Y" }}
+                                        </b>
+                                        {% if course.isAvailableRegistre %}
+                                            · <b>Admisión Abierta</b>
+                                        {% endif %}
+                                        · {{ course.capacity }} Estudiantes
+                                    </small>
+                                    <div class="d-flex mt-2 align-middle">
+                                        <h5 class="card-title font-weight-bold">{{ course.name }}</h5>
+                                        <h5 class="text-primary ml-auto font-weight-bold">4.0</h5>
+                                    </div>
+                                    <p class="card-text">{{ course.description|truncatechars:100 }}</p>
+                                    
+                                    <div class="d-flex align-items-stretch mt-2">
+                                        {% for fecha in course.schedules.all %}
+                                            
+                                            {% if forloop.counter < 3 %}
+                                                <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
+                                                    <div class="d-flex flex-column text-center text-small py-1">
+                                                        <div class="text-primary">
+                                                            {{ fecha.weekday }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-2 flex-fill align-self-center text-small">
+                                                        {{ fecha.dateIni|date:"h:i"}}
+                                                    </div>
+                                                </div>
+                                            {% else %}                                        
+                                                {% if forloop.counter == 3 %}
+                                                    <div class="d-inline-flex border rounded px-1 text-small ml-2">
+                                                        <div class="flex-fill align-self-center">+ {{ forloop.revcounter }}</div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}                                        
+                                            
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>              
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+<!-- Fin Cursos -->
+<!-- Que Hacemos -->
+<div class="py-4">
+    <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+    data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestra misión</p>
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/DKDjPaD3tp8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <!-- ShareThis BEGIN -->
+    <div class="mt-3 sharethis-inline-follow-buttons"></div>
+    <!-- ShareThis END -->
+</div>
+<!-- Fin Que Hacemos-->
+{% endblock contenido %}
+{% block headerScripts%}
+<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
+<script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
+{% endblock headerScripts%}
+    
+    

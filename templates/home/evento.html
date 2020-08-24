@@ -1,0 +1,115 @@
+{% extends './base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block titulo %}Evento Detalle{% endblock titulo %}
+
+{% block metatitle %}{{ event.name }}{% endblock %}
+{% block metadescription %}{{ event.body|truncatechars:"50"}}{% endblock %}
+{% block metaimg%}{{ event.image.url }}{% endblock %}
+{% block metaurl %}{% url 'evento' event.pk %}{% endblock metaurl %}
+{% block metadescripcion %}Página de Evento Detalle: {{ event.name }}. {{ event.body }}{% endblock metadescripcion %}
+
+{% block contenido %}
+<header class="header-min" id="inicio">
+    {% include './menu.html' %}
+
+    <div class="d-lg-flex ml-md-5 ml-sm-2 ml-2 text-white" style="padding-top: 10vh;">
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="350"
+            class="text-roboto-slab font-weight-bold text-uppercase display-2">
+            Evento
+        </h1>
+        <nav class="align-self-center ml-auto" aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item"><a class="link-light link-primary-hover" href="{% url 'index' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a class="link-light link-primary-hover" href="{% url 'eventos' %}">Eventos</a></li>
+                <li class="breadcrumb-item active text-secondary" aria-current="page">Detalle</li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<div class="p-4 bg-white">
+    <div class="row mt-4">
+        <div class="col-lg-8 shadow">            
+            <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>                
+            <img loading="lazy" alt="Imagen {{ event.name }}" src="{{ event.image.url }}" class="img-fluid mt-1"/>
+            
+            <div class="pt-4 mb-2">
+                <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>    
+                <div>{{ event.body|safe|linebreaksbr }}</div>
+                <br>
+                <div class="sharethis-inline-share-buttons"></div>
+            </div>       
+        </div>
+
+        <div class="col-lg-4 p-3">
+            <div class="mb-3">
+                <a href="#" class="d-flex" data-toggle="modal" data-target="#google-maps-event">
+                    <span class="material-icons text-primary">room</span> 
+                    <span class="align-self-center"> {{ event.place }}</span>
+                </a>
+            </div>
+
+            <div class="mb-3">
+                <small class="d-flex mb-2">
+                    <span class="material-icons text-primary">schedule</span> 
+                    <span class="align-self-center"> Fecha{{ event.dateEnvs.all|pluralize:"s"}}</span>
+                </small>
+                {% for fecha in event.dateEnvs.all %} 
+                    <div class="d-inline-flex border px-2 rounded ml-2">
+                        <div class="d-flex flex-column text-center text-small py-1">
+                            <div class="text-primary">
+                                {{ fecha.dateEnv|date:"N" }}
+                            </div>
+                            <div>
+                                {{ fecha.dateEnv|date:"d" }}
+                            </div>
+                        </div>
+                        <div class="ml-2 flex-fill align-self-center text-small">
+                            {{ fecha.dateEnv|date:"D P A"}}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <a class="d-flex mb-3" href="{{ event.file.url }}" download>
+                <span class="material-icons text-primary">cloud_download</span> 
+                <span class="align-self-center"> Descargar</span>
+            </a>   
+            
+            <!-- ShareThis BEGIN -->
+            <div class="sharethis-inline-follow-buttons"></div>
+            <!-- ShareThis END -->
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="google-maps-event">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-dark">{{ event.name }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="google-maps">
+                {{ event.google_maps|safe }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
+{% block headerScripts%}
+<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
+<script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
+{% endblock headerScripts%}
+
+{% block importScripts %}
+{% endblock importScripts %}
+    
