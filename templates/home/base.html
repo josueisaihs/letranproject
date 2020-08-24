@@ -19,7 +19,7 @@
     <meta name="keywords" content="educa, dominicos, orden de predicadores, educación, idioma, iglesia" />
     
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-167003377-1"></script>
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-167003377-1" crossorigin="anonymous"></script>
     <script defer>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -46,20 +46,23 @@
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      crossorigin="anonymous"
     />
 
     <link
       rel="stylesheet"
       href="https://unpkg.com/tippy.js@6/dist/backdrop.css"
+      crossorigin="anonymous"
     />
     <link
       rel="stylesheet"
       href="https://unpkg.com/tippy.js@6/animations/shift-away.css"
+      crossorigin="anonymous"
     />
 
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" crossorigin="anonymous"/>
 
-    <link rel="stylesheet" href="{% static 'letran/css/index.css' %}" />
+    <link rel="stylesheet" href="{% static 'letran/css/index.css' %}" crossorigin="anonymous"/>
     <style>
       .header, .header-min{
           background-image: url({{ header.background|thumbnail_url:'img-400'}});
@@ -202,8 +205,8 @@
       </div>
     </footer>
 
-    <script defer src="https://unpkg.com/@popperjs/core@2"></script>
-    <script defer src="https://unpkg.com/tippy.js@6"></script>
+    <script defer src="https://unpkg.com/@popperjs/core@2" crossorigin="anonymous"></script>
+    <script defer src="https://unpkg.com/tippy.js@6" crossorigin="anonymous"></script>
     <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"
       integrity="sha384-DBjhmceckmzwrnMMrjI7BvG2FmRuxQVaTfFYHgfnrdfqMhxKt445b7j3KBQLolRl"
@@ -218,13 +221,13 @@
       src="https://kit.fontawesome.com/8f55f7d0ff.js"
       crossorigin="anonymous"></script>
 
-    <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js" crossorigin="anonymous"></script>
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"
       integrity="sha512-CEiA+78TpP9KAIPzqBvxUv8hy41jyI3f2uHi7DGp/Y/Ka973qgSdybNegWFciqh6GrN2UePx2KkflnQUbUhNIA=="
       crossorigin="anonymous"></script>
-    <script defer src="{% static 'letran/js/ajaxdjango.js'%}"></script>
-    <script defer src="{% static 'letran/js/index.js' %}"></script>
+    <script defer src="{% static 'letran/js/ajaxdjango.js'%}" crossorigin="anonymous"></script>
+    <script defer src="{% static 'letran/js/index.js' %}" crossorigin="anonymous"></script>
 
     {% block importScripts %}            
     {% endblock %}
@@ -237,8 +240,8 @@
         content.style.display = "block";
       });
         
-        {% block scripts %}            
-        {% endblock scripts %}
+      {% block scripts %}            
+      {% endblock scripts %}
             
     </script>
   </body>
