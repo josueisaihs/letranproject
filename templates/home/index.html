@@ -219,7 +219,7 @@
             <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">                
                 {% for event in events %}
                     <div class="col" onclick="window.location.href='{% url 'evento' event.pk %}'">
-                        <div class="card h-100">
+                        <div class="card">
                             <div class="image-box">
                                 <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
                             </div>
