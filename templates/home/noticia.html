@@ -44,13 +44,13 @@
                 <div>{{ new.body|safe|linebreaksbr }}</div>
                 {% if new.link %}
                     <a class="linl-secondary enlace" target="_blank" href="{{ new.link }}" rel="canonical" >
-                        <div class="card enlace-card col-md-6 col-lg-4 col-sm-12">
+                        <div class="card enlace-card col-md-6 col-lg-6 col-sm-12">
                             <div class="row g-0">
                                 <div class="col-md-4 image-box">
                                     <img loading="lazy" src="" class="enlace-img img-h-enlace" style="">
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="card-body text-center">
+                                <div class="col-md-8 text-truncate">
+                                    <div class="card-body ml-1">
                                         <h5 class="card-title enlace-title"></h5>
                                         <small class="text-small enlace-url"></small>
                                     </div>

@@ -298,7 +298,8 @@ image-box .img-v {
   transition: all 0.3s;
   display: block;
   width: auto;
-  height: 25vh;
+  height: 100%;
+  max-height: 30vh;
   object-fit: cover;
   transform: scale(1);
 }
