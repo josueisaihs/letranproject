@@ -16,7 +16,7 @@ from random import randrange
 from validate_email import validate_email
 
 from Docencia.DatosPersonales.forms import *
-from Docencia.Cursos.models import CourseInformation, Edition
+from Docencia.Cursos.models import CourseInformation, Edition, Sede
 from Docencia.Admision.models import Application
 from Docencia.decorators import isStudent
 
@@ -46,6 +46,8 @@ def dashboard(req):
         return HttpResponseRedirect("/login/?next=/admision/dashboard/")
 
 def registro(req):
+    sede = Sede.objects.get(isprincipal=True)
+
     if req.method == "POST":
         form = StudentPersonalInformationForm(req.POST)
         if form.is_valid():
