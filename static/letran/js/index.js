@@ -168,7 +168,7 @@ function filtroCursos(){
 
 function getPreview(externalUrl){
     var target = externalUrl;
-    
+
     // $.ajax({
     //     url: "https://api.linkpreview.net",
     //     dataType: 'json',
@@ -184,7 +184,7 @@ function getPreview(externalUrl){
     $.ajax({
         url: urls.urlApi,
         data: {url: target,},
-        success: ()=>{
+        success: function(data){
             $(".enlace-title").html(data.title);
             $(".enlace-url").html(data.url);
             $(".enlace-img").attr("src", data.image);
