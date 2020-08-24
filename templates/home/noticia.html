@@ -4,6 +4,10 @@
 
 {% block titulo %}Noticia{% endblock titulo %}
 
+{% block metatitle %}{{ new.title}}{% endblock %}
+{% block metadescription %}{{ new.body|truncatechars:"50"}}{% endblock %}
+{% block metaimg%}{{ new.image.url }}{% endblock %}
+
 {% block metadescripcion %}Página de Noticia Detalle: {{ new.title }}.{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -32,18 +36,18 @@
     <div class="row mt-4">
         <div class="col-lg-8 shadow">   
             <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>    
-            <small class="text-muted text-roboto-slab">{{ new.date|date:"D d M Y" }}</small>     
+            <small class="text-muted text-roboto-slab">{{ new.date|date:"D d M Y" }}</small><br>     
             <img loading="lazy" src="{{ new.image.url }}" class="img-fluid  mt-1"/>
             
             <div class="pt-4 mb-2">
                 <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>
-                <p>{{ new.body }}</p>
+                <div>{{ new.body|safe|linebreaksbr }}</div>
                 {% if new.link %}
-                    <a class="linl-secondary enlace" target="_blank" href="{{ new.link }}" rel="canonical">
+                    <a class="linl-secondary enlace" target="_blank" href="{{ new.link }}" rel="canonical" >
                         <div class="card enlace-card invisible col-md-6 col-lg-4 col-sm-12">
                             <div class="row g-0">
                                 <div class="col-md-4 image-box">
-                                    <img loading="lazy" src="" class="img-h enlace-img">
+                                    <img loading="lazy" src="" class="enlace-img img-h-enlace" style="">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body text-center">

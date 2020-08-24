@@ -11,11 +11,11 @@
     <meta name="description" content="Sitio Web del Centro Fray Bartolomé de las Casas. {% block metadescripcion %}
     {% endblock metadescripcion %}">
     <meta name="author" content="Josué Isai Hernández Sánchez">
-    <meta property="og:title" content="Centro Fray Bartolomé de las Casas"/>
+    <meta property="og:title" content="{% block metatitle %}{% endblock %}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://bartolo.org"/>
-    <meta property="og:image" content="{% static 'img/faviconwhite.svg' %}"/>
-    <meta property="og:description" content="Espacio de Reflexión" />
+    <meta property="og:image" content="{% block metaimg %}{% endblock %}"/>
+    <meta property="og:description" content="{% block metadescription %}{% endblock %}" />
     <meta name="keywords" content="educa, dominicos, orden de predicadores, educación, idioma, iglesia" />
     
     <!-- Global site tag (gtag.js) - Google Analytics -->

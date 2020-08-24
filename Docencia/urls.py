@@ -10,6 +10,7 @@ urlpatterns = [
     path("eventos/", views.eventos, name="eventos"),
     path("evento/<int:pk>/", views.evento, name="evento"),
     path("cursos/", views.cursos, name="cursos"),
+    path("curso/<int:pk>/", views.curso, name="curso"),
     path("noticias/", views.noticias, name="noticias"),
     path("noticia/<int:pk>/", views.noticia, name="noticia"),
 

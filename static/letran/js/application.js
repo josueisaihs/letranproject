@@ -8,7 +8,7 @@ $(document).ready(()=>{
 
         $("#id_send").prop("disabled", true);
         $(".spinner-border").removeClass("invisible");
-        $(".btn-text").html("Enviando ...")
+        $(".btn-text").html("Validando ...")
 
         let asks = [];
 
@@ -74,17 +74,17 @@ $(document).ready(()=>{
                     },
                     success: (json)=>{
                         if (json.Exito === 'True'){
-                            console.log("OK");
+                            console.log("OK");                            
+                            $("#id_send").hide();
                             window.location.replace(url.urlRes);
                         }
                         else{
                             document.getElementById("id_error").innerHTML = "Error interno. Por favor, espere un tiempo y vuelva a intentar.";                            
                             document.getElementById("id_error").style.display = "block";
-                        } 
-                        
-                        $("#id_send").prop("disabled", false);
-                        $(".spinner-border").addClass("invisible");
-                        $(".btn-text").html("Enviar")                   
+                            $("#id_send").prop("disabled", false);
+                            $(".spinner-border").addClass("invisible");
+                            $(".btn-text").html("Enviar")  
+                        }                
                     },
                     error: (xhr, errmsg, err)=>{
                         console.log(errmsg, err);

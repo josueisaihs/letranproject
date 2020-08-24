@@ -4,6 +4,10 @@
 
 {% block titulo %}Inicio{% endblock titulo %}
 
+{% block metatitle %}Centro Fray Bartolomé de las Casas{% endblock %}
+{% block metadescription %}Espacio de Reflexión{% endblock %}
+{% block metaimg%}{{ header.icon.url }}{% endblock %}
+
 {% block metadescripcion %}Página Principal{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -79,7 +83,7 @@
                     {% if forloop.first %}
                         <div class="col h-100">
                             <div class="card shadow" 
-                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                                 <div class="image-box">
                                     <img class="card-img-top" 
                                     src="{{ new.image.url }}"
@@ -107,7 +111,7 @@
                     <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">                        
                         {% for new in news %}                            
                             {% ifnotequal forloop.counter 1 %}
-                                <div class="card mb-3">
+                                <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                                     <div class="row g-0">
                                         <div class="col-md-4 image-box">
                                             <img src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h">

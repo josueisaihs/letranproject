@@ -4,6 +4,10 @@
 
 {% block titulo %}Noticias{% endblock titulo %}
 
+{% block metatitle %}Noticias{% endblock %}
+{% block metadescription %}Últimas Noticias del CFBC{% endblock %}
+{% block metaimg%}{{ header.icon.url }}{% endblock %}
+
 {% block metadescripcion %}Página de Noticias{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -63,7 +67,7 @@
             <div class="col">
                 <div class="card" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                     <div class="image-box">
-                        <img class="card-img-top" 
+                        <img class="card-img-top img-v" 
                         src="{{ new.image.url }}"
                         srcset="
                         {{ new.image|thumbnail_url:'img-200' }} 320w,
