@@ -269,7 +269,7 @@ div {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 50vh;
+  max-height: 25vh;
   object-fit: cover;
   transform: scale(1);
 }
