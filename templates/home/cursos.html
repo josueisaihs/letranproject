@@ -3,8 +3,8 @@
 {% load thumbnail %}
 
 {% block titulo %}Cursos{% endblock titulo %}
-
-{% block metadescripcion %}Página de Cursos{% endblock metadescripcion %}
+{% block metaimg%}{{ header.background|thumbnail_url:"img-200" }}{% endblock %}
+{% block metadescripcion %}Nuestros Cursos{% endblock metadescripcion %}
 
 {% block contenido %}
 <header class="header-min" id="inicio">
