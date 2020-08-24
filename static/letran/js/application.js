@@ -30,7 +30,7 @@ $(document).ready(()=>{
         });
 
         asktextareas.map((iter, ask)=>{
-            console.log($(ask).minLength, $(ask).val().length >= $(ask).minLength);
+            console.log($(ask), $(ask).minLength, $(ask).val().length >= $(ask).minLength);
             if ($(ask).val().length >= $(ask).minLength){
                 asks.push([$(ask).attr("data-ask"), "t", $(ask).val()]);
             }else{
