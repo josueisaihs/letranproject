@@ -26,6 +26,13 @@ class Sede(models.Model):
     cellphone = models.CharField(max_length=8, blank=True, null=True, verbose_name="Móvil")
     email = models.EmailField(blank=True, null=True, verbose_name="Email")
 
+    reglamento = models.FileField(
+        verbose_name="Reglamento", 
+        upload_to=os.path.join('static', 'sedes', 'reglamentos'), 
+        blank=True, 
+        null=True
+    )
+
     class Meta:
         """Meta definition for Sede."""
         verbose_name = 'Sede'
@@ -41,7 +48,7 @@ class Sede(models.Model):
 
     class Admin(ModelAdmin):
         '''Admin View for Edition'''    
-        list_display = ('name', 'isprincipal', 'openhor', 'closehor', 'street', 'city', 'state', 'cellphone', 'email')
+        list_display = ('name', 'isprincipal', 'openhor', 'closehor', 'street', 'city', 'state', 'cellphone', 'email', 'reglamento')
         search_fields = ('name',)
         ordering = ('name',)
 

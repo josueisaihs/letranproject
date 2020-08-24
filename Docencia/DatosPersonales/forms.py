@@ -34,9 +34,9 @@ class StudentPersonalInformationForm(forms.ModelForm):
             "numberidentification": forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Número de Carnet',
-                'pattern': '[0-9]{11}',
-                'minlength': 11,
-                'maxlength': 11,
+                # 'pattern': '[0-9]{11}',
+                # 'minlength': 11,
+                # 'maxlength': 11,
                 
             }),
             "gender": forms.Select(attrs={
