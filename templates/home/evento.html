@@ -60,7 +60,7 @@
                     <span class="align-self-center"> Fecha{{ event.dateEnvs.all|pluralize:"s"}}</span>
                 </small>
                 {% for fecha in event.dateEnvs.all %} 
-                    <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
+                    <div class="d-inline-flex border px-2 rounded ml-2">
                         <div class="d-flex flex-column text-center text-small py-1">
                             <div class="text-primary">
                                 {{ fecha.dateEnv|date:"N" }}

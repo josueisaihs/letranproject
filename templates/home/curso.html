@@ -39,15 +39,21 @@
             <img src="{{ curso.image.url }}" class="img-fluid mt-1"/>
             
             <div class="pt-4 mb-2">
-                <p class="display-6 text-roboto-slab">Descripción</p>    
-                <div>{{ curso.description|safe|linebreaksbr }}</div>
-                <br>
-                <p class="display-6 text-roboto-slab">Requerimientos</p>    
-                <div>{{ curso.requeriments|safe|linebreaksbr }}</div>
-                <br>
-                <p class="display-6 text-roboto-slab">Curriculum</p>    
-                <div>{{ curso.curriculum|safe|linebreaksbr }}</div>
-                <br>
+                {% if curso.description %}
+                    <p class="display-6 text-roboto-slab">Descripción</p>    
+                    <div>{{ curso.description|safe|linebreaksbr }}</div>
+                    <br>
+                {% endif %}
+                {% if curso.requirements %}
+                    <p class="display-6 text-roboto-slab">Requerimientos</p>    
+                    <div>{{ curso.requirements|safe|linebreaksbr }}</div>
+                    <br>
+                {% endif %}
+                {% if curso.curriculum %}
+                    <p class="display-6 text-roboto-slab">Curriculum</p>    
+                    <div>{{ curso.curriculum|safe|linebreaksbr }}</div>
+                    <br>
+                {% endif %}
                 <div class="sharethis-inline-share-buttons"></div>
             </div>       
         </div>
@@ -61,24 +67,26 @@
                 {{ curso.sedes.all|join:',<br>' }}
             </div>
 
-            <div class="mb-3">
-                <small class="d-flex mb-2">
-                    <span class="material-icons text-primary">schedule</span> 
-                    <span class="align-self-center"> Horario{{ curso.schedules.all|pluralize:"s"}}</span>
-                </small>
-                {% for fecha in curso.schedules.all %}     
-                    <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
-                        <div class="d-flex flex-column text-center text-small py-1">
-                            <div class="text-primary">
-                                {{ fecha.weekday }}
+            {% if curso.schedules.all %}
+                <div class="mb-3">                
+                    <small class="d-flex mb-2">
+                        <span class="material-icons text-primary">schedule</span> 
+                        <span class="align-self-center"> Horario{{ curso.schedules.all|pluralize:"s"}}</span>
+                    </small>
+                    {% for fecha in curso.schedules.all %}     
+                        <div class="d-inline-flex border px-2 rounded ml-2">
+                            <div class="d-flex flex-column text-center text-small py-1">
+                                <div class="text-primary">
+                                    {{ fecha.weekday }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="ml-2 flex-fill align-self-center text-small">
-                            {{ fecha.dateIni|date:"h:i"}}
-                        </div>
-                    </div>                                   
-                {% endfor %}
-            </div>
+                            <div class="ml-2 flex-fill align-self-center text-small">
+                                {{ fecha.dateIni|date:"h:i"}}
+                            </div>
+                        </div>                                   
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <div class="d-flex mb-3">
                 {% if curso.programa %}
