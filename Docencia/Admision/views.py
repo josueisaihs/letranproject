@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.exceptions import *
 from django.conf import settings
@@ -14,10 +14,12 @@ from datetime import datetime, date
 from Docencia.DatosPersonales.models import StudentPersonalInformation
 from Docencia.Cursos.models import CourseInformation, Edition
 from Docencia.Admision.models import *
+from Docencia.decorators import isStudent
 
 TEMPLETE_PATH = "docencia/admision/%s.html"
 
 @cache_page(60 * 15)
+@user_passes_test(isStudent, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def selectcourse(req):
     courses = CourseInformation.objects.filter(openregistre__lte=datetime.today(),
@@ -42,7 +44,8 @@ def selectcourse(req):
 
     return render(req, TEMPLETE_PATH % "selectcourse", locals())
 
-@cache_page(60 * 15)
+#@cache_page(60 * 15)
+@user_passes_test(isStudent, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def application(req, coursePk):
     course = CourseInformation.objects.get(pk=coursePk)
@@ -104,7 +107,6 @@ def applicationAjax(req):
                         answers.append("No respondió")
                     break
             answer = "; ".join(answers)
-            print(answer)
             
 
         answerApp = AnswerApplication()
