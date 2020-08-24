@@ -7,7 +7,7 @@
 {% block metatitle %}{{ curso.name }} · {{ curso.area.name }}{% endblock %}
 {% block metadescription %}{{ curso.description|truncatechars:"50"}}{% endblock %}
 {% block metaimg%}{{ curso.image.url }}{% endblock %}
-{% block metaurl %}{% url 'noticia' new.pk %}{% endblock metaurl %}
+{% block metaurl %}{% url 'curso' curso.pk %}{% endblock metaurl %}
 {% block metadescripcion %}Página de Curso Detalle:{{ curso.area.name }} {{ curso.name }}. {{ curso.description }}{% endblock metadescripcion %}
 
 {% block contenido %}
