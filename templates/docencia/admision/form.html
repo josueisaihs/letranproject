@@ -185,7 +185,7 @@
             <p id="id_aceptar_txt" class="mt-4" data-aos="fade-up" data-aos-delay="700">
                 Al seleccionar <b>Aceptar y Continuar</b> a continuación, 
                 acepto lo
-                <a href="{{ sede.reglamento.url }}" target="_blank">Reglamento</a> 
+                <a href="{% if sede.reglamento %}{{ sede.reglamento.url }}{% else %}#{% endif %}" target="_blank">Reglamento</a> 
                 del CFBC.
             </p>
 
