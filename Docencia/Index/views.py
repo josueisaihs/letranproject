@@ -52,9 +52,9 @@ def index(request):
 
 @require_POST
 def previewLink(req):
-    url = req.POST.get("url")
-
-    return JsonResponse(getMetaDatos(url))
+    url = req.POST.get("target")
+    data = getMetaDatos(url)
+    return JsonResponse(data)
 
 @require_POST
 def suscribeteAjax(req):

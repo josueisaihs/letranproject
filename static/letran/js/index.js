@@ -185,6 +185,7 @@ function getPreview(externalUrl){
         url: urls.urlApi,
         data: {url: target,},
         success: function(data){
+            console.log(data)
             $(".enlace-title").html(data.title);
             $(".enlace-url").html(data.url);
             $(".enlace-img").attr("src", data.image);
