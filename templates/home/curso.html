@@ -104,7 +104,7 @@
             </div>
 
             {% if curso.isAvailableRegistre %}
-                <div class="container ">
+                <div class="container my-3">
                     <a class="btn btn-primary btn-block" target="_blank"
                     href="{% url 'admision_applicacion' curso.pk %}" 
                     role="button">
@@ -112,6 +112,25 @@
                     </a>
                 </div>
             {% endif %}
+            
+            {% if courses_ %}
+                <div class="mb-3 mt-5 mt-sm-5 mt-md-0">
+                    <h5 class="text-roboto-slab">Te puede interesar esto</h5>
+                    <ul class="mt-2">
+                        {% for course in courses_ %}
+                            <div class="border-bottom">
+                                <a class="p-1" href="{% url 'curso' course.pk %}" rel="canonical">
+                                    <div><h5 class="text-roboto-slab">{{ course.name }}</h5>
+                                    <p class="text-roboto-slab text-dark">{{ course.description|truncatechars:50 }}</p>
+                                    <small class="text-roboto-slab text-muted">{{ course.area.name }}</small></div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+                
+            
             
             <!-- ShareThis BEGIN -->
             <div class="mt-3 sharethis-inline-follow-buttons"></div>

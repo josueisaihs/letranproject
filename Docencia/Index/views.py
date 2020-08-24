@@ -144,7 +144,7 @@ def cursos(req):
 def curso(req, pk):
     navcursos = "active"
     curso = CourseInformation.objects.get(pk=pk)
-    courses = CourseInformation.objects.filter(area=curso.area).exclude(pk=pk)[:6]
+    courses_ = CourseInformation.objects.filter(area=curso.area.pk).exclude(pk=pk)[:6]
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)
