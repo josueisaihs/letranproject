@@ -67,7 +67,7 @@ class AskApplication(models.Model):
         return reverse('AskApplication.views.details', args=[str(self.id)])
     
     class Admin(ModelAdmin):
-        list_display = ('app', 'askBody', 'askType', 'order', 'textMax')
+        list_display = ('app', 'askBody', 'askType', 'order', 'textMin', 'textMax')
         search_fields = list_display
         fields = list_display   
 # <> fin AskApplication
