@@ -16,6 +16,8 @@ from datetime import datetime
 from Docencia.Cursos.models import CourseInformation, Area, Sede
 from Docencia.Index.models import HeaderIndex, News, SectionSuscribete, Suscriptor, SectionComments, Comments, Links, Events
 
+from .scrapping import getMetaDatos
+
 TEMPLETE_PATH = "home/%s.html"
 cantpaginator = 4
 
@@ -47,6 +49,12 @@ def index(request):
     pre = Links.objects.filter(section="opr").order_by("name") 
 
     return render(request, TEMPLETE_PATH % "index", locals())
+
+@require_POST
+def previewLink(req):
+    url = req.POST.get("url")
+
+    return JsonResponse(getMetaDatos(url))
 
 @require_POST
 def suscribeteAjax(req):

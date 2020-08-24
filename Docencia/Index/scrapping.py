@@ -5,7 +5,7 @@ import json
 def getMetaDatos(link):
     response = requests.get(link)
 
-    soup =  BeautifulSoup(response.text, "html.parser")
+    soup =  BeautifulSoup(response.text, "html.parser", from_encoding="iso-8859-1")
 
     title = soup.find("meta",  property="og:title")
     url = soup.find("meta",  property="og:url")
@@ -21,7 +21,7 @@ def getMetaDatos(link):
 
     titulo = title["content"] if title else "No meta title given"
     url = url["content"] if url else "No meta url given"
-    
+
     try:
         image = image["content"] if url else ""
     except TypeError:
@@ -36,8 +36,6 @@ def getMetaDatos(link):
     jsonfile["url"] = url
     jsonfile["image"] = image
     jsonfile["description"] = description
-    jsonfile = json.loads(jsonfile)
+    # jsonfile = json.dumps(jsonfile, ensure_ascii=False)
 
     return jsonfile
-
-print(getMetaDatos("https://bartolo.org"))
