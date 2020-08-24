@@ -169,27 +169,15 @@ function filtroCursos(){
 function getPreview(externalUrl){
     var target = externalUrl;
 
-    // $.ajax({
-    //     url: "https://api.linkpreview.net",
-    //     dataType: 'json',
-    //     data: {q: target, key: 'ff55066756cdd0c5f063bd3c7d33c138'},
-    //     success: function (data) {
-    //         $(".enlace-title").html(data.title);
-    //         $(".enlace-url").html(data.url);
-    //         $(".enlace-img").attr("src", data.image);
-    //         $(".enlace-card").fadeIn();
-    //     }
-    // });
-
     $.ajax({
-        url: urls.urlApi,
-        data: {url: target,},
-        success: function(data){
-            console.log(data)
+        url: "https://api.linkpreview.net",
+        dataType: 'json',
+        data: {q: target, key: 'ff55066756cdd0c5f063bd3c7d33c138'},
+        success: function (data) {
             $(".enlace-title").html(data.title);
             $(".enlace-url").html(data.url);
             $(".enlace-img").attr("src", data.image);
-            $(".enlace-card").fadeIn();
+            $(".enlace-card").show("slow");
         }
     });
 }
