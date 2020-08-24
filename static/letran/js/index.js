@@ -102,6 +102,7 @@ $(document).ready(()=>{
     }   
     
     try{
+    $(".enlace-card").hide();
     getPreview($(".enlace").attr('href'))
     } catch(errr){}
 });
@@ -169,13 +170,13 @@ function getPreview(externalUrl){
     var target = externalUrl;
     $.ajax({
         url: "https://api.linkpreview.net",
-        dataType: 'jsonp',
+        dataType: 'json',
         data: {q: target, key: 'ff55066756cdd0c5f063bd3c7d33c138'},
         success: function (data) {
             $(".enlace-title").html(data.title);
             $(".enlace-url").html(data.url);
             $(".enlace-img").attr("src", data.image);
-            $(".enlace-card").removeClass("invisible");
+            $(".enlace-card").fadeIn();
         }
     });
 }
