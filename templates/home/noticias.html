@@ -67,7 +67,7 @@
             <div class="col">
                 <div class="card" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                     <div class="image-box">
-                        <img class="card-img-top img-v" 
+                        <img class="card-img-top img-v" loading="lazy"
                         src="{{ new.image.url }}"
                         srcset="
                         {{ new.image|thumbnail_url:'img-200' }} 320w,
@@ -76,7 +76,7 @@
                         {{ new.image|thumbnail_url:'img-640' }} 800w,
                         {{ new.image|thumbnail_url:'img-1100' }} 2000w
                         "
-                        alt="Noticia" />
+                        alt="Noticia {{ new.title }}" />
                     </div>
                     
                     <div class="card-body">

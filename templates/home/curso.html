@@ -7,7 +7,7 @@
 {% block metatitle %}{{ curso.name }} · {{ curso.area.name }}{% endblock %}
 {% block metadescription %}{{ curso.description|truncatechars:"50"}}{% endblock %}
 {% block metaimg%}{{ curso.image.url }}{% endblock %}
-
+{% block metaurl %}{% url 'noticia' new.pk %}{% endblock metaurl %}
 {% block metadescripcion %}Página de Curso Detalle:{{ curso.area.name }} {{ curso.name }}. {{ curso.description }}{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -36,7 +36,7 @@
     <div class="row mt-4">
         <div class="col-lg-8 shadow">            
             <h2 class="display-3 text-roboto-slab">{{ curso.name }}</h2>                
-            <img src="{{ curso.image.url }}" class="img-fluid mt-1"/>
+            <img loading="lazy" alt="Imagen {{ curso.name }}" src="{{ curso.image.url }}" class="img-fluid mt-1"/>
             
             <div class="pt-4 mb-2">
                 {% if curso.description %}

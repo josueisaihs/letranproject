@@ -7,7 +7,7 @@
 {% block metatitle %}{{ event.name }}{% endblock %}
 {% block metadescription %}{{ event.body|truncatechars:"50"}}{% endblock %}
 {% block metaimg%}{{ event.image.url }}{% endblock %}
-
+{% block metaurl %}{% url 'evento' event.pk %}{% endblock metaurl %}
 {% block metadescripcion %}Página de Evento Detalle: {{ event.name }}. {{ event.body }}{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -36,7 +36,7 @@
     <div class="row mt-4">
         <div class="col-lg-8 shadow">            
             <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>                
-            <img src="{{ event.image.url }}" class="img-fluid mt-1"/>
+            <img loading="lazy" alt="Imagen {{ event.name }}" src="{{ event.image.url }}" class="img-fluid mt-1"/>
             
             <div class="pt-4 mb-2">
                 <h2 class="display-3 text-roboto-slab">{{ event.name }}</h2>    

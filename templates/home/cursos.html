@@ -63,8 +63,8 @@
             <div data-course="{{ course.area }}" class="col">
                 <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
                     <div class="image-box">
-                        <img src="{{ course.image.url }}" 
-                        class="card-img-top img-fluid" alt="Imagen Curso 0" />
+                        <img src="{{ course.image.url }}" loading="lazy" 
+                        class="card-img-top img-fluid" alt="Imagen {{ course.name }}" />
                     </div>
                     <div class="card-body">
                         <small class="mr-auto text-primary text-small">

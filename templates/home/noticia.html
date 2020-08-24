@@ -7,7 +7,7 @@
 {% block metatitle %}{{ new.title}}{% endblock %}
 {% block metadescription %}{{ new.body|truncatechars:"50"}}{% endblock %}
 {% block metaimg%}{{ new.image.url }}{% endblock %}
-
+{% block metaurl %}{% url 'noticia' new.pk %}{% endblock metaurl %}
 {% block metadescripcion %}Página de Noticia Detalle: {{ new.title }}.{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -37,7 +37,7 @@
         <div class="col-lg-8 shadow">   
             <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>    
             <small class="text-muted text-roboto-slab">{{ new.date|date:"D d M Y" }}</small><br>     
-            <img loading="lazy" src="{{ new.image.url }}" class="img-fluid  mt-1"/>
+            <img loading="lazy" alt="Image {{ new.title }}" rc="{{ new.image.url }}" class="img-fluid  mt-1"/>
             
             <div class="pt-4 mb-2">
                 <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>

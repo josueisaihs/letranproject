@@ -7,7 +7,7 @@
 {% block metatitle %}Centro Fray Bartolomé de las Casas{% endblock %}
 {% block metadescription %}Espacio de Reflexión{% endblock %}
 {% block metaimg%}{{ header.icon.url }}{% endblock %}
-
+{% block metaurl %}{% endblock metaurl %}
 {% block metadescripcion %}Página Principal{% endblock metadescripcion %}
 
 {% block contenido %}
@@ -74,8 +74,8 @@
 
 <!-- Noticias -->
     <div id="noticias" style="background-color: rgba(240, 236, 236, 0.904);" class="py-4">
-        <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
-        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Noticias</p>
+        <a href="{% url 'noticias' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Noticias</p></a>
 
         <div class="container">
             <div class="row row-cols-1 row-cols-md-2 g-1 ml-lg-5 ml-md-5">                
@@ -212,9 +212,9 @@
 
 <!-- Eventos -->
     <div id="eventos" class="p-1 bg-mi-gris">
-        <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+        <a href="{% url 'eventos' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">Eventos
-        </p>
+        </p></a>
         <div class="container">
             <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">                
                 {% for event in events %}
@@ -310,8 +310,8 @@
 
 <!-- Cursos -->
     <div id="cursos" class="py-4 bg-mi-gris">
-        <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
-        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestros cursos</p>
+        <a href="{% url 'cursos' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+        data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestros cursos</p></a>
         
         <div class="container">
             <ul class="nav nav-dark justify-content-center text-roboto-slab cursos mb-2">

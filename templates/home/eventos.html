@@ -67,7 +67,7 @@
             <div class="col">
                 <div class="card" onclick="window.location.href='{% url 'evento' event.pk %}'">
                     <div class="image-box">
-                        <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                        <img loading="lazy" src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen {{ event.name }}">
                     </div>
                     <div class="card-body">
                         {% if event.dateEnvs.all %}
