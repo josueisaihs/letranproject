@@ -20,7 +20,7 @@
         class="ml-md-5 ml-sm-2 ml-2 mw-100"
         style="margin-top: 10vh;"
         src="{{ header.icon.url }}"
-        alt="Perro"
+        alt="Centro Fray Bartolomé de las Casas"
         height="90vh"/>
     <div class="ml-md-5 ml-sm-2 ml-2 text-white text-roboto-slab">
         <h1
@@ -85,7 +85,7 @@
                             <div class="card shadow" 
                             data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                                 <div class="image-box">
-                                    <img class="card-img-top" 
+                                    <img class="card-img-top"  loading="lazy"
                                     src="{{ new.image.url }}"
                                     srcset="
                                     {{ new.image|thumbnail_url:'img-200' }} 320w,
@@ -114,7 +114,7 @@
                                 <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.pk %}'">
                                     <div class="row g-0">
                                         <div class="col-md-4 image-box">
-                                            <img src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h">
+                                            <img loading="lazy" src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -327,7 +327,7 @@
                 {% regroup courses by area as courses_list %}          
                 {% for course in courses %}  
                         <div data-course="{{ course.area }}" class="curso-contenedor col">
-                            <div class="card">
+                            <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
                                 <div class="image-box">
                                     <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
                                 </div>
