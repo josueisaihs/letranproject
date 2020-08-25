@@ -109,7 +109,8 @@ class StudentPersonalInformation(models.Model):
         fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                   "email", "nacionality", "ocupation", "degree", "title"]
         ordering = ["numberidentification", "lastname", "name"]
-        search_fields = fields
+        search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                  "email", "nacionality", "ocupation", "degree", "title", "user__username"]
         list_display = fields
 
 
@@ -197,7 +198,8 @@ class TeacherPersonalInformation(models.Model):
         fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                   "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
         ordering = ["numberidentification", "lastname", "name"]
-        search_fields = fields
+        search_fields = ["user__username", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                  "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
         list_display = fields
 
 

@@ -178,8 +178,8 @@ class CourseInformation(models.Model):
     )
 
     schedules = models.ManyToManyField("CourseSchedule", verbose_name="Horario(s)", blank=True)
+    starts = models.SmallIntegerField(verbose_name="Puntuación", default=4)
 
-    # TODO:  la puntuacion
     class Meta:
         """Meta definition for Curso."""
         verbose_name = 'Curso / Servicio'
@@ -202,8 +202,8 @@ class CourseInformation(models.Model):
     class Admin(ModelAdmin):
         fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules"]
+                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts"]
         ordering = ["area", "name", "capacity", "openregistre"]
-        search_fields = ["name", "openregistre"]
+        search_fields = ["name", "openregistre", "area__name", "sedes__name"]
         list_filter = ["sedes", "area", "isService", "haveApplication"]
         list_display = ["name", "area", "isService", "capacity", "haveApplication", "openregistre", "deadline"]

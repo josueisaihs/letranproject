@@ -68,8 +68,10 @@ class AskApplication(models.Model):
     
     class Admin(ModelAdmin):
         list_display = ('app', 'askBody', 'askType', 'order', 'textMin', 'textMax')
-        search_fields = list_display
         fields = list_display   
+        search_fields = ['app__name', 'app__course__name', 'askBody']
+        list_filter = ["askType",]
+
 # <> fin AskApplication
 
 
@@ -89,6 +91,7 @@ class OptionAskApplication(models.Model):
     class Admin(ModelAdmin):
         list_display = ('askApp', 'option', 'ispositive')
         fields = list_display
+        search_fields = ['askApp__askBody', 'option', 'askApp__app__course__name']
 
     def get_absolute_url(self):
         """Return absolute url for Curso."""
@@ -116,6 +119,7 @@ class AnswerApplication(models.Model):
         list_display = ('askApp', 'student', 'answer', 'appdate')
         fields = list_display
         readonly_fields = ('appdate',)
+        search_fields = ['askApp__askBody', 'askApp__app__course__name', 'askApp__app__name', 'student__name', 'student__lastname']
     
     def get_absolute_url(self):
         """Return absolute url for Curso."""
@@ -164,5 +168,7 @@ class Application(models.Model):
     class Admin(ModelAdmin):
         list_display = ('course', 'edition', 'student', 'appdate', 'status')
         fields = list_display
+        list_filter = ["edition", "status"]
+        search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
         readonly_fields = ('appdate',)
 # <> fin Application
