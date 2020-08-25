@@ -1,0 +1,4 @@
+.env
+letranproject.code-workspace
+debug.log
+db.sqlite3
