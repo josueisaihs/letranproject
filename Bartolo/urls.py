@@ -25,7 +25,6 @@ from django.views.decorators.cache import cache_page
 
 import debug_toolbar
 
-from Docencia.views import pag_404_not_found
 from Docencia.sitemaps import Dynamic
 
 sitemaps = {
@@ -42,8 +41,6 @@ urlpatterns = [
     # Aplicacion
     path('docencia/', include('Docencia.urls')),
     path('', include('Docencia.urls')),
-
-    path('404', pag_404_not_found, name='404'),
     
     # Autentificacion
     path("login/", auth_views.LoginView.as_view(), name="login"),
@@ -58,4 +55,5 @@ urlpatterns = [
     path('robots.txt', cache_page(60 * 60)(TemplateView.as_view(template_name="robots.txt", content_type="text/plain"))),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-handler404 = pag_404_not_found
+handler404 = 'Docencia.views.pag_404_not_found'
+handler500 = 'Docencia.views.pag_500_error_server'

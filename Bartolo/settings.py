@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!^jkfhybvxwkbsq$qbj)fxx^!gqqnjf(3g*)*9#(brn5f)3+%e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "bartolo.org",]
 
@@ -231,7 +231,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Ejecucion de las tareas de forma asincornica
 # BACKGROUND_TASK_RUN_ASYNC = True
-
+ADMINS =(('josueisaihs','josueisaihs@gmail.com'),)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -240,6 +240,21 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
         },
     },
     'loggers': {
