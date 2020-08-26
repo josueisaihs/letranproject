@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.views.decorators.cache import cache_page
 
 from datetime import datetime, date
+from json import loads
 
 from Docencia.DatosPersonales.models import StudentPersonalInformation
 from Docencia.Cursos.models import CourseInformation, Edition
@@ -88,70 +89,74 @@ def application(req, coursePk):
 def applicationAjax(req):
     user = User.objects.get(username=req.user.username)
     student = StudentPersonalInformation.objects.get(user=user.pk)
+    datos = req.POST.getlist('datos[]')
+    # Importando los datos 
+    respuestas = loads(datos[0])
+    # respuestas -> askPk, askType, answer
+    exito = True
+    estado = 0
+    for askPk, askType, answer in respuestas:
+        try:
+            if askType == "o" or askType == "r":
+                answer = OptionAskApplication.objects.get(pk=answer).option
 
-    askPk = req.POST.get('ask')
-    askType = req.POST.get('askType')
-    answer = req.POST.get('answer')
-
-    try:
-        if askType == "o" or askType == "r":
-            answer = OptionAskApplication.objects.get(pk=answer).option
-
-        if askType == "c":
-            answers = []
-            for option in answer.split(";"):
-                if option != "0" and option != "":
-                    answers.append(OptionAskApplication.objects.get(pk=option).option)
-                else:
-                    if option == "0":
-                        answers.append("No respondió")
-                    break
-            answer = "; ".join(answers)
-            
-
-        answerApp = AnswerApplication()
-        answerApp.askApp = AskApplication.objects.get(pk=askPk)
-        answerApp.student = student
-        answerApp.answer = answer
-
-        enrollment = EnrollmentApplication.objects.get(pk=answerApp.askApp.app.pk)
-        course = CourseInformation.objects.get(pk=enrollment.course.pk)
-
-        edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
-            dateend__gte=datetime.today())
+            if askType == "c":
+                answers = []
+                for option in answer.split(";"):
+                    if option != "0" and option != "":
+                        answers.append(OptionAskApplication.objects.get(pk=option).option)
+                    else:
+                        if option == "0":
+                            answers.append("No respondió")
+                        break
+                answer = "; ".join(answers)
                 
-        try:
-            app = Application()
-            app.student = student
-            app.course = course
-            app.edition = edition
-            app.save()
-        except IntegrityError as e:
-            Application.objects.filter(course=course.pk, student=student.pk, edition=edition.pk).delete()
-            app.save()
 
-        try:
-            answerApp.save()
+            answerApp = AnswerApplication()
+            answerApp.askApp = AskApplication.objects.get(pk=askPk)
+            answerApp.student = student
+            answerApp.answer = answer
 
+            enrollment = EnrollmentApplication.objects.get(pk=answerApp.askApp.app.pk)
+            course = CourseInformation.objects.get(pk=enrollment.course.pk)
+
+            edition = Edition.objects.get(
+                dateinit__gte=datetime.today(), 
+                dateend__gte=datetime.today())
+                    
+            try:
+                app = Application()
+                app.student = student
+                app.course = course
+                app.edition = edition
+                app.save()
+            except IntegrityError as e:
+                Application.objects.filter(course=course.pk, student=student.pk, edition=edition.pk).delete()
+                app.save()
+
+            try:
+                answerApp.save()
+                # se va a mostrar este mensaje con estado = True              
+            except IntegrityError as e:
+                response_data = {
+                    'Exito': "True"
+                }
+                AnswerApplication.objects.filter(askApp=askPk, student=student.pk).delete()
+                answerApp.save()
+                estado = False                
+        except ValueError as e:
+            exito = False
+            break
+    
+    if exito:
+        if estado:
             messages.success(req, "Aplicación enviada a %s" % enrollment.course.name)
+        else:
+            messages.success(req, "Nueva Aplicación enviada a %s\nSe eliminó su aplicación anterior" % enrollment.course.name)
 
-            response_data = {
-                'Exito': "True"
-            }
-        except IntegrityError as e:
-            response_data = {
-                'Exito': "True"
-            }
-            AnswerApplication.objects.filter(askApp=askPk, student=student.pk).delete()
-            answerApp.save()
-
-            messages.success(req, "Nueva Aplicación enviada a %s\nSe eliminó su aplicación anterior" % enrollment.course.name)            
-    except ValueError as e:
-        response_data = {
-            'Exito': "False"
-        }
-
+    response_data = {
+        'Exito': str(exito)
+    }
     return JsonResponse(response_data)    
 # <> fin applicationAjax
 
