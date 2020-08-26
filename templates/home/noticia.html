@@ -7,8 +7,13 @@
 {% block metatitle %}{{ new.title}}{% endblock %}
 {% block metadescription %}{{ new.body|truncatechars:"50"}}{% endblock %}
 {% block metaimg%}{{ new.image|thumbnail_url:'img-200' }}{% endblock %}
-{% block metaurl %}{% url 'noticia' new.pk %}{% endblock metaurl %}
-{% block metadescripcion %}Página de Noticia Detalle: {{ new.title }}.{% endblock metadescripcion %}
+{% block metaurl %}{% url 'noticia' new.pk %}{% endblock %}
+{% block metadescripcion %}Página de Noticia Detalle: {{ new.title }}.{% endblock %}
+
+{% block twittertitle %}{{ new.title}}{% endblock %}
+{% block twitterdescription %}{{ new.body|truncatechars:"50"}}{% endblock %}
+{% block twitterimg%}{{ new.image|thumbnail_url:'img-200' }}{% endblock %}
+{% block twitterurl %}{% url 'noticia' new.pk %}{% endblock %}
 
 {% block contenido %}
 <header class="header-min" id="inicio">
