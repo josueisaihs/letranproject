@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
-from django.conf.urls import handler404, handler500
+from django.conf.urls import handler404, handler500, handler403
 from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import TemplateView
@@ -57,3 +57,4 @@ urlpatterns = [
 
 handler404 = 'Docencia.views.pag_404_not_found'
 handler500 = 'Docencia.views.pag_500_error_server'
+handler403 = 'Docencia.views.pag_403_permission_denied'

@@ -1,0 +1,51 @@
+{% extends './base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block titulo %}500{% endblock titulo %}
+
+{% block metatitle %}500{% endblock %}
+{% block metadescription %}Error 500{% endblock %}
+{% block metaimg%}{{ header.background.url }}{% endblock %}
+{% block metaurl %}{% endblock metaurl %}
+{% block metadescripcion %}Página de Error 500{% endblock metadescripcion %}
+
+{% block contenido %}
+<header class="header-min" id="inicio">
+    {% include './menu.html' %}
+
+    <div class="d-lg-flex ml-md-5 ml-sm-2 ml-2 text-white" style="padding-top: 10vh;">
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="350"
+            class="text-roboto-slab font-weight-bold text-uppercase display-2">
+            500
+        </h1>
+    </div>
+</header>
+
+<div class="p-4 bg-white">
+    <div class="container justify-content-center d-flex align-items-center" style="min-height: 100vh;">
+        <div class="text-center">
+            <h1 class="h1">Lo sentimos</h1>
+            <p>Hemos detectado un problema interno</p>
+            <div>
+                <a role="button" href="{% url 'index' %}" class="btn btn-primary">Volver al Inicio</a>
+            </div>
+            {% if respuesta %}
+                <figure class="p-5 m-2 text-right border rounded bg-mi-gris bg-gradient">
+                    <blockquote class="blockquote">
+                    <p class="font-weight-light">{{ respuesta.body }}</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer d-inline-block">
+                    {{ respuesta.autor }}
+                    </figcaption>
+                </figure>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block importScripts %}
+{% endblock importScripts %}
