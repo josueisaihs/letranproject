@@ -37,7 +37,15 @@
         <div class="col-lg-8 shadow">   
             <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>    
             <small class="text-muted text-roboto-slab">{{ new.date|date:"D d M Y" }}</small><br>     
-            <img loading="lazy" alt="Image {{ new.title }}" src="{{ new.image.url }}" class="img-fluid  mt-1"/>
+            <img loading="lazy" alt="Image {{ new.title }}" 
+            src="{{ new.image.url }}" srcset="
+            {{ new.image|thumbnail_url:'img-200' }} 320w,
+            {{ new.image|thumbnail_url:'img-400' }} 400w,
+            {{ new.image|thumbnail_url:'img-600' }} 600w,
+            {{ new.image|thumbnail_url:'img-640' }} 800w,
+            {{ new.image|thumbnail_url:'img-1100' }} 2000w
+            "
+            class="img-fluid  mt-1"/>
             
             <div class="pt-4 mb-2">
                 <h2 class="display-3 text-roboto-slab">{{ new.title }}</h2>
