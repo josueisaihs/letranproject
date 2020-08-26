@@ -6,7 +6,7 @@
 
 {% block metatitle %}{{ new.title}}{% endblock %}
 {% block metadescription %}{{ new.body|truncatechars:"50"}}{% endblock %}
-{% block metaimg%}{{ new.image.url }}{% endblock %}
+{% block metaimg%}{{ new.image|thumbnail_url:'img-200' }}{% endblock %}
 {% block metaurl %}{% url 'noticia' new.pk %}{% endblock metaurl %}
 {% block metadescripcion %}Página de Noticia Detalle: {{ new.title }}.{% endblock metadescripcion %}
 
