@@ -278,3 +278,33 @@ class SectionComments(models.Model):
         list_display = ('name',)
         search_fields = ('name',)
 
+class Recurso(models.Model):
+    name = models.CharField(max_length=50, verbose_name="Nombre")
+    recurso = models.FileField(verbose_name="Recurso", 
+    upload_to=os.path.join('static', 'recurso'), null=True, blank=True,)
+    tipo = models.CharField(max_length=20, verbose_name="Tipo", 
+    choices=(
+        ("imagen", "Imagen"), 
+        ("documento", "Documento"),
+        ("video", "Video"),
+        )
+    )
+    uploaddate = models.DateField(verbose_name="Fecha", auto_now=True, blank=False, 
+        editable=False)
+    class Meta:
+        verbose_name = 'Recurso'
+        verbose_name_plural = 'Index - Recursos'
+
+    def __str__(self):
+        return "%s" % self.namelute
+
+    class Admin(ModelAdmin):    
+        list_display = ('name', 'tipo')
+        list_filter = ('tipo',)
+        readonly_fields = ('uploaddate',)
+        search_fields = ('name', 'tipo')
+        ordering = ('-uploaddate',)
+
+    
+
+
