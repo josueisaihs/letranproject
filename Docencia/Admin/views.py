@@ -120,7 +120,7 @@ def admindashboard_detail(req, coursepk):
         apps = []
 
         for app in apps_obj:
-            answers = AnswerApplication.objects.filter(student=app.student, askApp=app.pk).order_by('askApp__order')
+            answers = AnswerApplication.objects.filter(student=app.student, askApp__app=app.pk).order_by('askApp__order')
             app.answers = answers
             apps.append(app)
 
@@ -156,7 +156,7 @@ def admindashboard_student_detail(req, apppk):
     coursepk = course.pk
     apps = []
 
-    answers = AnswerApplication.objects.filter(student=app_obj.student, askApp=app_obj).order_by('askApp__order')
+    answers = AnswerApplication.objects.filter(student=app_obj.student, askApp__app=app_obj).order_by('askApp__order')
     app_obj.answers = answers
     apps.append(app_obj)
 
