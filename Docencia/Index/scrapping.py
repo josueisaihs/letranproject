@@ -5,7 +5,7 @@ import json
 def getMetaDatos(link):
     response = requests.get(link)
 
-    soup =  BeautifulSoup(response.text, "html.parser", from_encoding="iso-8859-1")
+    soup =  BeautifulSoup(response.text, "html.parser")
 
     title = soup.find("meta",  property="og:title")
     url = soup.find("meta",  property="og:url")

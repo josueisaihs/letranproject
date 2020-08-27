@@ -52,8 +52,10 @@ def index(request):
 
 @require_POST
 def previewLink(req):
-    url = req.POST.get("url")
+    url = req.POST.get("q")
+    print(url)
     data = getMetaDatos(url)
+    print(data)
     return JsonResponse(data)
 
 @require_POST
