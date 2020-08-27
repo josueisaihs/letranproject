@@ -42,8 +42,8 @@ class StudentPersonalInformation(models.Model):
     email = models.EmailField(verbose_name="Correo Eletrónico")
 
     degree = models.CharField(verbose_name="Grado Científico", max_length=20,
-                              choices=(("Ing.", "Ingeniero"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
-                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"),
+                              choices=(("Ing.", "Ingeniero"), ("Arq.", "Arquitecto"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
+                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ('Otro', 'Otro'),
                                        ("Ning.", "Ninguno")),
                               default="Ning.")
     title = models.CharField(verbose_name="Título", max_length=100, blank=True, null=True, default="")
@@ -137,8 +137,8 @@ class TeacherPersonalInformation(models.Model):
     pasaport = models.CharField(max_length=10, blank=True, null=True, verbose_name="Pasaporte")
 
     degree = models.CharField(max_length=20, verbose_name="Grado Científico",
-                              choices=(("Ing.", "Ingeniero"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
-                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"),
+                              choices=(("Ing.", "Ingeniero"), ("Arq.", "Arquitecto"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
+                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ("Otro", "Otro"),
                                        ("Ning.", "Ninguno")),
                               default="Lic.")
     title = models.CharField(max_length=100, blank=True, null=True, default="", verbose_name="Título")
