@@ -131,6 +131,7 @@
                                             <label class="form-check-label" for="id_radio_{{ answer.pk }}">
                                                 {{ answer.answer }}
                                             </label>
+                                            <small class="text-muted">{{ answer.appdate|date:"D d M Y" }}</small>
                                         </div>
                                     {% endifequal %}
                                 </div>
