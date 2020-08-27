@@ -150,26 +150,26 @@ def admindashboard_student_detail(req, apppk):
 
     courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
 
-    try:
-        app_obj = Application.objects.get(pk = apppk)
-        course = CourseInformation.objects.get(pk = app_obj.course.pk)
-        coursepk = course.pk
-        apps = []
+    # try:
+    app_obj = Application.objects.get(pk = apppk)
+    course = CourseInformation.objects.get(pk = app_obj.course.pk)
+    coursepk = course.pk
+    apps = []
 
-        answers = AnswerApplication.objects.filter(student=app_obj.student, askApp=app_obj.pk).order_by('askApp__order')
-        app_obj.answers = answers
-        apps.append(app_obj)
+    answers = AnswerApplication.objects.filter(student=app_obj.student, askApp=app_obj).order_by('askApp__order')
+    app_obj.answers = answers
+    apps.append(app_obj)
 
-        paginador = Paginator(apps, 1)
-        
-        page_number = req.GET.get('page')
-        page_obj = paginador.get_page(page_number)
+    paginador = Paginator(apps, 1)
+    
+    page_number = req.GET.get('page')
+    page_obj = paginador.get_page(page_number)
 
-        del app_obj
-        del answers
+    del app_obj
+    del answers
 
-        VIEW = "STUDENT"
-    except:
-        messages.error(req, "No hay aplicaciones")    
+    VIEW = "STUDENT"
+    # except:
+    #     messages.error(req, "No hay aplicaciones")    
 
     return render(req, TEMPLETE_PATH % "appDetail", locals())
