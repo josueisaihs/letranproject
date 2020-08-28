@@ -202,7 +202,7 @@ def noticia(req, pk):
 
 def recursos(req):
     navrecursos = "active"
-    paginador = Paginator( Recurso.objects.order_by("-uploaddate"), 20)    
+    paginador = Paginator( Recurso.objects.all().order_by("-uploaddate"), 20)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
 
