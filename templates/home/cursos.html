@@ -64,7 +64,7 @@
                 <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
                     <div class="image-box">
                         <img src="{{ course.image.url }}" loading="lazy" 
-                        class="card-img-top img-fluid" alt="Imagen {{ course.name }}" />
+                        class="card-img-top" alt="Imagen {{ course.name }}" />
                     </div>
                     <div class="card-body">
                         <small class="mr-auto text-primary text-small">
@@ -87,7 +87,6 @@
                         
                         <div class="d-flex align-items-stretch mt-2">
                             {% for fecha in course.schedules.all %}
-                                
                                 {% if forloop.counter < 3 %}
                                     <div class="d-inline-flex border px-2 rounded {% if forloop.first %}{% else %}ml-2{% endif %}">
                                         <div class="d-flex flex-column text-center text-small py-1">
@@ -106,7 +105,6 @@
                                         </div>
                                     {% endif %}
                                 {% endif %}                                        
-                                
                             {% endfor %}
                         </div>
                     </div>
