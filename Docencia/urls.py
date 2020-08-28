@@ -14,6 +14,7 @@ urlpatterns = [
     path("noticias/", views.noticias, name="noticias"),
     path("noticia/<int:pk>/", views.noticia, name="noticia"),
     path("api/previewlink/", views.previewLink, name="api_index_previewlink"),
+    path("recursos/", views.recursos, name="recursos"),
 
     path('admision/dashboard/', views.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.registro, name='admision_registro'),
