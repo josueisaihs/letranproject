@@ -30,7 +30,7 @@
         </nav>
     </div>
 </header>
-<div class="py-4 bg-white container">
+<div class="py-4 bg-white">
     <nav class="mt-2">
         <ul class="pagination pagination-sm justify-content-center">
             <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
@@ -61,7 +61,7 @@
         </ul>
     </nav>
 
-    <div class="row g-4">
+    <div class="row g-4 container">
         {% for recurso in page_obj %}
             <div class="col-sm-6 col-md-3 col-lg-4">
                 <div class="card">
