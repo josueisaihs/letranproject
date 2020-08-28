@@ -68,7 +68,7 @@
                     <h5 class="card-title">{{ recurso.name }}</h5>
                     <small class="text-muted">{{ recurso.tipo }} | {{ recurso.uploaddate|date:"D d M Y" }}</small>
                     {% if recurso.recurso %}
-                        <a href="{{ recurso.recurso.url }}" class="btn btn-primary">Descargar</a>
+                        <a href="{{ recurso.recurso.url }}" class="btn btn-primary" download>Descargar</a>
                     {% endif %}
                 </div>
             </div>
