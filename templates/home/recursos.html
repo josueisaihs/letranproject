@@ -30,7 +30,7 @@
         </nav>
     </div>
 </header>
-<div class="py-4 bg-white">
+<div class="py-4 bg-white container">
     <nav class="mt-2">
         <ul class="pagination pagination-sm justify-content-center">
             <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
@@ -60,19 +60,20 @@
             </li>          
         </ul>
     </nav>
+
     <div class="row g-4">
         {% for recurso in page_obj %}
-        <div class="col-sm-6 col-md-3 col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ recurso.name }}</h5>
-                    <small class="text-muted">{{ recurso.tipo }} | {{ recurso.uploaddate|date:"D d M Y" }}</small>
-                    {% if recurso.recurso %}
-                        <br><a href="{{ recurso.recurso.url }}" class="btn btn-primary" download>Descargar</a>
-                    {% endif %}
+            <div class="col-sm-6 col-md-3 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recurso.name }}</h5>
+                        <small class="text-muted">{{ recurso.tipo }} | {{ recurso.uploaddate|date:"D d M Y" }}</small>
+                        {% if recurso.recurso %}
+                            <br><a href="{{ recurso.recurso.url }}" class="btn btn-primary" download>Descargar</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>
