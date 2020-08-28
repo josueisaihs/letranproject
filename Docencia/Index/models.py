@@ -296,7 +296,7 @@ class Recurso(models.Model):
         verbose_name_plural = 'Index - Recursos'
 
     def __str__(self):
-        return "%s" % self.namelute
+        return "%s" % self.name
 
     class Admin(ModelAdmin):    
         list_display = ('name', 'tipo')
