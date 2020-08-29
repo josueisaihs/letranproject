@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 from .models import RespuestasError
 from django.template import RequestContext
 from django.shortcuts import render
@@ -8,7 +6,7 @@ from Docencia.Admin.views import *
 from Docencia.Admision.views import *
 from Docencia.DatosPersonales.views import *
 from Docencia.Index.views import *
-
+from Docencia.Plataforma.views import *
 
 #...
 #404: página no encontrada

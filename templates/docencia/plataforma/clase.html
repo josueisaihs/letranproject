@@ -1,0 +1,8 @@
+{% extends './dashboard.html' %}
+{% block dashboard_content %}
+    <p class="h2">{{ clase.name }}</p>
+    <small class="text-muted">{{ clase.course.name }} | {{ clase.datepub|date:"D d M Y" }}</small>
+    <div class="ckeditor row">
+        {{ clase.body|safe }}
+    </div>
+{% endblock dashboard_content %}}

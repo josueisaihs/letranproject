@@ -1,0 +1,106 @@
+
+{% extends './base.html' %}
+{% load static %}
+{% block titleHead %}Administración{% endblock titleHead %}
+{% block importCSS %}
+    <!-- View -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/dashboard.css' %}">
+    {% comment %} <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> {% endcomment %}
+{% endblock importCSS %}
+{% block contenido %}
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{% url 'index' %}">
+            CFBC
+        </a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <input id="id_buscar" list="datalistOptions" class="form-control form-control-dark w-100" type="text" placeholder="Buscar ..." aria-label="Buscar">
+        <!-- <datalist id="datalistOptions">
+            {% for app in apps %}
+                <option value="{{ app.course.name }}">
+            {% endfor %}            
+        </datalist> -->
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'logout' %}">Cerrar Sessión</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#misAplicaciones">
+                            <span data-feather="bookmark"></span>
+                            Mis Aplicaciones 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'clase' %}">
+                            <span data-feather="bookmark"></span>
+                            Clases
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'pwdreset' %}">
+                            <span data-feather="bookmark"></span>
+                            Gestión Contraseña
+                        </a>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Hola Fulano</h1>
+                </div>
+                
+
+                 {% if messages%}
+                    {% for message in messages %}
+                                                    
+                        {% ifequal message.level 40 %}
+                            <div class="alert alert-danger lg" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endifequal %}
+                            
+                    {% endfor %}
+                {% endif %}
+
+                
+                {% block dashboard_content %}
+                    
+                {% endblock dashboard_content %}
+            </main>
+                
+        </div>
+    </div>
+{% endblock contenido %}
+
+{% block importScripts %}
+    <!-- View -->
+    <script defer src="{% static 'letran/js/ajaxdjango.js' %}"></script>
+    <script defer src="{% static 'letran/js/dashboard.js' %}"></script> 
+{% endblock importScripts %}
+
+
+{% block scripts %}
+    urls = {
+        "cancel": "{% url 'api_admision_aplicacion_cancel' %}"
+    }
+{% endblock scripts %}
+    
+    
+    

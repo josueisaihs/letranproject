@@ -16,6 +16,8 @@ urlpatterns = [
     path("api/previewlink/", views.previewLink, name="api_index_previewlink"),
     path("recursos/", views.recursos, name="recursos"),
 
+    path("clase/", views.clase, name="clase"),
+
     path('admision/dashboard/', views.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.registro, name='admision_registro'),
     path('admision/success/', views.registrocompletado, name='admision_registro_ok'),
