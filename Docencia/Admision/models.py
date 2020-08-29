@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.admin import ModelAdmin
+from django.contrib import admin
 from django.urls import reverse
 
 from Docencia.DatosPersonales.models import StudentPersonalInformation
@@ -21,10 +21,10 @@ class EnrollmentApplication(models.Model):
     def get_absolute_url(self):
         """Return absolute url for Curso."""
         return reverse('EnrollmentApplication.views.details', args=[str(self.id)])
-
-    class Admin(ModelAdmin):
-        list_display = ('course', 'name')   
-        fields = list_display 
+@admin.register(EnrollmentApplication)
+class Admin(ModelAdmin):
+    list_display = ('course', 'name')   
+    fields = list_display 
 # <> fin EnrollmentApplication
 
 
