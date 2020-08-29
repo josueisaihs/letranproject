@@ -5,7 +5,7 @@ from Docencia.DatosPersonales.models import *
 from Docencia.Cursos.models import *
 from Docencia.Admision.models import *
 from Docencia.Index.models import *
-
+from Docencia.Plataforma.models import *
 
 class RespuestasError(models.Model):
     """Model definition for RespuestasError."""
