@@ -2,8 +2,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-import locale
-locale.setlocale(locale.LC_TIME, "es_CU")
+# import locale
+# locale.setlocale(locale.LC_TIME, "es_CU")
 
 from Docencia.tasks import enviar_suscriptores
 from Docencia.Index.models import News
