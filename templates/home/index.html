@@ -10,6 +10,11 @@
 {% block metaurl %}{% endblock metaurl %}
 {% block metadescripcion %}Página Principal{% endblock metadescripcion %}
 
+{% block twittertitle %}Centro Fray Bartolomé de las Casas{% endblock %}
+{% block twitterdescription %}Espacio de Reflexión{% endblock %}
+{% block twitterimg%}{{ header.background|thumbnail_url:'img-200'}}{% endblock %}
+{% block twitterurl %}/{% endblock %}
+
 {% block contenido %}
 <header class="header" id="inicio">
     {% include './menu.html' %}

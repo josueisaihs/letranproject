@@ -40,9 +40,13 @@ class News(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
     body = models.TextField(verbose_name="Cuerpo")
     link = models.URLField(verbose_name="Enlace", blank=True)
-    image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True)
+    image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
 
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
+
+    image_1 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 1")
+    image_2 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 2")
+    image_3 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 3")
 
     class Meta:
         verbose_name = 'Index - Noticia'
@@ -57,9 +61,10 @@ class News(models.Model):
         return reverse('News.views.details', args=[str(self.id)])
 
     class Admin(ModelAdmin):   
-        list_display = ('title', 'link', 'date', 'image')
+        fields = ('title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
+        list_display = ('title', 'link', 'date',)
         search_fields = ('title',)
-        ordering = ('title',)
+        ordering = ('title', '-date')
 
 class Post(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
