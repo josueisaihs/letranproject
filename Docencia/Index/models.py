@@ -9,8 +9,6 @@ from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
 
-from django.db.models import ImageField
-
 class Suscriptor(models.Model):
     """Model definition for Suscriptor."""
 
@@ -62,7 +60,6 @@ class News(models.Model):
         list_display = ('title', 'link', 'date', 'image')
         search_fields = ('title',)
         ordering = ('title',)
-
 
 class Post(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")

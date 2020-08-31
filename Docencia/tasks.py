@@ -1,6 +1,6 @@
 from background_task import background
 
-from django.core.mail import EmailMessage, BadHeaderError
+from django.core.mail import EmailMessage, BadHeaderError, send_mass_mail
 from smtplib import SMTPException
 from django.contrib.auth.models import User
 
@@ -39,3 +39,22 @@ def verificar_email(_email_):
     except TimeoutError as e:
         logger.exception("Error: TimeoutError %s" % _email_)
         print("Error timeout")
+
+@background(schedule=5)
+def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
+    print(pk, title, resumen, date)
+    correos = []
+    for suscriptor in Suscriptor.objects.all().only('email'):
+        correos.append(suscriptor.email)
+    print(correos)
+    cuerpo = ""
+    email = EmailMessage(
+                "Nueva Noticia · Centro Fray Bartolomé de las Casas", 
+                "<html><head></head><body><strong>¡Nueva Noticia!</strong><br><hr><h1>%s</h1><br><small>%s</small>" % (title, date) +
+                "<p>%s...</p>" % resumen +
+                "<a href='https://bartolo.org/noticia/%s/'>Leer Más ...</a><br><br>" % pk +
+                "<a href='https://bartolo.org'><small>Centro Fray Bartolomé de las Casas</small></a></body></html>",
+                to=correos,
+    )
+    email.content_subtype = "html" 
+    email.send(fail_silently=True)
