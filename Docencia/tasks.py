@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from Docencia.Index.models import Suscriptor
 
 from validate_email import validate_email
+from Docencia.tweepy_admin import TwitterBartolo
 
 import logging
 logger = logging.getLogger(__name__)
@@ -58,3 +59,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     )
     email.content_subtype = "html" 
     email.send(fail_silently=True)
+
+    twitter = TwitterBartolo()
+    twitter.sendTweet("%s\n%s\n%s\n#cfbc" % (title, resumen, "https;//bartolo.org/noticia/%s/" % pk))
+

@@ -1,14 +1,18 @@
 import tweepy
 
-consumer_key = "pnZ6U9Yciuls5Qif2hzdtVeRd"
-consumer_secret = "ftpQvB3PSLn1gZ4J3IdJMITocU17MNYAhTXid2Cj5nXTfqgkpz"
+class TwitterBartolo():           
+    def __init__(self, *args, **kwargs):
+        super(TwitterBartolo, self).__init__(*args, **kwargs)
 
-access_token = "3386231271-Bd5pZxtfZNnwbJIg5vQ1vkAZ6L4kiYB7uQPvwcr"
-access_token_secret = "X5FhhQzt7Yh5kwwjq3DEpeBL0M8Il0tWocbfhedOpm94d"
+        consumer_key = "dNY7kBN9ptV6IUn49lSlkerN0"
+        consumer_secret = "Gd1SqdmY0tZzD1Rttxusrhm8w5OI2N5pMKHujYCC2dBAT3aRKH"
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
+        access_token = "1254462238460710915-c5JweuGrookBEQfTFjkuXWLXyI9OoV"
+        access_token_secret = "0YLI7ULFMEJg1DBFc0B9qj0AfYNe81qfz6I4qq86bIoVz"
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
 
-api = tweepy.API(auth)
+        api = tweepy.API(auth)
 
-api.update_status('Visita nuestro Sitio https://bartolo.org')
+    def sendTweet(self, msg):
+        self.api.update_status(msg)
