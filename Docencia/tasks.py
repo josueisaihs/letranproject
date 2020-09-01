@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from Docencia.Index.models import Suscriptor
 
 from validate_email import validate_email
-from Docencia.tweepy_admin import TwitterBartolo
+import tweepy
 
 import logging
 logger = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     cuerpo = ""
     email = EmailMessage(
                 "Nueva Noticia · Centro Fray Bartolomé de las Casas", 
-                "<html><head></head><body><strong>¡Nueva Noticia!</strong><br><hr><h1>%s</h1><br><small>%s</small>" % (title, date) +
+                "<html><head></head><body><h1>¡Nueva Noticia!</h1><br><hr><h3>%s</h3><small>%s</small>" % (title, date) +
                 "<p>%s...</p>" % resumen +
                 "<a href='https://bartolo.org/noticia/%s/'>Leer Más ...</a><br><br>" % pk +
                 "<a href='https://bartolo.org'><small>Centro Fray Bartolomé de las Casas</small></a></body></html>",
@@ -60,6 +60,12 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     email.content_subtype = "html" 
     email.send(fail_silently=True)
 
-    twitter = TwitterBartolo()
-    twitter.sendTweet("%s\n%s\n%s\n#cfbc" % (title, resumen, "https;//bartolo.org/noticia/%s/" % pk))
+    consumer_key = "dNY7kBN9ptV6IUn49lSlkerN0"
+    consumer_secret = "Gd1SqdmY0tZzD1Rttxusrhm8w5OI2N5pMKHujYCC2dBAT3aRKH"
+    access_token = "1254462238460710915-c5JweuGrookBEQfTFjkuXWLXyI9OoV"
+    access_token_secret = "0YLI7ULFMEJg1DBFc0B9qj0AfYNe81qfz6I4qq86bIoVz"
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+    api.update_status("%s\n%s\n%s\n#cfbc" % (title, resumen, "https;//bartolo.org/noticia/%s/" % pk))
 
