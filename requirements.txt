@@ -13,6 +13,7 @@ django-js-asset==1.2.2
 django-quill-editor==0.1.16
 django-recaptcha==2.0.6
 easy-thumbnails==2.7
+facebook-sdk==3.1.0
 idna==2.10
 oauthlib==3.1.0
 Pillow==7.2.0
