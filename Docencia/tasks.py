@@ -67,5 +67,5 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
-    api.update_status("%s\n%s\n%s\n#cfbc" % (title, resumen, "https://bartolo.org/noticia/%s/" % pk))
+    api.update_status("%s\n%s...\n%s\n#cfbc" % (title, resumen, "https://bartolo.org/noticia/%s/" % pk))
 
