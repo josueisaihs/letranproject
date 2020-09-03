@@ -96,7 +96,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     email = EmailMessage(
                 "Nueva Noticia · Centro Fray Bartolomé de las Casas", 
                 cuerpo,
-                to=correos,
+                bcc=correos,
     )
     email.content_subtype = "html" 
     email.send(fail_silently=True)
@@ -181,7 +181,7 @@ def enviar_evento_suscriptores(pk, title, resumen):
     email = EmailMessage(
                 "Nuevo Evento · Centro Fray Bartolomé de las Casas", 
                 cuerpo,
-                to=correos,
+                bcc=correos,
     )
     email.content_subtype = "html" 
     email.send(fail_silently=True)
