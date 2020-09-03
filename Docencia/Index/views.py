@@ -125,10 +125,6 @@ def cursos(req):
     navcursos = "active"
     courses = CourseInformation.objects.filter(isService=False).order_by("name")
 
-    paginador = Paginator(courses, cantpaginator)    
-    page_number = req.GET.get('page')
-    page_obj = paginador.get_page(page_number)
-
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)
     areas = Area.objects.all().order_by("name")
