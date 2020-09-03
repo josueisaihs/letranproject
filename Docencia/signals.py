@@ -5,11 +5,31 @@ from django.utils import timezone
 # import locale
 # locale.setlocale(locale.LC_TIME, "es_CU")
 
-from Docencia.tasks import enviar_suscriptores
+from Docencia.tasks import enviar_suscriptores, twitter, facebook
 from Docencia.Index.models import News
 
 @receiver(post_save, sender=News)
 def signal_enviar_email(sender, instance, **kwargs):
     if (kwargs.get('created', False)):
         delta = instance.date - timezone.now()
-        enviar_suscriptores(instance.pk, instance.title, instance.body[:100], instance.date.strftime("%a %d %b %Y %H:%M").title(), schedule=delta)
+        enviar_suscriptores(
+            instance.pk, 
+            instance.title, 
+            instance.body[:100], 
+            instance.date.strftime("%a %d %b %Y %H:%M").title(), 
+            schedule=delta
+        )
+        
+        twitter(
+            instance.pk,
+            instance.title,
+            instance.body[:100],
+            schedule=delta
+        )
+
+        facebook(
+            instance.pk,
+            instance.title,
+            instance.body[:100],
+            schedule=delta
+        )
