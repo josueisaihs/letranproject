@@ -311,3 +311,17 @@ image-box .img-v {
 .image-box:hover img {
   transform: scale(1.1);
 }
+
+.flecha {
+  animation: shimmy 1.5s infinite;
+  animation-direction: alternate;
+}
+
+@keyframes shimmy {
+  0% {
+    transform: translate(0, 0);    
+  }
+  100% {
+    transform: translate(0px, 25px);
+  }
+}
