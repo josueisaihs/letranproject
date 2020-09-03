@@ -5,7 +5,7 @@ from django.utils import timezone
 # import locale
 # locale.setlocale(locale.LC_TIME, "es_CU")
 
-from Docencia.tasks import enviar_suscriptores, twittertweet, facebookposts
+from Docencia.tasks import enviar_suscriptores, twittertweet, facebookposts, enviar_evento_suscriptores
 from Docencia.Index.models import News, Events
 
 @receiver(post_save, sender=News)
