@@ -112,27 +112,10 @@ def enviar_evento_suscriptores(pk, title, resumen):
     cuerpo = """
         <html>
             <head>
-                <style>
-                    body {
-                        width: 75%;
-                        margin: auto;
-                        padding: 5%;
-                    }
-                    h1 {
-                        text-align: center;
-                        color: #660616;
-                    }
-                    .grid-container {
-                        display: grid;
-                        grid-template-columns: auto auto auto;
-                        grid-gap: 10px;
-                        padding: 5%;
-                    }
-                </style>
             </head>
-            <body>        
+            <body style="width: 75%; margin: auto; padding: 5%;">        
                 <div class="grid-container"> 
-                    <div><h1>¡Nuevo Evento!</h1></div>           
+                    <div><h1 style="text-align: center; color: #660616;">¡Nuevo Evento!</h1></div>           
                     <div style="text-align: right;">
                         <a href='https://bartolo.org/?utm_source=correos-suscripcion&utm_medium=correo&utm_campaign=crecimiento'>
                             <img src="https://bartolo.org/static/img/cfbc.png" alt="Centro Fray Bartolomé de las Casas" height="50vh" />
@@ -149,7 +132,7 @@ def enviar_evento_suscriptores(pk, title, resumen):
                 </div>
                 <br>
                 <div style="text-align: center;"><small>Síguenos en Nuestras Redes Sociales</small></div>
-                <div class="grid-container">
+                <div style="display: grid; grid-template-columns: auto auto auto; grid-gap: 10px; padding: 5%;">
                     <div style="text-align: center;"><a href="https://bit.ly/3dD0mGy">Facebook</a></div>
                     <div style="text-align: center;"><a href="https://bit.ly/3fAINsK">Twitter</a></div>
                     <div style="text-align: center;"><a href="https://bit.ly/3ewUEXl">YouTube</a></div>
