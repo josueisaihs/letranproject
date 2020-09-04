@@ -46,21 +46,9 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
         <html>
             <head>
                 <style>
-                    body {{
-                        width: 75%;
-                        margin: auto;
-                        padding: 5%;
-                    }}
-                    h1 {{
-                        text-align: center;
-                        color: #660616;
-                    }}
-                    .grid-container {{
-                        display: grid;
-                        grid-template-columns: auto auto auto;
-                        grid-gap: 10px;
-                        padding: 5%;
-                    }}
+                    body {{width: 75%; margin: auto; padding: 5%;}}
+                    h1 {{text-align: center; color: #660616;}}
+                    .grid-container {{display: grid; grid-template-columns: auto auto auto; grid-gap: 10px; padding: 5%;}}
                 </style>
             </head>
             <body>        
