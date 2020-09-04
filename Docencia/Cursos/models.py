@@ -105,6 +105,27 @@ class Area(models.Model):
         ordering = ('name',)
 # <> Fin Area
 
+class CourseCategory(models.Model):
+    """Model definition for Categoria."""
+
+    name = models.CharField(verbose_name="Nombre", unique=True, max_length=100, default="Curso")
+
+    class Meta:
+        """Meta definition for Categoria."""
+
+        verbose_name = 'Categoría'
+        verbose_name_plural = 'Curso - Categorías'
+
+    def __str__(self):
+        """Unicode representation of Categoria."""
+        return "%s" % self.name
+
+    class Admin(ModelAdmin):
+        list_display = ('name',)
+        search_fields = ('name',)
+        ordering = ('name',)    
+
+
 class CourseSchedule(models.Model):
     """Model definition for CourseSchedule."""
     weekday = models.CharField(max_length=14, choices=(
@@ -156,6 +177,7 @@ class CourseInformation(models.Model):
     yearMax = models.PositiveSmallIntegerField(default=40, verbose_name="Edad Máxima")
     
     isService = models.BooleanField(default=False, verbose_name="¿Es un servicio?")
+    category = models.ForeignKey("CourseCategory", verbose_name="Categoría", on_delete=models.CASCADE, blank=True, null=True)
 
     groups = []    
     subjects = []
@@ -200,10 +222,10 @@ class CourseInformation(models.Model):
         return self.openregistre <= date.today() <= self.deadline
 
     class Admin(ModelAdmin):
-        fields = ["name", "area", "isService", "image", "capacity", "openregistre", "deadline", 
+        fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
                   "description", "yearMin", "yearMax", "haveApplication", 
                   "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts"]
         ordering = ["area", "name", "capacity", "openregistre"]
-        search_fields = ["name", "openregistre", "area__name", "sedes__name"]
-        list_filter = ["sedes", "area", "isService", "haveApplication"]
-        list_display = ["name", "area", "isService", "capacity", "haveApplication", "openregistre", "deadline"]
+        search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
+        list_filter = ["sedes", "area", "category", "isService", "haveApplication"]
+        list_display = ["name", "area", "category", "isService", "capacity", "haveApplication", "openregistre", "deadline"]

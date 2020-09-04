@@ -302,6 +302,7 @@ image-box .img-v {
   max-height: 30vh;
   object-fit: cover;
   transform: scale(1);
+  background-color: #b1b5ec;
 }
 
 .card:hover .image-box img {

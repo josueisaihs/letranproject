@@ -30,41 +30,56 @@
 <div class="py-4 bg-white">
     <div class="row g-4 mt-4 mx-auto container">
         <div class="col-lg-4">
-            <input type="search" class="form-control" value="" placeholder="Buscar" />
-
-            <div class="mt-5">
-                <h6>Área</h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Todos</a>
-                    </li>
-                    
-                    {% for area in areas %}
+            <input id="id_buscar" type="search" class="form-control" value="" placeholder="Buscar" />
+            <div class="row row-cols-md-3 row-cols-lg-1 row-cols-sm-1 row-cols-1">
+                <div class="col mt-5">
+                    <h6>Área</h6>
+                    <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">{{ area.name }}</a>
-                        </li>  
-                    {% endfor %}                        
-                    
-                </ul>
-            </div>
-            
-            <div class="mt-5">
-                <h6>Tipo</h6>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Todos</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#">Curso</a></li>  
-                    <li class="nav-item"><a class="nav-link" href="#">Diplomado</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Bachillerato</a></li>  
-                </ul>
+                        <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                            onclick="filtro(this, '.filtro-area')">
+                            Todos
+                        </a>
+                        </li>
+                        
+                        {% for area in areas %}
+                            <li class="nav-item">
+                                <a class="nav-link filtro-area" role="button" onclick="filtro(this, '.filtro-area')">{{ area.name }}</a>
+                            </li>  
+                        {% endfor %}                        
+                        
+                    </ul>
+                </div>
+                
+                <div class="col mt-5">
+                    <h6>Tipo</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                        <a class="nav-link text-primary filtro-tipo" aria-current="page" role="button" onclick="filtro(this, '.filtro-tipo')">Todos</a>
+                        </li>
+                        {% for category in categories %}
+                            <li class="nav-item"><a class="nav-link filtro-tipo" role="button" onclick="filtro(this, '.filtro-tipo')">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="col mt-5">
+                    <h6>Estado Admisión</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                        <a class="nav-link text-primary filtro-admision" aria-current="page" role="button" onclick="filtro(this, '.filtro-admision')">Todos</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link filtro-admision" role="button" onclick="filtro(this, '.filtro-admision')">Abierta</a></li>  
+                        <li class="nav-item"><a class="nav-link filtro-admision" role="button" onclick="filtro(this, '.filtro-admision')">Cerrada</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-8"> 
             <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">    
                 {% for course in courses %}
-                    <div class="card mb-3" onclick="window.location.href='{% url 'curso' course.pk %}'">
+                    <div class="card mb-3" data-area="{{ course.area.name }}" data-tipo="{{ course.category.name }}" data-course="{{ course.name }}" data-admision="{% if course.isAvailableRegistre %}Abierta{% else %}Cerrada{% endif %}" onclick="window.location.href='{% url 'curso' course.pk %}'">
                         <div class="row g-0">
                             <div class="col-md-4 image-box">
                                 <img loading="lazy" src="{{ course.image|thumbnail_url:'img-640' }}" srcset="
@@ -122,3 +137,6 @@
     </div>
 </div>
 {% endblock contenido %}
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/cursos.js' %}"></script>
+{% endblock %}

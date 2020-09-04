@@ -13,7 +13,7 @@ from django.core.paginator import Paginator
 
 from datetime import datetime
 
-from Docencia.Cursos.models import CourseInformation, Area, Sede
+from Docencia.Cursos.models import CourseInformation, Area, Sede, CourseCategory
 from Docencia.Index.models import HeaderIndex, News, SectionSuscribete, Suscriptor, SectionComments, Comments, Links, Events, Recurso
 
 from .scrapping import getMetaDatos
@@ -124,6 +124,7 @@ def evento(req, pk):
 def cursos(req):
     navcursos = "active"
     courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    categories = CourseCategory.objects.all()
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)
