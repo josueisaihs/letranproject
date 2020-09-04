@@ -89,7 +89,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
                     <div style="text-align: center;"><a href="https://bit.ly/3ewUEXl">YouTube</a></div>
                 </div>       
 
-                <p style="color:#555555; text-align: center;">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
+                <p style="color:#555555; text-align: center;">Centro Fray Bartolomé de las Casas | 1998-2020</p>
             </body>
         </html>
     """.format(title, date, resumen, pk)
