@@ -307,6 +307,32 @@ class Recurso(models.Model):
         search_fields = ('name', 'tipo')
         ordering = ('-uploaddate',)
 
+
+class RedesSociales(models.Model):
+    """Model definition for RedesSociales."""
+
+    consumer_key = models.CharField(verbose_name="Twitter > Consumer Key", max_length=200)
+    consumer_secret = models.CharField(verbose_name="Twitter > Consumer Secret", max_length=200)
+    access_token = models.CharField(verbose_name="Twitter > Access Token", max_length=200)
+    access_token_secret = models.CharField(verbose_name="Twitter > Access Token Secret", max_length=200)
+    active = models.BooleanField(default=False)
+
+    class Meta:
+        """Meta definition for RedesSociales."""
+        unique_together = [('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret')]
+        verbose_name = 'Redes Sociales Tokens'
+        verbose_name_plural = 'Index - Redes Sociales Tokens'
+
+    def __str__(self):
+        """Unicode representation of RedesSociales."""
+        return "%s" % self.consumer_key
+
+    class Admin(ModelAdmin):    
+        list_display = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret')
+        search_fields = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret')
+
+    
+
     
 
 

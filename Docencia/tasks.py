@@ -4,7 +4,7 @@ from django.core.mail import EmailMessage, BadHeaderError, send_mass_mail
 from smtplib import SMTPException
 from django.contrib.auth.models import User
 
-from Docencia.Index.models import Suscriptor
+from Docencia.Index.models import Suscriptor, RedesSociales
 
 from validate_email import validate_email
 import tweepy
@@ -103,12 +103,10 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
 
 @background(schedule=5)
 def twittertweet(pk, title, resumen, seccion="noticia"):
-    consumer_key = "NY7kBN9ptV6IUn49lSlkerN0"
-    consumer_secret = "Gd1SqdmY0tZzD1Rttxusrhm8w5OI2N5pMKHujYCC2dBAT3aRKH"
-    access_token = "1254462238460710915-c5JweuGrookBEQfTFjkuXWLXyI9OoV"
-    access_token_secret = "0YLI7ULFMEJg1DBFc0B9qj0AfYNe81qfz6I4qq86bIoVz"
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
+    tokens = RedesSociales.objects.get(active=True)
+    
+    auth = tweepy.OAuthHandler(tokens.consumer_key, tokens.consumer_secret)
+    auth.set_access_token(tokens.access_token, tokens.access_token_secret)
     api = tweepy.API(auth)
     api.update_status("%s\n%s...\n%s\n#cfbc" % (title, resumen, "https://bartolo.org/%s/%s/?utm_source=twitter-tweet&utm_medium=twitter&utm_campaign=crecimiento" % (seccion, pk)))
 
