@@ -73,11 +73,11 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
                     </div>
                 </div>
                 <div style="border: #e6e2e2 solid 1px; padding: 2% 4%; border-radius: 15px;">
-                    <h3>%s</h3>
-                    <small>%s</small>        
-                    <p>%s...
+                    <h3>{}</h3>
+                    <small>{}</small>        
+                    <p>{}...
                     </p>
-                    <a style="background-color: #660616; color: white; text-decoration: none; border: #660616 solid 1px; padding: 1% 2%; border-radius: 15px;" role="button" href='https://bartolo.org/noticia/%s/?utm_source=correos-suscripcion&utm_medium=correo&utm_campaign=crecimiento'>
+                    <a style="background-color: #660616; color: white; text-decoration: none; border: #660616 solid 1px; padding: 1% 2%; border-radius: 15px;" role="button" href='https://bartolo.org/noticia/{}/?utm_source=correos-suscripcion&utm_medium=correo&utm_campaign=crecimiento'>
                         Continua Leyendo ...
                     </a>
                 </div>
@@ -92,7 +92,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
                 <p style="color:#555555; text-align: center;">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
             </body>
         </html>
-    """ % (title, date, resumen, pk)
+    """.format(title, date, resumen, pk)
     email = EmailMessage(
                 "Nueva Noticia · Centro Fray Bartolomé de las Casas", 
                 cuerpo,
@@ -159,10 +159,10 @@ def enviar_evento_suscriptores(pk, title, resumen):
                     </div>
                 </div>
                 <div style="border: #e6e2e2 solid 1px; padding: 2% 4%; border-radius: 15px;">
-                    <h3>%s</h3>        
-                    <p>%s...
+                    <h3>{}</h3>        
+                    <p>{}...
                     </p>
-                    <a style="background-color: #660616; color: white; text-decoration: none; border: #660616 solid 1px; padding: 1% 2%; border-radius: 15px;" role="button" href='https://bartolo.org/evento/%s/?utm_source=correos-suscripcion&utm_medium=correo&utm_campaign=crecimiento'>
+                    <a style="background-color: #660616; color: white; text-decoration: none; border: #660616 solid 1px; padding: 1% 2%; border-radius: 15px;" role="button" href='https://bartolo.org/evento/{}/?utm_source=correos-suscripcion&utm_medium=correo&utm_campaign=crecimiento'>
                         Más detalles ...
                     </a>
                 </div>
@@ -177,7 +177,7 @@ def enviar_evento_suscriptores(pk, title, resumen):
                 <p style="color:#555555; text-align: center;">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
             </body>
         </html>
-    """ % (title, resumen, pk)
+    """.format(title, resumen, pk)
     email = EmailMessage(
                 "Nuevo Evento · Centro Fray Bartolomé de las Casas", 
                 cuerpo,
