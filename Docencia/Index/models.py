@@ -315,11 +315,13 @@ class RedesSociales(models.Model):
     consumer_secret = models.CharField(verbose_name="Twitter > Consumer Secret", max_length=100)
     access_token = models.CharField(verbose_name="Twitter > Access Token", max_length=100)
     access_token_secret = models.CharField(verbose_name="Twitter > Access Token Secret", max_length=100)
+    facebook_token = models.CharField(verbose_name="Facebook > Token", max_length=100, blank=True, null=True)
+    facebook_id = models.CharField(verbose_name="Facebook > ID", max_length=100, blank=True, null=True)
     active = models.BooleanField(default=False)
 
     class Meta:
         """Meta definition for RedesSociales."""
-        unique_together = ['consumer_key', 'consumer_secret', 'access_token', 'access_token_secret']
+        unique_together = ['consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id']
         verbose_name = 'Redes Sociales Tokens'
         verbose_name_plural = 'Index - Redes Sociales Tokens'
 
@@ -328,8 +330,8 @@ class RedesSociales(models.Model):
         return "%s" % self.consumer_key
 
     class Admin(ModelAdmin):    
-        list_display = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret')
-        search_fields = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret')
+        list_display = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
+        search_fields = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
 
     
 

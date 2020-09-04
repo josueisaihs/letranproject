@@ -95,10 +95,10 @@ def twittertweet(pk, title, resumen, seccion="noticia"):
 
 @background(schedule=5)
 def facebookposts(pk, title, resumen, seccion="noticia"):
-    token = "EAAUmfSh3VGABAFbD30GbVHxQfppNkGbstVZCseaKE0cHhHWmKSkR94VPVjMDZC6wx0i7b33sWu272ACUreJLDNj10li90pTv8OZA06EJDRvvnVkDsObS8226GKv3zdiv2QQe3ZCHihvNA9p0ajaXqa974ouhKZBbpyWGZCCrXtKFTu6H6OcNW1G2T4hmYau7TTW9yn31ZB92wZDZD"
-    graph = facebook.GraphAPI(access_token=token, version="2.12")
+    tokens = RedesSociales.objects.get(active=True)
+    graph = facebook.GraphAPI(access_token=tokens.facebooktoken, version="2.12")
     graph.put_object(
-        parent_object='108435717211122', 
+        parent_object=tokens.facebook_id, 
         connection_name='feed',
         message="%s\n%s...\Leer más" % (title, resumen),
         link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, pk)
