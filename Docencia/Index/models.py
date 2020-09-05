@@ -33,7 +33,7 @@ class Suscriptor(models.Model):
         list_display = ('email', 'ip', 'fecha')
         search_fields = ('email',)
         ordering = ('email',)
-        readonly_fields = ('fecha',)
+        readonly_fields = ('-fecha',)
 
 
 class News(models.Model):
@@ -64,7 +64,7 @@ class News(models.Model):
         fields = ('title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
         list_display = ('title', 'link', 'date',)
         search_fields = ('title',)
-        ordering = ('title', '-date')
+        ordering = ('-date', 'title')
 
 class Post(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
@@ -107,7 +107,7 @@ class EventsDate(models.Model):
     class Admin(ModelAdmin):
         list_display = ('dateEnv', 'dateFin')
         search_fields = ('dateEnv', 'dateFin')
-        ordering = ('dateEnv',)
+        ordering = ('-dateEnv',)
 
 class Events(models.Model):
     """Model definition for Events."""
@@ -141,7 +141,7 @@ class Events(models.Model):
         fields = ('user', 'name', 'date', 'place', 'image', 'file', 'dateEnvs', 'body', 'google_maps')
         list_display = ('name', 'date', 'place', 'image', 'file')
         search_fields = ('name', 'place')
-        ordering = ('date',)
+        ordering = ('-date', 'name', 'place')
 
 
 class Links(models.Model):
