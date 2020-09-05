@@ -147,7 +147,7 @@
                 <ul class="mt-2">
                     {% for new_ in news %}
                         <div class="border-bottom">
-                            <a class="p-1" href="{% url 'noticia' new_.pk %}" rel="canonical">
+                            <a class="p-1" href="{% url 'noticia' new_.slug %}" rel="canonical">
                                 <div><h5 class="text-roboto-slab">{{ new_.title }}</h5>
                                 <p class="text-roboto-slab text-dark">{{ new_.body|safe|truncatechars:50 }}</p>
                                 <small class="text-roboto-slab text-muted">{{ new_.date|date:"D d M Y" }}</small></div>
