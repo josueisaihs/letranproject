@@ -161,9 +161,14 @@ def curso(req, pk):
 # @cache_page(60 * 15)
 def noticias(req):
     navnoticias = "active"
-    paginador = Paginator( News.objects.filter(date__lte=datetime.today()).order_by("-date"), cantpaginator)    
+
+    query = req.GET.get('q', '')
+
+    paginador = Paginator( News.objects.filter(date__lte=datetime.today(), category=query).order_by("-date"), 10)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
+
+    categories = News.objects.order_by('category').values_list('category', flat=True).distinct()
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)

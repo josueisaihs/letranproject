@@ -63,17 +63,26 @@
     </nav>
     <div class="row g-4 mt-4 mx-auto container">
         <div class="col-lg-4">
-            <input id="id_buscar" type="search" class="form-control" value="" placeholder="Buscar" />
             <div class="row row-cols-md-3 row-cols-lg-1 row-cols-sm-1 row-cols-1">
                 <div class="col mt-5">
-                    <h6>Área</h6>
+                    <h6>Categorías</h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                        <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
-                            onclick="filtro(this, '.filtro-area')">
-                            Todos
-                        </a>
+                            <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                                onclick="filtro(this, '.filtro-area')">
+                                Todas
+                            </a>
                         </li>
+                        
+                        {% for category in categories %}
+                            <li class="nav-item">
+                                <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                                    onclick="filtro(this, '.filtro-area')">
+                                    {{ category }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                            
                     </ul>
                 </div>
             </div>
