@@ -34,13 +34,13 @@
 <div class="py-4 bg-white">
     <nav class="mt-2">
         <ul class="pagination pagination-sm justify-content-center">
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q=''">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}&q=''" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
                 </a>
             </li>
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q=''">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}&q=''" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
                 </a>
             </li>              
@@ -50,12 +50,12 @@
                 </a>
             </li>
             <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}&q=''" aria-label="Next">
                     <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
             </li>
             <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}&q=''" aria-label="Next">
                     <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
                 </a>
             </li>          
@@ -73,7 +73,7 @@
                                 text-primary
                             {% endifequal %}
                                 " aria-current="page" role="button" 
-                                href="{% url 'noticias' %}">
+                                href="{% url 'noticias' %}?page=1&q=''">
                                 Todas
                             </a>
                         </li>
@@ -85,7 +85,7 @@
                                     text-primary
                                 {% endifequal %}
                                     " aria-current="page" role="button" 
-                                   href="{% url 'noticias' %}?q={{ category }}">
+                                   href="{% url 'noticias' %}?q=page=1&{{ category }}">
                                     {{ category }}
                                 </a>
                             </li>
