@@ -315,7 +315,7 @@ class RedesSociales(models.Model):
     consumer_secret = models.CharField(verbose_name="Twitter > Consumer Secret", max_length=100)
     access_token = models.CharField(verbose_name="Twitter > Access Token", max_length=100)
     access_token_secret = models.CharField(verbose_name="Twitter > Access Token Secret", max_length=100)
-    facebook_token = models.CharField(verbose_name="Facebook > Token", max_length=100, blank=True, null=True)
+    facebook_token = models.CharField(verbose_name="Facebook > Token", max_length=250, blank=True, null=True)
     facebook_id = models.CharField(verbose_name="Facebook > ID", max_length=100, blank=True, null=True)
     active = models.BooleanField(default=False)
 

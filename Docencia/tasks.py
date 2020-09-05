@@ -96,7 +96,7 @@ def twittertweet(pk, title, resumen, seccion="noticia"):
 @background(schedule=5)
 def facebookposts(pk, title, resumen, seccion="noticia"):
     tokens = RedesSociales.objects.get(active=True)
-    graph = facebook.GraphAPI(access_token=tokens.facebooktoken, version="2.12")
+    graph = facebook.GraphAPI(access_token=tokens.facebook_token, version="8.0")
     graph.put_object(
         parent_object=tokens.facebook_id, 
         connection_name='feed',
