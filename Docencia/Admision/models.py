@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.admin import ModelAdmin
+from django.contrib import admin
 from django.urls import reverse
 
 from Docencia.DatosPersonales.models import StudentPersonalInformation
@@ -22,11 +22,14 @@ class EnrollmentApplication(models.Model):
         """Return absolute url for Curso."""
         return reverse('EnrollmentApplication.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        list_display = ('course', 'name')   
-        fields = list_display 
-# <> fin EnrollmentApplication
 
+@admin.register(EnrollmentApplication)
+class EnrollmentApplicationAdmin(admin.ModelAdmin):
+    '''Admin View for EnrollmentApplication'''
+    list_display = ('course', 'name')
+    search_fields = ('course__name', 'course__sede__name', 'name')
+    ordering = ('name', 'course__name')
+# <> fin EnrollmentApplication
 
 class AskApplication(models.Model):
     app = models.ForeignKey('EnrollmentApplication', verbose_name="Aplicación", 
@@ -65,12 +68,13 @@ class AskApplication(models.Model):
     def get_absolute_url(self):
         """Return absolute url for Curso."""
         return reverse('AskApplication.views.details', args=[str(self.id)])
-    
-    class Admin(ModelAdmin):
-        list_display = ('app', 'askBody', 'askType', 'order', 'textMin', 'textMax')
-        fields = list_display   
-        search_fields = ['app__name', 'app__course__name', 'askBody']
-        list_filter = ["askType",]
+
+@admin.register(AskApplication)
+class AskApplicationAdmin(admin.ModelAdmin):
+    list_display = ('app', 'askBody', 'askType', 'order', 'textMin', 'textMax')
+    fields = list_display   
+    search_fields = ['app__name', 'app__course__name', 'askBody']
+    list_filter = ["askType",]
 
 # <> fin AskApplication
 
@@ -87,15 +91,16 @@ class OptionAskApplication(models.Model):
         unique_together = [('askApp', 'option')]
         verbose_name = 'Aplicación - Opción'
         verbose_name_plural = 'Aplicación - Opciones'
-
-    class Admin(ModelAdmin):
-        list_display = ('askApp', 'option', 'ispositive')
-        fields = list_display
-        search_fields = ['askApp__askBody', 'option', 'askApp__app__course__name']
-
+    
     def get_absolute_url(self):
         """Return absolute url for Curso."""
         return reverse('OptionAskApplication.views.details', args=[str(self.id)])
+
+@admin.register(OptionAskApplication)
+class OptionAskApplicationAdmin(admin.ModelAdmin):
+    list_display = ('askApp', 'option', 'ispositive')
+    fields = list_display
+    search_fields = ['askApp__askBody', 'option', 'askApp__app__course__name']
 # <> OptionAskApplication
 
 
@@ -114,16 +119,17 @@ class AnswerApplication(models.Model):
         unique_together = [('askApp', 'student')]
         verbose_name = 'Aplicación - Respuesta'
         verbose_name_plural = 'Aplicación - Respuestas'
-
-    class Admin(ModelAdmin):
-        list_display = ('askApp', 'student', 'answer', 'appdate')
-        fields = list_display
-        readonly_fields = ('appdate',)
-        search_fields = ['askApp__askBody', 'askApp__app__course__name', 'askApp__app__name', 'student__name', 'student__lastname']
     
     def get_absolute_url(self):
         """Return absolute url for Curso."""
         return reverse('AnswerApplication.views.details', args=[str(self.id)])
+
+@admin.register(AnswerApplication)
+class AnswerApplicationAdmin(admin.ModelAdmin):
+    list_display = ('askApp', 'student', 'answer', 'appdate')
+    fields = list_display
+    readonly_fields = ('appdate',)
+    search_fields = ['askApp__askBody', 'askApp__app__course__name', 'askApp__app__name', 'student__name', 'student__lastname']
 # <> fin AnswerApplication
 
 
@@ -165,10 +171,11 @@ class Application(models.Model):
         """Return absolute url for Application."""
         return reverse('Application.views.details', args=[str(self.id)])
     
-    class Admin(ModelAdmin):
-        list_display = ('course', 'edition', 'student', 'appdate', 'status')
-        fields = list_display
-        list_filter = ["edition", "status"]
-        search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
-        readonly_fields = ('appdate',)
+@admin.register(Application)
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ('course', 'edition', 'student', 'appdate', 'status')
+    fields = list_display
+    list_filter = ["edition", "status"]
+    search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
+    readonly_fields = ('appdate',)
 # <> fin Application

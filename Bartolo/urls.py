@@ -41,6 +41,7 @@ urlpatterns = [
     # Aplicacion
     path('docencia/', include('Docencia.urls')),
     path('', include('Docencia.urls')),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
     
     # Autentificacion
     path("login/", auth_views.LoginView.as_view(), name="login"),

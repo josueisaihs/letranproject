@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.admin import ModelAdmin
+from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
@@ -29,11 +29,12 @@ class Suscriptor(models.Model):
         """Return absolute url for Subscriptor."""
         return reverse('Suscriptor.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):   
-        list_display = ('email', 'ip', 'fecha')
-        search_fields = ('email',)
-        ordering = ('email',)
-        readonly_fields = ('-fecha',)
+@admin.register(Suscriptor)
+class SuscriptorAdmin(admin.ModelAdmin):
+    list_display = ('email', 'ip', 'fecha')
+    search_fields = ('email',)
+    ordering = ('-fecha', 'email',)
+    readonly_fields = ('fecha',)
 
 
 class News(models.Model):
@@ -60,42 +61,18 @@ class News(models.Model):
         """Return absolute url for Noticias."""
         return reverse('News.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):   
-        fields = ('title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
-        list_display = ('title', 'link', 'date',)
-        search_fields = ('title',)
-        ordering = ('-date', 'title')
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    fields = ('title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
+    list_display = ('title', 'link', 'date',)
+    search_fields = ('title',)
+    ordering = ('-date', 'title')
 
-class Post(models.Model):
-    title = models.CharField(max_length=100, unique=True, verbose_name="Título")
-    body = models.TextField(verbose_name="Cuerpo")
-    link = models.URLField(verbose_name="Enlace", blank=True)
-    autor = models.CharField(max_length=200)
-    image = ImageField(upload_to=os.path.join('static', 'image', 'blog'), null=True, blank=True)
-
-    date = models.DateTimeField(verbose_name="Fecha de Publicación")
-
-    class Meta:
-        verbose_name = 'Index - Blog Post'
-        verbose_name_plural = 'Index - Blog Posts'
-
-    def __str__(self):
-        """Unicode representation of Noticias."""
-        return "%s" % self.title
-
-    def get_absolute_url(self):
-        """Return absolute url for Noticias."""
-        return reverse('Post.views.details', args=[str(self.id)])
-
-    class Admin(ModelAdmin):   
-        list_display = ('title', 'autor', 'link', 'date', 'image')
-        search_fields = ('title',)
-        ordering = ('title',)
 
 class EventsDate(models.Model):
     dateEnv = models.DateTimeField(verbose_name="Fecha Inicio")
     dateFin = models.DateTimeField(verbose_name="Fecha Fin", default=now)
-
+    
     class Meta:
         unique_together = [('dateEnv', 'dateFin')]
         verbose_name = 'Index - Evento Fecha'
@@ -104,10 +81,11 @@ class EventsDate(models.Model):
     def __str__(self):
         return "%s - %s" % (self.dateEnv, self.dateFin)
 
-    class Admin(ModelAdmin):
-        list_display = ('dateEnv', 'dateFin')
-        search_fields = ('dateEnv', 'dateFin')
-        ordering = ('-dateEnv',)
+@admin.register(EventsDate)
+class EventsDateAdmin(admin.ModelAdmin):
+    list_display = ('dateEnv', 'dateFin')
+    search_fields = ('dateEnv', 'dateFin')
+    ordering = ('-dateEnv',)
 
 class Events(models.Model):
     """Model definition for Events."""
@@ -137,11 +115,12 @@ class Events(models.Model):
         """Return absolute url for Events."""
         return reverse('Events.views.details', args=[str(self.id)])
     
-    class Admin(ModelAdmin):
-        fields = ('user', 'name', 'date', 'place', 'image', 'file', 'dateEnvs', 'body', 'google_maps')
-        list_display = ('name', 'date', 'place', 'image', 'file')
-        search_fields = ('name', 'place')
-        ordering = ('-date', 'name', 'place')
+@admin.register(Events)
+class EventsAdmin(admin.ModelAdmin):
+    fields = ('user', 'name', 'date', 'place', 'image', 'file', 'dateEnvs', 'body', 'google_maps')
+    list_display = ('name', 'date', 'place', 'image', 'file')
+    search_fields = ('name', 'place')
+    ordering = ('-date', 'name', 'place')
 
 
 class Links(models.Model):
@@ -163,7 +142,8 @@ class Links(models.Model):
         """Return absolute url for Links."""
         return reverse('Links.views.details', args=[srt(self.id)])
 
-    class Admin(ModelAdmin):
+@admin.register(Links)
+class LinksAdmin(admin.ModelAdmin):
         list_display = ('name', 'link')
         search_fields = ('name',)
 
@@ -188,7 +168,8 @@ class Comments(models.Model):
         """Return absolute url for Comments."""
         return reverse('Comments.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
+@admin.register(Comments)
+class CommentsAdmin(admin.ModelAdmin):
         list_display = ('author', 'body', 'image')
         search_fields = ('author',)
 
@@ -225,11 +206,12 @@ class HeaderIndex(models.Model):
         """Return absolute url for SectionSuscribete."""
         return reverse('HeaderIndex.views.details' % self.id)
 
-    class Admin(ModelAdmin):
-        fields = ["name", "background", "icon", "titleLine1", "titleLine2", "titleLine3", "subtitle",
-                  "hadBtn1", "btn1", "linkBtn1", "hadBtn2", "btn2", "linkBtn2", "isVisible"]
-        list_display = ('name',)
-        search_fields = ('name',)
+@admin.register(HeaderIndex)
+class HeaderIndexAdmin(admin.ModelAdmin):
+    fields = ["name", "background", "icon", "titleLine1", "titleLine2", "titleLine3", "subtitle",
+                "hadBtn1", "btn1", "linkBtn1", "hadBtn2", "btn2", "linkBtn2", "isVisible"]
+    list_display = ('name',)
+    search_fields = ('name',)
 
 
 class SectionSuscribete(models.Model):
@@ -254,9 +236,10 @@ class SectionSuscribete(models.Model):
         """Return absolute url for SectionSuscribete."""
         return reverse('SectionSuscribete.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        list_display = ('name', 'background', 'students', 'graduados', 'cursos')
-        search_fields = ('name',)
+@admin.register(SectionSuscribete)
+class SectionSuscribeteAdmin(admin.ModelAdmin):
+    list_display = ('name', 'background', 'students', 'graduados', 'cursos')
+    search_fields = ('name',)
 
 class SectionComments(models.Model):
     """Model definition for SectionComments."""
@@ -276,9 +259,10 @@ class SectionComments(models.Model):
         """Return absolute url for SectionComments."""
         return reverse('SectionComments.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        list_display = ('name',)
-        search_fields = ('name',)
+@admin.register(SectionComments)
+class SectionCommentsAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
 
 class Recurso(models.Model):
     name = models.CharField(max_length=50, verbose_name="Nombre")
@@ -300,17 +284,17 @@ class Recurso(models.Model):
     def __str__(self):
         return "%s" % self.name
 
-    class Admin(ModelAdmin):    
-        list_display = ('name', 'tipo')
-        list_filter = ('tipo',)
-        readonly_fields = ('uploaddate',)
-        search_fields = ('name', 'tipo')
-        ordering = ('-uploaddate',)
+@admin.register(Recurso)
+class RecursoAdmin(admin.ModelAdmin):    
+    list_display = ('name', 'tipo')
+    list_filter = ('tipo',)
+    readonly_fields = ('uploaddate',)
+    search_fields = ('name', 'tipo')
+    ordering = ('-uploaddate',)
 
 
 class RedesSociales(models.Model):
     """Model definition for RedesSociales."""
-
     consumer_key = models.CharField(verbose_name="Twitter > Consumer Key", max_length=100)
     consumer_secret = models.CharField(verbose_name="Twitter > Consumer Secret", max_length=100)
     access_token = models.CharField(verbose_name="Twitter > Access Token", max_length=100)
@@ -329,9 +313,10 @@ class RedesSociales(models.Model):
         """Unicode representation of RedesSociales."""
         return "%s" % self.consumer_key
 
-    class Admin(ModelAdmin):    
-        list_display = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
-        search_fields = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
+@admin.register(RedesSociales)
+class RedesSocialesAdmin(admin.ModelAdmin):    
+    list_display = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
+    search_fields = ('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'facebook_token', 'facebook_id')
 
     
 

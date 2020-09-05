@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.admin import ModelAdmin
+from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
@@ -46,11 +46,12 @@ class Sede(models.Model):
         """Return absolute url for Sede."""
         return reverse('Sede.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        '''Admin View for Edition'''    
-        list_display = ('name', 'isprincipal', 'openhor', 'closehor', 'street', 'city', 'state', 'cellphone', 'email', 'reglamento')
-        search_fields = ('name',)
-        ordering = ('name',)
+@admin.register(Sede)
+class SedeAdmin(admin.ModelAdmin):
+    '''Admin View for Edition'''    
+    list_display = ('name', 'isprincipal', 'openhor', 'closehor', 'street', 'city', 'state', 'cellphone', 'email', 'reglamento')
+    search_fields = ('name',)
+    ordering = ('name',)
 
 
 class Edition(models.Model):
@@ -75,11 +76,12 @@ class Edition(models.Model):
         """Return absolute url for Edition."""
         return reverse('Edition.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        '''Admin View for Edition'''    
-        list_display = ('name', 'dateinit', 'dateend')
-        search_fields = ('name',)
-        ordering = ('name',)
+@admin.register(Edition)
+class EditionAdmin(admin.ModelAdmin):
+    '''Admin View for Edition'''    
+    list_display = ('name', 'dateinit', 'dateend')
+    search_fields = ('name',)
+    ordering = ('name',)
 
 
 class Area(models.Model):
@@ -97,12 +99,13 @@ class Area(models.Model):
     def get_absolute_url(self):
         return reverse('Area.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        '''Admin View for Area'''    
-        list_display = ('name', 'description', 'typeOf')
-        list_filter = ('typeOf',)
-        search_fields = ('name', 'description', 'typeOf')
-        ordering = ('name',)
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
+    '''Admin View for Area'''    
+    list_display = ('name', 'description', 'typeOf')
+    list_filter = ('typeOf',)
+    search_fields = ('name', 'description', 'typeOf')
+    ordering = ('name',)
 # <> Fin Area
 
 class CourseCategory(models.Model):
@@ -120,10 +123,11 @@ class CourseCategory(models.Model):
         """Unicode representation of Categoria."""
         return "%s" % self.name
 
-    class Admin(ModelAdmin):
-        list_display = ('name',)
-        search_fields = ('name',)
-        ordering = ('name',)    
+@admin.register(CourseCategory)
+class CourseCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    ordering = ('name',)    
 
 
 class CourseSchedule(models.Model):
@@ -151,10 +155,11 @@ class CourseSchedule(models.Model):
     def __str__(self):
         return "%s (%s-%s)" % (self.weekday, self.dateIni, self.dateFin)
 
-    class Admin(ModelAdmin):
-        list_display = ('weekday', 'dateIni', 'dateFin')
-        search_fields = ('weekday', 'dateIni', 'dateFin')
-        ordering = ('dateIni',)
+@admin.register(CourseSchedule)
+class CourseScheduleAdmin(admin.ModelAdmin):
+    list_display = ('weekday', 'dateIni', 'dateFin')
+    search_fields = ('weekday', 'dateIni', 'dateFin')
+    ordering = ('dateIni',)
 
 
 class CourseInformation(models.Model):
@@ -221,11 +226,12 @@ class CourseInformation(models.Model):
     def isAvailableRegistre(self):
         return self.openregistre <= date.today() <= self.deadline
 
-    class Admin(ModelAdmin):
-        fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
-                  "description", "yearMin", "yearMax", "haveApplication", 
-                  "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts"]
-        ordering = ["area", "name", "capacity", "openregistre"]
-        search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
-        list_filter = ["sedes", "area", "category", "isService", "haveApplication"]
-        list_display = ["name", "area", "category", "isService", "capacity", "haveApplication", "openregistre", "deadline"]
+@admin.register(CourseInformation)
+class CourseInformationAdmin(admin.ModelAdmin):
+    fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
+                "description", "yearMin", "yearMax", "haveApplication", 
+                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts"]
+    ordering = ["area", "name", "capacity", "openregistre"]
+    search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
+    list_filter = ["sedes", "area", "category", "isService", "haveApplication"]
+    list_display = ["name", "area", "category", "isService", "capacity", "haveApplication", "openregistre", "deadline"]

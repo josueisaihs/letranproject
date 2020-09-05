@@ -1,11 +1,12 @@
 from django.db import models
+from django.contrib.admin import ModelAdmin
 
 # Create your models here.
-from Docencia.DatosPersonales.models import *
-from Docencia.Cursos.models import *
-from Docencia.Admision.models import *
-from Docencia.Index.models import *
-
+import Docencia.DatosPersonales.models as datospersonales
+import Docencia.Cursos.models as cursos
+import Docencia.Admision.models as admision
+import Docencia.Index.models as index
+import Docencia.Plataforma.models as plataforma
 
 class RespuestasError(models.Model):
     """Model definition for RespuestasError."""

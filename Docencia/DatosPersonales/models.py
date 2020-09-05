@@ -1,5 +1,5 @@
 from django.db import models, IntegrityError
-from django.contrib.admin import ModelAdmin
+from django.contrib import admin
 from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
@@ -105,13 +105,14 @@ class StudentPersonalInformation(models.Model):
     def fullname(self):
         return "%s %s" % (self.name, self.lastname)
 
-    class Admin(ModelAdmin):
-        fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "ocupation", "degree", "title"]
-        ordering = ["numberidentification", "lastname", "name"]
-        search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "ocupation", "degree", "title", "user__username"]
-        list_display = fields
+@admin.register(StudentPersonalInformation)
+class StudentPersonalInformationAdmin(admin.ModelAdmin):
+    fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                "email", "nacionality", "ocupation", "degree", "title"]
+    ordering = ["numberidentification", "lastname", "name"]
+    search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                "email", "nacionality", "ocupation", "degree", "title", "user__username"]
+    list_display = fields
 
 
 class TeacherPersonalInformation(models.Model):
@@ -194,13 +195,14 @@ class TeacherPersonalInformation(models.Model):
 
         return user
 
-    class Admin(ModelAdmin):
-        fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
-        ordering = ["numberidentification", "lastname", "name"]
-        search_fields = ["user__username", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                  "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
-        list_display = fields
+@admin.register(TeacherPersonalInformation)
+class TeacherPersonalInformationAdmin(admin.ModelAdmin):
+    fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
+    ordering = ["numberidentification", "lastname", "name"]
+    search_fields = ["user__username", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                "email", "nacionality", "degree", "title", "pasaport", "dateinit", "dateend"]
+    list_display = fields
 
 
 class Colaboradores(models.Model):
@@ -248,9 +250,10 @@ class Colaboradores(models.Model):
         """Return absolute url for Colaboradores."""
         return reverse('Colaboradores.views.details', args=[str(self.id)])
 
-    class Admin(ModelAdmin):
-        fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", 
-                "cellphone", "phone", "email", "dateinit", "dateend", "labor", "curriculum"]
-        ordering = ["numberidentification", "lastname", "name"]
-        search_fields = fields
-        list_display = fields
+@admin.register(Colaboradores)
+class ColaboradoresAdmin(admin.ModelAdmin):
+    fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", 
+            "cellphone", "phone", "email", "dateinit", "dateend", "labor", "curriculum"]
+    ordering = ["numberidentification", "lastname", "name"]
+    search_fields = fields
+    list_display = fields

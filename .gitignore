@@ -2,11 +2,14 @@
 letranproject.code-workspace
 debug.log
 db.sqlite3
+Docencia/__pycache__/
 Docencia/Admision/__pycache__/
 Docencia/Cursos/__pycache__/
 Docencia/DatosPersonales/__pycache__/
 Docencia/migrations/
 Docencia/Index/__pycache__/
+Docencia/Plataforma/__pycache__/
 Bartolo/__pycache__/
 Bartolo/setting.py
 media/
+Docencia/migrations/
