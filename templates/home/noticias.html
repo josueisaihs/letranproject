@@ -68,7 +68,11 @@
                     <h6>Categorías</h6>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                            <a class="nav-link 
+                            {% ifequal query '' %} 
+                                text-primary
+                            {% endifequal %}
+                                " aria-current="page" role="button" 
                                 href="{% url 'noticias' %}">
                                 Todas
                             </a>
@@ -76,7 +80,11 @@
                         
                         {% for category in categories %}
                             <li class="nav-item">
-                                <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                                <a class="nav-link 
+                                {% ifequal query category %} 
+                                    text-primary
+                                {% endifequal %}
+                                    " aria-current="page" role="button" 
                                    href="{% url 'noticias' %}?q={{ category }}">
                                     {{ category }}
                                 </a>
