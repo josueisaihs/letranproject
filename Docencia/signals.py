@@ -13,7 +13,7 @@ def signal_enviar_email(sender, instance, **kwargs):
     if (kwargs.get('created', False)):
         delta = instance.date - timezone.now()
         enviar_suscriptores(
-            instance.pk, 
+            instance.slug, 
             instance.title, 
             instance.bodysend(), 
             instance.date.strftime("%a %d %b %Y %H:%M").title(), 
@@ -21,14 +21,14 @@ def signal_enviar_email(sender, instance, **kwargs):
         )
 
         twittertweet(
-            instance.pk,
+            instance.slug,
             instance.title,
             instance.bodysend(),
             schedule=delta
         )
 
         facebookposts(
-            instance.pk,
+            instance.slug,
             instance.title,
             instance.bodysend(),
             schedule=delta

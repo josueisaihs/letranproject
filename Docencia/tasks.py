@@ -38,7 +38,7 @@ def verificar_email(_email_):
         logger.exception("Error: TimeoutError %s" % _email_)
 
 @background(schedule=5)
-def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
+def enviar_suscriptores(slug, title:str, resumen:str, date:str):
     correos = []
     for suscriptor in Suscriptor.objects.all().only('email'):
         correos.append(suscriptor.email)
@@ -75,7 +75,7 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
                 <p style="color:#555555; text-align: center;">Centro Fray Bartolomé de las Casas | 1998-2020</p>
             </body>
         </html>
-    """.format(title, date, resumen, pk)
+    """.format(title, date, resumen, slug)
     email = EmailMessage(
                 "Nueva Noticia · Centro Fray Bartolomé de las Casas", 
                 cuerpo,
@@ -85,23 +85,23 @@ def enviar_suscriptores(pk:int, title:str, resumen:str, date:str):
     email.send(fail_silently=True)
 
 @background(schedule=5)
-def twittertweet(pk, title, resumen, seccion="noticia"):
+def twittertweet(slug, title, resumen, seccion="noticia"):
     tokens = RedesSociales.objects.get(active=True)
     
     auth = tweepy.OAuthHandler(tokens.consumer_key, tokens.consumer_secret)
     auth.set_access_token(tokens.access_token, tokens.access_token_secret)
     api = tweepy.API(auth)
-    api.update_status("%s\n%s...\n%s\n#cfbc" % (title, resumen, "https://bartolo.org/%s/%s/?utm_source=twitter-tweet&utm_medium=twitter&utm_campaign=crecimiento" % (seccion, pk)))
+    api.update_status("%s\n%s...\n%s\n#cfbc" % (title, resumen, "https://bartolo.org/%s/%s/?utm_source=twitter-tweet&utm_medium=twitter&utm_campaign=crecimiento" % (seccion, slug)))
 
 @background(schedule=5)
-def facebookposts(pk, title, resumen, seccion="noticia"):
+def facebookposts(slug, title, resumen, seccion="noticia"):
     tokens = RedesSociales.objects.get(active=True)
     graph = facebook.GraphAPI(access_token=tokens.facebook_token, version="2.8")
     graph.put_object(
         parent_object=tokens.facebook_id, 
         connection_name='feed',
         message="%s\n%s...\nLeer más" % (title, resumen),
-        link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, pk)
+        link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, slug)
     )
 
 @background(schedule=5)
