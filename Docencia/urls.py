@@ -16,12 +16,12 @@ urlpatterns = [
     path("api/previewlink/", views.index.previewLink, name="api_index_previewlink"),
     path("recursos/", views.index.recursos, name="recursos"),
 
-    path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma"),
+    # path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma"),
     path("plataforma/dashboard/clase/<int:pk>/", views.plataforma.clase, name="plataforma_clase"),
 
-    path('admision/dashboard/', views.admision.dashboard, name='admision_dashboard'),
-    path('admision/registro/', views.admision.registro, name='admision_registro'),
-    path('admision/success/', views.admision.registrocompletado, name='admision_registro_ok'),
+    path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
+    path('admision/registro/', views.datospersonales.registro, name='admision_registro'),
+    path('admision/success/', views.datospersonales.registrocompletado, name='admision_registro_ok'),
     path('admision/seleccioncurso/', views.admision.selectcourse, name='admision_seleccion_curso'),
     path('admision/seleccioncurso/<int:coursePk>/application/', views.admision.application, name='admision_applicacion'),
     path('api/admision/application/add/', views.admision.applicationAjax, name='api_admision_aplicacion'),

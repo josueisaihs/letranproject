@@ -21,12 +21,15 @@ class EnrollmentApplication(models.Model):
     def get_absolute_url(self):
         """Return absolute url for Curso."""
         return reverse('EnrollmentApplication.views.details', args=[str(self.id)])
-@admin.register(EnrollmentApplication)
-class Admin(ModelAdmin):
-    list_display = ('course', 'name')   
-    fields = list_display 
-# <> fin EnrollmentApplication
 
+
+@admin.register(EnrollmentApplication)
+class EnrollmentApplicationAdmin(admin.ModelAdmin):
+    '''Admin View for EnrollmentApplication'''
+    list_display = ('course', 'name')
+    search_fields = ('course__name', 'course__sede__name', 'name')
+    ordering = ('name', 'course__name')
+# <> fin EnrollmentApplication
 
 class AskApplication(models.Model):
     app = models.ForeignKey('EnrollmentApplication', verbose_name="Aplicación", 
@@ -66,7 +69,7 @@ class AskApplication(models.Model):
         """Return absolute url for Curso."""
         return reverse('AskApplication.views.details', args=[str(self.id)])
     
-    class Admin(ModelAdmin):
+    class Admin(admin.ModelAdmin):
         list_display = ('app', 'askBody', 'askType', 'order', 'textMin', 'textMax')
         fields = list_display   
         search_fields = ['app__name', 'app__course__name', 'askBody']
@@ -88,7 +91,7 @@ class OptionAskApplication(models.Model):
         verbose_name = 'Aplicación - Opción'
         verbose_name_plural = 'Aplicación - Opciones'
 
-    class Admin(ModelAdmin):
+    class Admin(admin.ModelAdmin):
         list_display = ('askApp', 'option', 'ispositive')
         fields = list_display
         search_fields = ['askApp__askBody', 'option', 'askApp__app__course__name']
@@ -115,7 +118,7 @@ class AnswerApplication(models.Model):
         verbose_name = 'Aplicación - Respuesta'
         verbose_name_plural = 'Aplicación - Respuestas'
 
-    class Admin(ModelAdmin):
+    class Admin(admin.ModelAdmin):
         list_display = ('askApp', 'student', 'answer', 'appdate')
         fields = list_display
         readonly_fields = ('appdate',)
@@ -165,7 +168,7 @@ class Application(models.Model):
         """Return absolute url for Application."""
         return reverse('Application.views.details', args=[str(self.id)])
     
-    class Admin(ModelAdmin):
+    class Admin(admin.ModelAdmin):
         list_display = ('course', 'edition', 'student', 'appdate', 'status')
         fields = list_display
         list_filter = ["edition", "status"]
