@@ -58,3 +58,6 @@ def pag_403_permission_denied(request, exception):
 
     respuesta = RespuestasError.objects.order_by('?').first()
     return render(request, 'home/403.html', locals())
+
+def politicaprivacidad(req):
+    return render(req, "home/politica.html", locals())

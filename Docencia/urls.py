@@ -15,6 +15,7 @@ urlpatterns = [
     path("noticia/<int:pk>/", views.index.noticia, name="noticia"),
     path("api/previewlink/", views.index.previewLink, name="api_index_previewlink"),
     path("recursos/", views.index.recursos, name="recursos"),
+    path("politicaprivacidad/", views.politicaprivacidad, name="politicaprivacidad"),
 
     # path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma"),
     path("plataforma/dashboard/clase/<int:pk>/", views.plataforma.clase, name="plataforma_clase"),
