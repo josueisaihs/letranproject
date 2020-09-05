@@ -39,6 +39,12 @@ class SuscriptorAdmin(admin.ModelAdmin):
 
 
 class News(models.Model):
+    category = models.CharField(max_length=100, verbose_name="Categría", choices=(
+        ("Iglesia", "Iglesia"),
+        ("Educación", "Educación"),
+        ("Nacionales", "Nacionales"),
+        ("Mundo", "Mundo"),
+    ), default="Iglesia")
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
     # body = models.TextField(verbose_name="Cuerpo")
     body = CKEditor5Field('Cuerpo', config_name='default')
