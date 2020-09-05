@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
+from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from django.utils.timezone import now
@@ -39,7 +40,8 @@ class SuscriptorAdmin(admin.ModelAdmin):
 
 class News(models.Model):
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
-    body = models.TextField(verbose_name="Cuerpo")
+    # body = models.TextField(verbose_name="Cuerpo")
+    body = CKEditor5Field('Cuerpo', config_name='default')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
 
