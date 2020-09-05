@@ -74,10 +74,11 @@ class News(models.Model):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
-    list_display = ('title', 'link', 'date',)
+    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
+    list_display = ('category', 'title', 'link', 'date',)
     search_fields = ('title',)
     ordering = ('-date', 'title')
+    list_filter = ('category',)
 
 
 class EventsDate(models.Model):
@@ -155,8 +156,8 @@ class Links(models.Model):
 
 @admin.register(Links)
 class LinksAdmin(admin.ModelAdmin):
-        list_display = ('name', 'link')
-        search_fields = ('name',)
+    list_display = ('name', 'link')
+    search_fields = ('name',)
 
 
 class Comments(models.Model):
@@ -181,8 +182,8 @@ class Comments(models.Model):
 
 @admin.register(Comments)
 class CommentsAdmin(admin.ModelAdmin):
-        list_display = ('author', 'body', 'image')
-        search_fields = ('author',)
+    list_display = ('author', 'body', 'image')
+    search_fields = ('author',)
 
 class HeaderIndex(models.Model):
     """Model definition for HeaderIndex."""
