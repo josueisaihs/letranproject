@@ -326,3 +326,17 @@ image-box .img-v {
     transform: translate(0px, 25px);
   }
 }
+
+blockquote {
+  color: #555;
+  font-style: italic;
+  padding: 2.5% 5%;
+  background-color: #e4e4e4;
+  border-radius: 10px;
+}
+
+blockquote::before{
+  content: open-quote;
+  font-size: xx-large;
+  font-family: Roboto Slab;
+}
