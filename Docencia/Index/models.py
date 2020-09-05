@@ -44,6 +44,8 @@ class News(models.Model):
         ("Educación", "Educación"),
         ("Nacionales", "Nacionales"),
         ("Mundo", "Mundo"),
+        ("Tecnología", "Tecnología"),
+        ("CFBC", "CFBC")
     ), default="Iglesia")
     title = models.CharField(max_length=100, unique=True, verbose_name="Título")
     # body = models.TextField(verbose_name="Cuerpo")
