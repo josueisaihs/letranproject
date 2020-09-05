@@ -163,8 +163,7 @@ def noticias(req):
     navnoticias = "active"
 
     query = req.GET.get('q', '')
-
-    paginador = Paginator( News.objects.filter(date__lte=datetime.today(), category=query).order_by("-date"), 10)    
+    paginador = Paginator( News.objects.filter(date__lte=datetime.today(), category__icontains=query).order_by("-date"), 10)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
 
