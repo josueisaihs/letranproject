@@ -68,6 +68,9 @@ class News(models.Model):
     def get_absolute_url(self):
         """Return absolute url for Noticias."""
         return reverse('News.views.details', args=[str(self.id)])
+    
+    def bodysend(self, m=100):
+        return self.body[:m].replace("<p>", "").replace("</p>", "\n").replace("")
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):

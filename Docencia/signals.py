@@ -15,7 +15,7 @@ def signal_enviar_email(sender, instance, **kwargs):
         enviar_suscriptores(
             instance.pk, 
             instance.title, 
-            instance.body[:100], 
+            instance.bodysend(), 
             instance.date.strftime("%a %d %b %Y %H:%M").title(), 
             schedule=delta
         )
@@ -23,14 +23,14 @@ def signal_enviar_email(sender, instance, **kwargs):
         twittertweet(
             instance.pk,
             instance.title,
-            instance.body[:100],
+            instance.bodysend(),
             schedule=delta
         )
 
         facebookposts(
             instance.pk,
             instance.title,
-            instance.body[:100],
+            instance.bodysend(),
             schedule=delta
         )
 
