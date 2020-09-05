@@ -85,7 +85,7 @@
                                     text-primary
                                 {% endifequal %}
                                     " aria-current="page" role="button" 
-                                   href="{% url 'noticias' %}?q=page=1&{{ category }}">
+                                   href="{% url 'noticias' %}?page=1&q={{ category }}">
                                     {{ category }}
                                 </a>
                             </li>
