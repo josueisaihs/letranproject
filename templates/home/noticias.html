@@ -82,7 +82,7 @@
                     <div class="card-body">
                     <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
                     <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }} · {{ new.category }}</small>
-                    <p class="card-text">{{ new.body|truncatechars:100 }}</p>
+                    <p class="card-text">{{ new.body|safe|truncatechars:100 }}</p>
                     </div>
                 </div>
             </div>
