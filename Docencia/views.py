@@ -60,4 +60,15 @@ def pag_403_permission_denied(request, exception):
     return render(request, 'home/403.html', locals())
 
 def politicaprivacidad(req):
+     # Requeridos en todo el Index
+    header = index.HeaderIndex.objects.get(isVisible=True)
+
+    areas = index.Area.objects.all().order_by("name")
+    courses = index.CourseInformation.objects.filter(isService=False).order_by("name")
+    services = index.CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = index.Sede.objects.get(isprincipal=True)
+
+    enl = index.Links.objects.filter(section="enl").order_by("name")
+    pre = index.Links.objects.filter(section="opr").order_by("name") 
     return render(req, "home/politica.html", locals())
