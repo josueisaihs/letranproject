@@ -100,7 +100,7 @@ def facebookposts(pk, title, resumen, seccion="noticia"):
     graph.put_object(
         parent_object=tokens.facebook_id, 
         connection_name='feed',
-        message="%s\n%s...\Leer más" % (title, resumen),
+        message="%s\n%s...\nLeer más" % (title, resumen),
         link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, pk)
     )
 
