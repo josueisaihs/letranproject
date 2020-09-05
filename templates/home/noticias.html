@@ -61,32 +61,45 @@
             </li>          
         </ul>
     </nav>
-
-    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 row-cols-lg-4 g-1 g-md-2 p-1">
-        {% for new in page_obj %}
-            <div class="col">
-                <div class="card" onclick="window.location.href='{% url 'noticia' new.pk %}'">
-                    <div class="image-box">
-                        <img class="card-img-top img-v" loading="lazy"
-                        src="{{ new.image.url }}"
-                        srcset="
-                        {{ new.image|thumbnail_url:'img-200' }} 320w,
-                        {{ new.image|thumbnail_url:'img-400' }} 400w,
-                        {{ new.image|thumbnail_url:'img-600' }} 600w,
-                        {{ new.image|thumbnail_url:'img-640' }} 800w,
-                        {{ new.image|thumbnail_url:'img-1100' }} 2000w
-                        "
-                        alt="Noticia {{ new.title }}" />
-                    </div>
-                    
-                    <div class="card-body">
-                    <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
-                    <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }} · {{ new.category }}</small>
-                    <p class="card-text">{{ new.body|safe|truncatechars:100 }}</p>
-                    </div>
+    <div class="row g-4 mt-4 mx-auto container">
+        <div class="col-lg-4">
+            <input id="id_buscar" type="search" class="form-control" value="" placeholder="Buscar" />
+            <div class="row row-cols-md-3 row-cols-lg-1 row-cols-sm-1 row-cols-1">
+                <div class="col mt-5">
+                    <h6>Área</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                        <a class="nav-link text-primary filtro-area" aria-current="page" role="button" 
+                            onclick="filtro(this, '.filtro-area')">
+                            Todos
+                        </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        {% endfor %}                
+        </div>
+        <div class="col-lg-8"> 
+            <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">    
+                {% for new in page_obj %}
+                    <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.pk %}'">
+                        <div class="row g-0">
+                            <div class="col-md-4 image-box">
+                                <img loading="lazy" src="{{ new.image|thumbnail_url:'img-640' }}" srcset="
+                                {{ new.image|thumbnail_url:'img-640' }} 800w,
+                                {{ new.image|thumbnail_url:'img-1100' }} 2000w" class="img-h-enlace">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
+                                    <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }} · {{ new.category }}</small>
+                                    <p class="card-text">{{ new.body|safe|truncatechars:100 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}                
+            </div>
+        </div>
     </div>
 </div>
 {% endblock contenido %}
