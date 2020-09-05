@@ -5,6 +5,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from django.utils.timezone import now
+from django.utils.text import slugify
 
 from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
@@ -37,6 +38,44 @@ class SuscriptorAdmin(admin.ModelAdmin):
     ordering = ('-fecha', 'email',)
     readonly_fields = ('fecha',)
 
+class Release(models.Model):
+    """Model definition for Release."""
+    title = models.CharField(max_length=100, verbose_name="Título")
+    slug = models.SlugField(max_length=140, unique=True)
+    body = CKEditor5Field('Cuerpo', config_name='default')
+    date = models.DateTimeField(verbose_name="Fecha de Publicación")
+
+    class Meta:
+        """Meta definition for Release."""
+        unique_together = [('title', 'slug')]
+        verbose_name = 'Comunicado'
+        verbose_name_plural = 'Index - Comunicados'
+    
+    def _get_unique_slug(self):
+        slug = slugify(self.title)
+        unique_slug = slug
+        num = 1
+        while Release.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        """Unicode representation of Release."""
+        return "%s" % self.title
+@admin.register(Release)
+class ReleaseAdmin(admin.ModelAdmin):
+    '''Admin View for Release'''
+    list_display = ('title', 'date', 'slug')
+    readonly_fields = ('slug',)
+    search_fields = ('title',)
+    ordering = ('-date',)
+
 
 class News(models.Model):
     category = models.CharField(max_length=100, verbose_name="Categría", choices=(
@@ -47,8 +86,8 @@ class News(models.Model):
         ("Tecnología", "Tecnología"),
         ("CFBC", "CFBC")
     ), default="Iglesia")
-    title = models.CharField(max_length=100, unique=True, verbose_name="Título")
-    # body = models.TextField(verbose_name="Cuerpo")
+    title = models.CharField(max_length=100, verbose_name="Título")
+    slug = models.SlugField(max_length=140, default="")
     body = CKEditor5Field('Cuerpo', config_name='default')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
@@ -60,12 +99,27 @@ class News(models.Model):
     image_3 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 3")
 
     class Meta:
+        unique_together = [('title', 'slug')]
         verbose_name = 'Index - Noticia'
         verbose_name_plural = 'Index - Noticias'
 
     def __str__(self):
         """Unicode representation of Noticias."""
         return "%s" % self.title
+
+    def _get_unique_slug(self):
+        slug = slugify(self.title)
+        unique_slug = slug
+        num = 1
+        while News.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         """Return absolute url for Noticias."""
@@ -76,11 +130,12 @@ class News(models.Model):
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body')
+    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body', 'slug')
     list_display = ('category', 'title', 'link', 'date',)
     search_fields = ('title',)
     ordering = ('-date', 'title')
     list_filter = ('category',)
+    readonly_fields = ('slug',)
 
 
 class EventsDate(models.Model):

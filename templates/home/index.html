@@ -91,7 +91,7 @@
                     {% if forloop.first %}
                         <div class="col h-100">
                             <div class="card shadow" 
-                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" onclick="window.location.href='{% url 'noticia' new.pk %}'">
+                            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" onclick="window.location.href='{% url 'noticia' new.slug %}'">
                                 <div class="image-box">
                                     <img class="card-img-top img-v"  loading="lazy"
                                     src="{{ new.image.url }}"
@@ -119,7 +119,7 @@
                     <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">                        
                         {% for new in news %}                            
                             {% ifnotequal forloop.counter 1 %}
-                                <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.pk %}'">
+                                <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.slug %}'">
                                     <div class="row g-0">
                                         <div class="col-md-4 image-box">
                                             <img loading="lazy" src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h-enlace">

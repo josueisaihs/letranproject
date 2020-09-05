@@ -183,10 +183,10 @@ def noticias(req):
     return render(req, TEMPLETE_PATH % "noticias", locals())
 
 # @cache_page(60 * 15)
-def noticia(req, pk):
+def noticia(req, slug):
     navnoticias = "active"
-    new = News.objects.get(pk=pk)
-    news = News.objects.filter(date__lte=datetime.today()).exclude(pk=pk).order_by('-date')[:6]
+    new = News.objects.get(slug=slug)
+    news = News.objects.filter(date__lte=datetime.today()).exclude(slug=slug).order_by('-date')[:6]
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)
