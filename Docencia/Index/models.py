@@ -70,7 +70,7 @@ class News(models.Model):
         return reverse('News.views.details', args=[str(self.id)])
     
     def bodysend(self, m=100):
-        return self.body[:m].replace("<p>", "").replace("</p>", "\n").replace("")
+        return self.body[:m].replace("<p>", "").replace("</p>", "\n")
 
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
