@@ -83,6 +83,8 @@ class ReleaseAdmin(admin.ModelAdmin):
 class News(models.Model):
     category = models.CharField(max_length=100, verbose_name="Categría", choices=(
         ("Iglesia", "Iglesia"),
+        ("Orden Predicadores", "Orden Predicadores"),
+        ("Vicariato 'Pedro de Córdoba'", "Vicariato 'Pedro de Córdoba'"),
         ("Educación", "Educación"),
         ("Nacionales", "Nacionales"),
         ("Mundo", "Mundo"),
