@@ -82,26 +82,16 @@
 <!-- Comunicado -->
     {% if comunicado %}
         <div id="comunicado" class="py-4" style="background-color: #61D7DE;">
-            <a href="{% url 'comunicado' comunicado.slug %}">
-                <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
-                data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                    Comunicado
-                </p>
-                <div class="container text-center">
-                        <h5>Comunicado Especial</h5>
-                    <!-- <div class="card bg-dark mx-auto">
-                        <div class="card-header text-center"><h5 class="card-title text-warning">Card title</h5></div>
-                        <div class="card-body">
-                            <p class="card-text text-white">Some quick example text to build on the card 
-                                title and make up the bulk of the card's content.
-                            </p>
-                        </div>
-                        <div class="card-footer text-white text-center">
-                            Sab. 25 Sep 2020 09:58
-                        </div>
-                    </div> -->
-                </div>
-            </a>
+            <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
+            data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                Comunicado
+            </p>
+            <div class="container text-center">
+                <h5> {{ comunicado.title }}</h5>
+                <p>{{ comunicado.body|safe|truncatechars:100 }}</p>
+                <a role="button" href="{% url 'comunicado' comunicado.slug %}" class="btn btn-primary">Leer más</a><br>
+                <span><small>{{ comunicado.date|date:"D d M Y h:i" }}</small></span>
+            </div>
         </div>
     {% endif %}
 <!-- Fin Comunicado -->
