@@ -35,7 +35,7 @@
 
         {% for ask in askApplication %}
             <div id="id_ask_{{ ask.pk }}">
-                <div class="container card mb-4" data-aos="zoom-in-right" data-aos-delay="500"> 
+                <div class="container card mb-4"> 
                     <div class="card-body">
                         <h5>{{ ask.order }} - {{ ask.askBody }}</h5>
                         <div class="form-group">
@@ -112,7 +112,7 @@
             </div>
         {% endfor %}
 
-        <p id="id_aceptar_txt" class="mt-4" data-aos="fade-up" data-aos-delay="700">
+        <p id="id_aceptar_txt" class="mt-4">
             Al seleccionar <b>Enviar</b> a continuación, 
             acepto 
             <a href="{% if curso.reglamento %}{{ curso.reglamento.url }}{% else %}#{% endif %}" target="_blank">Reglamento del Curso</a>.
