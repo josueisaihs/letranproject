@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 from datetime import datetime
 
 from Docencia.Cursos.models import CourseInformation, Area, Sede, CourseCategory
-from Docencia.Index.models import HeaderIndex, News, SectionSuscribete, Suscriptor, SectionComments, Comments, Links, Events, Recurso
+from Docencia.Index.models import HeaderIndex, News, SectionSuscribete, Suscriptor, SectionComments, Comments, Links, Events, Recurso, Release
 
 from .scrapping import getMetaDatos
 
@@ -35,6 +35,8 @@ def index(request):
     seccion_coment = SectionComments.objects.all().first()
 
     comments = Comments.objects.all().order_by("?")[:2]
+
+    comunicado = Release.objects.order_by('-date').first()
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)
@@ -219,3 +221,20 @@ def recursos(req):
     pre = Links.objects.filter(section="opr").order_by("name") 
 
     return render(req, TEMPLETE_PATH % "recursos", locals())
+
+def release(req, slug):
+    comunicado = Release.objects.get(slug=slug)
+    comunicados = Release.objects.all().exclude(slug=slug).order_by('-date')[:6]
+
+    # Requeridos en todo el Index
+    header = HeaderIndex.objects.get(isVisible=True)
+    areas = Area.objects.all().order_by("name")
+    courses = CourseInformation.objects.filter(isService=False).order_by("name")
+    services = CourseInformation.objects.filter(isService=True).order_by("name")
+    
+    sede = Sede.objects.get(isprincipal=True)
+
+    enl = Links.objects.filter(section="enl").order_by("name")
+    pre = Links.objects.filter(section="opr").order_by("name") 
+
+    return render(req, TEMPLETE_PATH % "comunicado", locals())

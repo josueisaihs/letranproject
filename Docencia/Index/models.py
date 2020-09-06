@@ -50,6 +50,9 @@ class Release(models.Model):
         unique_together = [('title', 'slug')]
         verbose_name = 'Comunicado'
         verbose_name_plural = 'Index - Comunicados'
+
+    def bodysend(self, m=100):
+        return self.body[:m].replace("<p>", "").replace("</p>", "\n")
     
     def _get_unique_slug(self):
         slug = slugify(self.title)

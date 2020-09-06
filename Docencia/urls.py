@@ -13,6 +13,7 @@ urlpatterns = [
     path("curso/<int:pk>/", views.index.curso, name="curso"),
     path("noticias/", views.index.noticias, name="noticias"),
     path("noticia/<slug:slug>/", views.index.noticia, name="noticia"),
+    path("comunicado/<slug:slug>/", views.index.release, name="comunicado"),
     path("api/previewlink/", views.index.previewLink, name="api_index_previewlink"),
     path("recursos/", views.index.recursos, name="recursos"),
     path("politicaprivacidad/", views.politicaprivacidad, name="politicaprivacidad"),

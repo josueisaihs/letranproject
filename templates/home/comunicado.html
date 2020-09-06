@@ -1,0 +1,77 @@
+{% extends './base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block titulo %}{{ comunicado.title }}{% endblock titulo %}
+
+{% block metatitle %}{{ comunicado.title }}{% endblock %}
+{% block metadescription %}{{ comunicado.bodysend|truncatechars:"50"}}{% endblock %}
+{% block metaurl %}{% url 'comunicado' comunicado.slug %}{% endblock metaurl %}
+{% block metadescripcion %}Página de Comunicado:{{ comunicado.title }}. {{ comunicado.bodysend }}{% endblock metadescripcion %}
+
+{% block contenido %}
+<header class="header-min" id="inicio">
+    {% include './menu.html' %}
+
+    <div class="d-lg-flex ml-md-5 ml-sm-2 ml-2 text-white" style="padding-top: 10vh;">
+        <h1
+            data-aos="fade-right"
+            data-aos-duration="700"
+            data-aos-delay="350"
+            class="text-roboto-slab font-weight-bold text-uppercase display-2">
+            Comunicado
+        </h1>
+        <nav class="align-self-center ml-auto" aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent">
+                <li class="breadcrumb-item"><a class="link-light link-primary-hover" href="{% url 'index' %}">Inicio</a></li>
+                <li class="breadcrumb-item active text-secondary" aria-current="page">Comunicado</li>
+            </ol>
+        </nav>
+    </div>
+</header>
+
+<div class="p-4 bg-white">
+    <div class="row mt-4">
+        <div class="col-lg-8 shadow">            
+            <h2 class="display-3 text-roboto-slab">{{ comunicado.title }}</h2>                
+            
+            <div class="pt-4 mb-2"> 
+                <div>{{ comunicado.body|safe|linebreaksbr }}</div>
+                <br>
+                <div class="sharethis-inline-share-buttons"></div>
+            </div>       
+        </div>
+
+        <div class="col-lg-4 p-3">            
+            {% if comunicados %}
+                <div class="mb-3 mt-5 mt-sm-5 mt-md-0">
+                    <h5 class="text-roboto-slab">Te puede interesar esto</h5>
+                    <ul class="mt-2">
+                        {% for comunicado_ in comunicados %}
+                            <div class="border-bottom">
+                                <a class="p-1" href="{% url 'curso' course.pk %}" rel="canonical">
+                                    <div><h5 class="text-roboto-slab">{{ comunicado.title }}</h5>
+                                    <p class="text-roboto-slab text-dark">{{ comunicado.bodysend|truncatechars:50 }}</p>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+                
+            
+            
+            <!-- ShareThis BEGIN -->
+            <div class="mt-3 sharethis-inline-follow-buttons"></div>
+            <!-- ShareThis END -->
+        </div>
+    </div>
+{% endblock %}
+{% block headerScripts%}
+<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
+<script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
+{% endblock headerScripts%}
+
+{% block importScripts %}
+{% endblock importScripts %}
+    
