@@ -41,11 +41,11 @@
                 {% endfor %}                   
             {% endif %}                
 
-            <div class="container card" data-aos="zoom-in-right" data-aos-delay="1000">                
+            <div class="container card">                
                 <div class="card-body">
-                    <h5 class="card-title mb-4" data-aos="zoom-down" data-aos-delay="1200">Datos Personales</h5>
+                    <h5 class="card-title mb-4">Datos Personales</h5>
                     <div class="row">
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.name }}
                             <label for="inputNombre">Nombre</label>
                             <div class="invalid-feedback">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.lastname }}
                             <label for="inputSegApellido">Apellidos</label>
                             <div class="invalid-feedback">
@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.nacionality }}
                             <label for="inputNacionalidad">Nacionalidad</label>
                             <div class="invalid-feedback">
@@ -69,7 +69,7 @@
                             </div>
                         </div> 
 
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.numberidentification }}
                             <label for="inputCI">Carnet de Identidad</label>
                             <div class="invalid-feedback">
@@ -77,18 +77,18 @@
                             </div>
                         </div>
 
-                        <div class="col" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col">
                             {{ form.gender }}
                         </div>                        
                     </div>                    
                 </div>
             </div>
 
-            <div class="container card mt-4" data-aos="zoom-in-left" data-aos-delay="1000">                
+            <div class="container card mt-4">                
                 <div class="card-body">
-                    <h5 class="card-title mb-4" data-aos="zoom-down" data-aos-delay="1200">Datos de Contacto</h5>
+                    <h5 class="card-title mb-4">Datos de Contacto</h5>
                     <div class="row">
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.street }}
                             <label for="inputCalle">Calle</label>
                             <div class="invalid-feedback">
@@ -96,7 +96,7 @@
                             </div>
                         </div> 
 
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.city }}
                             <label for="inputMunicipio">Municipio</label>
                             <div class="invalid-feedback">
@@ -104,7 +104,7 @@
                             </div>
                         </div> 
                         
-                        <div class="col-lg-12 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-12 form-label-group">
                             {{ form.state }}
                             <label for="inputMunicipio">Provincia</label>
                             <div class="invalid-feedback">
@@ -112,12 +112,12 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.cellphone }}
                             <label for="inputMovil">Móvil</label>
                         </div> 
 
-                        <div class="col-lg-6 form-label-group" data-aos="zoom-down" data-aos-delay="1500">
+                        <div class="col-lg-6 form-label-group">
                             {{ form.phone }}
                             <label for="inputTelef">Teléfono</label>
                         </div> 
@@ -125,20 +125,20 @@
                 </div>
             </div>
 
-            <div class="container card mt-4" data-aos="zoom-in-right" data-aos-delay="500">                
+            <div class="container card mt-4">                
                 <div class="card-body">
                     <div class="row">
-                        <h5 class="card-title mb-4" data-aos="zoom-down" data-aos-delay="700">Grado Académico y Ocupación</h5>
+                        <h5 class="card-title mb-4">Grado Académico y Ocupación</h5>
                         
-                        <div class="col-lg-6" data-aos="zoom-down" data-aos-delay="900">
+                        <div class="col-lg-6">
                             {{ form.degree }}
                         </div>
 
-                         <div class="col-lg-6" data-aos="zoom-down" data-aos-delay="900">
+                         <div class="col-lg-6">
                             {{ form.ocupation }}
                         </div>
 
-                        <div class="col form-label-group" data-aos="zoom-down" data-aos-delay="900">
+                        <div class="col form-label-group">
                             {{ form.title }}
                             <label for="inputTitulo">Título</label>
                             <div class="invalid-feedback">
@@ -149,13 +149,13 @@
                 </div>
             </div>
 
-            <div class="container card mt-4" data-aos="zoom-in-left" data-aos-delay="500">                
+            <div class="container card mt-4">                
                 <div class="card-body">
-                    <h5 class="card-title mb-4" data-aos="zoom-down" data-aos-delay="700">Usuario</h5>
+                    <h5 class="card-title mb-4">Usuario</h5>
                     <div class="row">
-                        <div class="col-lg-12 form-label-group" data-aos="zoom-down" data-aos-delay="900">
+                        <div class="col-lg-12 form-label-group">
                             {{ form.email }}
-                            <small id="passwordHelpBlock1" class="form-text text-muted" data-aos="fade-up" data-aos-delay="1300">
+                            <small id="passwordHelpBlock1" class="form-text text-muted">
                                 Su cuenta de correo será verificada y se le enviará un email con el siguiente paso a seguir
                             </small>
                             <label for="inputEmail">Correo Eléctronico</label>
@@ -171,25 +171,25 @@
                 </div>
             </div>
 
-            <div class="mt-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="mt-4">
                 {{ form.captcha }}
             </div>
             
 
-            <div id="id_autorizo" class="form-check mt-4" data-aos="fade-up" data-aos-delay="500">
+            <div id="id_autorizo" class="form-check mt-4">
                 <input type="checkbox" class="form-check-input" id="id_checked" required>
                 <label class="form-check-label" for="validationFormCheck1">Autorizo el uso de mis datos personales</label>
                 <div class="invalid-feedback">Es necesario su consentimiento</div>
             </div>    
 
-            <p id="id_aceptar_txt" class="mt-4" data-aos="fade-up" data-aos-delay="700">
+            <p id="id_aceptar_txt" class="mt-4">
                 Al seleccionar <b>Aceptar y Continuar</b> a continuación, 
                 acepto lo
                 <a href="{% if sede.reglamento %}{{ sede.reglamento.url }}{% else %}#{% endif %}" target="_blank">Reglamento</a> 
                 del CFBC.
             </p>
 
-            <button id="id_aceptar" data-aos="fade-up" data-aos-delay="900" class="mt-4 mb-4 btn btn-lg btn-primary btn-block" type="submit">
+            <button id="id_aceptar" class="mt-4 mb-4 btn btn-lg btn-primary btn-block" type="submit">
                 Aceptar y continuar
             </button>
 
