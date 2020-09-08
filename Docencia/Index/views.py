@@ -224,7 +224,7 @@ def recursos(req):
 
 def release(req, slug):
     comunicado = Release.objects.get(slug=slug)
-    comunicados = Release.objects.all().exclude(slug=slug).order_by('-date')[:6]
+    comunicados = Release.objects.filter(publicar=True).exclude(slug=slug).order_by('-date')[:6]
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)

@@ -34,7 +34,7 @@
     <div class="row mt-4">
         <div class="col-lg-8 shadow">            
             <h2 class="display-3 text-roboto-slab">{{ comunicado.title }}</h2>                
-            
+            <small class="text-muted text-roboto-slab">{{ comunicado.date|date:"D d M Y" }}</small><br>
             <div class="pt-4 mb-2"> 
                 <div>{{ comunicado.body|safe|linebreaksbr }}</div>
                 <br>
@@ -49,9 +49,9 @@
                     <ul class="mt-2">
                         {% for comunicado_ in comunicados %}
                             <div class="border-bottom">
-                                <a class="p-1" href="{% url 'curso' course.pk %}" rel="canonical">
-                                    <div><h5 class="text-roboto-slab">{{ comunicado.title }}</h5>
-                                    <p class="text-roboto-slab text-dark">{{ comunicado.bodysend|truncatechars:50 }}</p>
+                                <a class="p-1" href="{% url 'comunicado' comunicado_.slug %}" rel="canonical">
+                                    <div><h5 class="text-roboto-slab">{{ comunicado_.title }}</h5>
+                                    <small class="text-roboto-slab text-muted">{{ comunicado_.date|date:"D d M Y" }}</small></div>
                                 </a>
                             </div>
                         {% endfor %}
