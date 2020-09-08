@@ -79,6 +79,37 @@
         <i class="flecha fa fa-angle-down text-white" style="font-size: 3rem;"></i>
     </div>
 </header>
+<!-- Comunicado -->
+    {% if comunicados %}
+    <div >
+        <div id="carouselComunicados" class="carousel slide bg-dark" data-ride="carousel" style="min-height: 65vh; max-height: 65vh;">
+            <ol class="carousel-indicators">
+                
+                {% for comunicado in comunicados %}                    
+                    {% if forloop.first %}
+                        <li data-target="#carouselComunicados" data-slide-to="0" class="active"></li>
+                    {% else %}
+                        <li data-target="#carouselComunicados" data-slide-to="{{ forloop.counter0 }}"></li>
+                    {% endif %}                        
+                {% endfor %}
+            </ol>
+            <div class="carousel-inner">                
+                {% for comunicado in comunicados %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %} p-lg-5 p-1 text-white">
+                        <div class="container text-center p-lg-5 px-1 py-3">
+                            <h5> {{ comunicado.title }}</h5>
+                            <p class="text-left px-lg-5 px-1">{{ comunicado.resume }}</p>
+                            <span><small>{{ comunicado.date|date:"D d M Y h:i" }}</small></span><br><br>
+                            <a role="button" href="{% url 'comunicado' comunicado.slug %}" 
+                            class="btn btn-primary">Leer más</a><br>                            
+                        </div>
+                    </div> 
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+<!-- Fin Comunicado -->
 <!-- Noticias -->
     <div id="noticias" style="background-color: rgba(240, 236, 236, 0.904);" class="py-4">
         <a href="{% url 'noticias' %}"><p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
@@ -105,10 +136,8 @@
                                 </div>
                                 
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
-                                    <small class="text-small text-primary font-weight-bold">
-                                        {{ new.date|date:"D d M Y" }} · {{ new.category }}
-                                    </small>
+                                <h5 class="card-title font-weight-bold">{{ new.title }}</h5>
+                                <small class="text-small text-primary font-weight-bold">{{ new.date|date:"D d M Y" }} · {{ new.category }}</small>
                                 </div>
                             </div>
                         </div>

@@ -36,7 +36,7 @@ def index(request):
 
     comments = Comments.objects.all().order_by("?")[:2]
 
-    comunicado = Release.objects.order_by('-date').first()
+    comunicados = Release.objects.filter(publicar=True).order_by('-date')[:4]
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)

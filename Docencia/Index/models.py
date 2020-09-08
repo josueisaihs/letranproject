@@ -41,9 +41,11 @@ class SuscriptorAdmin(admin.ModelAdmin):
 class Release(models.Model):
     """Model definition for Release."""
     title = models.CharField(max_length=100, verbose_name="Título")
+    resume = models.CharField(verbose_name="Resumen", max_length=150, default="", null=True)
     slug = models.SlugField(max_length=140, unique=True)
     body = CKEditor5Field('Cuerpo', config_name='default')
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
+    publicar = models.BooleanField(verbose_name="¿Publicar?", default=False)
 
     class Meta:
         """Meta definition for Release."""
@@ -74,8 +76,9 @@ class Release(models.Model):
 @admin.register(Release)
 class ReleaseAdmin(admin.ModelAdmin):
     '''Admin View for Release'''
-    list_display = ('title', 'date', 'slug')
+    list_display = ('title', 'date', 'slug', 'publicar')
     readonly_fields = ('slug',)
+    list_filter = ('publicar',)
     search_fields = ('title',)
     ordering = ('-date',)
 
