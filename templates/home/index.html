@@ -151,7 +151,7 @@
                                 <div class="card mb-3" onclick="window.location.href='{% url 'noticia' new.slug %}'">
                                     <div class="row g-0">
                                         <div class="col-md-4 image-box">
-                                            <img loading="lazy" src="{{ new.image|thumbnail_url:'img-200' }}" class="img-h-enlace">
+                                            <img loading="lazy" src="{{ new.image|thumbnail_url:'img-600' }}" class="img-h-enlace">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
@@ -257,7 +257,13 @@
                     <div class="col" onclick="window.location.href='{% url 'evento' event.pk %}'">
                         <div class="card">
                             <div class="image-box">
-                                <img src="{{ event.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                                <img src="{{ event.image.url|thumbnail_url:'img-600' }}" srcset="
+                                {{ event.image|thumbnail_url:'img-200' }} 320w,
+                                {{ event.image|thumbnail_url:'img-400' }} 400w,
+                                {{ event.image|thumbnail_url:'img-600' }} 600w,
+                                {{ event.image|thumbnail_url:'img-640' }} 800w,
+                                {{ event.image|thumbnail_url:'img-1100' }} 2000w
+                                " class="card-img-top img-fluid" alt="Evento">
                             </div>
                             <div class="card-body">                                
                                 {% if event.dateEnvs.all %}
@@ -364,7 +370,14 @@
                         <div data-course="{{ course.area }}" class="curso-contenedor col">
                             <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
                                 <div class="image-box">
-                                    <img src="{{ course.image.url }}" class="card-img-top img-fluid" alt="Imagen Curso 0">
+                                    <img src="{{ course.image.url|thumbnail_url:'img-600' }}" class="card-img-top img-fluid" 
+                                    srcset="
+                                    {{ course.image|thumbnail_url:'img-200' }} 320w,
+                                    {{ course.image|thumbnail_url:'img-400' }} 400w,
+                                    {{ course.image|thumbnail_url:'img-600' }} 600w,
+                                    {{ course.image|thumbnail_url:'img-640' }} 800w,
+                                    {{ course.image|thumbnail_url:'img-1100' }} 2000w
+                                    " alt="Imagen Curso 0">
                                 </div>
                                 <div class="card-body">
                                     <small class="mr-auto text-primary text-small">
@@ -418,21 +431,19 @@
     </div>
 <!-- Fin Cursos -->
 <!-- Que Hacemos -->
-<div class="py-4">
+<!-- <div class="py-4">
     <p class="text-dark text-roboto-slab text-center text-uppercase display-6" 
     data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">nuestra misión</p>
     <div class="embed-responsive embed-responsive-16by9">
       <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/DKDjPaD3tp8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
     <!-- ShareThis BEGIN -->
-    <div class="mt-3 sharethis-inline-follow-buttons"></div>
+    <!-- <div class="mt-3 sharethis-inline-follow-buttons"></div> -->
     <!-- ShareThis END -->
-</div>
+</div> -->
 <!-- Fin Que Hacemos-->
 {% endblock contenido %}
 {% block headerScripts%}
-<script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
-<script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
 {% endblock headerScripts%}
     
     
