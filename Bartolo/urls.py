@@ -43,6 +43,8 @@ urlpatterns = [
     path('', include('Docencia.urls')),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     
+    # Social Auth
+    path('social/', include('social_django.urls', namespace='social')),
     # Autentificacion
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
