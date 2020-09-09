@@ -15,10 +15,6 @@
 {% block twitterimg%}{{ new.image|thumbnail_url:'img-200' }}{% endblock %}
 {% block twitterurl %}{% url 'noticia' new.pk %}{% endblock %}
 
-{% block headerScripts%}
-<link rel="stylesheet" href="{% static 'letran/css/ckeditor.css' %}" />
-{% endblock %}
-
 {% block contenido %}
 <header class="header-min" id="inicio">
     {% include './menu.html' %}
@@ -171,6 +167,7 @@
 {% block headerScripts%}
 <script defer src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons"></script>
 <script defer type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f4164010a78ee0012323d96&product=inline-share-buttons" async="async"></script>
+<link rel="stylesheet" href="{% static 'letran/css/ckeditor.css' %}" />
 {% endblock headerScripts%}
 {% block importScripts %}
 <div id="fb-root"></div>
