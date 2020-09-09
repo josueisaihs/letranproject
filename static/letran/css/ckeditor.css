@@ -4,3 +4,22 @@
     display:block; 
     height: auto;
 }
+
+.ckeditor a:link {
+    color: rgba(0, 34, 128, 0.8);
+  }
+  
+/* visited link */
+.ckeditor a:visited {
+    color: rgba(84, 85, 85, 0.8);;
+}
+
+/* mouse over link */
+.ckeditor a:hover {
+    color: rgba(0, 17, 63, 0.8);;
+}
+
+/* selected link */
+.ckeditor a:active {
+    color: rgba(2, 44, 160, 0.842);;
+} 
