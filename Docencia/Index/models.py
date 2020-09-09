@@ -41,7 +41,7 @@ class SuscriptorAdmin(admin.ModelAdmin):
 class Release(models.Model):
     """Model definition for Release."""
     title = models.CharField(max_length=100, verbose_name="Título")
-    resume = models.CharField(verbose_name="Resumen", max_length=150, default="", null=True)
+    resume = models.TextField(verbose_name="Resumen", max_length=150, default="", null=True)
     slug = models.SlugField(max_length=140, unique=True)
     body = CKEditor5Field('Cuerpo', config_name='default')
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
@@ -73,6 +73,7 @@ class Release(models.Model):
     def __str__(self):
         """Unicode representation of Release."""
         return "%s" % self.title
+    
 @admin.register(Release)
 class ReleaseAdmin(admin.ModelAdmin):
     '''Admin View for Release'''
@@ -94,12 +95,13 @@ class News(models.Model):
         ("Tecnología", "Tecnología"),
         ("CFBC", "CFBC")
     ), default="Iglesia")
+    resume = models.TextField(verbose_name="Resumen", max_length=250, default="")
     title = models.CharField(max_length=100, verbose_name="Título")
     slug = models.SlugField(max_length=140, default="")
     body = CKEditor5Field('Cuerpo', config_name='default')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
-
+    # TODO: quitar las imagenes
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
 
     image_1 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 1")
@@ -133,12 +135,9 @@ class News(models.Model):
         """Return absolute url for Noticias."""
         return reverse('News.views.details', args=[str(self.id)])
     
-    def bodysend(self, m=100):
-        return self.body[:m].replace("<p>", "").replace("</p>", "\n")
-
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'body', 'slug')
+    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'resume', 'body', 'slug')
     list_display = ('category', 'title', 'link', 'date',)
     search_fields = ('title',)
     ordering = ('-date', 'title')

@@ -54,6 +54,7 @@
             
             <div class="pt-4 mb-2">
                 <div>{{ new.body|safe|linebreaksbr }}</div>
+                <!-- TODO(Josue): Hacer que cuando salga una imagen por el ckeditor tenga formato correcto -->
                 <br>
                 <div class="card-group">
                     
@@ -74,7 +75,8 @@
                     {% if new.image_2 %}
                         <div class="card">
                             <a role="button" data-toggle="modal" data-target="#imageModal" data-image="{{ new.image_2.url }}"  onclick="$('#imgModal').attr('src', $(this).attr('data-image'));">
-                                <img loading="lazy" class="card-img-top" src="{{ new.image_2.url }}" srcset="
+                                <img loading="lazy" class="card-img-top" src="{{ new.image_2.url }}" 
+                                srcset="
                                 {{ new.image_2|thumbnail_url:'img-200' }} 320w,
                                 {{ new.image_2|thumbnail_url:'img-400' }} 400w,
                                 {{ new.image_2|thumbnail_url:'img-600' }} 600w,
