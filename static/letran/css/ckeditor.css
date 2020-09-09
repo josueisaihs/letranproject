@@ -1,23 +1,6 @@
-@media screen and (max-width: 800px){
-    .ckeditor img {
-        width: 100%;
-        max-width: 600px;
-        height: auto;
-    }
-}
-
-@media screen and (max-width: 640px){
-    .ckeditor img {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-    }
-}
-
-@media screen and (max-width: 480px){
-    .ckeditor img {
-        width: 100%;
-        max-width: 200px;
-        height: auto;
-    }
+.ckeditor img {
+    max-width: 85vw; 
+    width: 100%;
+    display:block; 
+    height: auto;
 }
