@@ -98,7 +98,7 @@ class News(models.Model):
     resume = models.TextField(verbose_name="Resumen", max_length=250, default="")
     title = models.CharField(max_length=100, verbose_name="Título")
     slug = models.SlugField(max_length=140, default="")
-    body = CKEditor5Field('Cuerpo', config_name='default')
+    body = CKEditor5Field('Cuerpo', config_name='extends')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
     # TODO: quitar las imagenes
