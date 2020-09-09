@@ -101,7 +101,6 @@ class News(models.Model):
     body = CKEditor5Field('Cuerpo', config_name='extends')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
-    # TODO: quitar las imagenes
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
 
     image_1 = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Galería 1")
@@ -137,7 +136,7 @@ class News(models.Model):
     
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('category', 'title', 'link', 'date', 'image', 'image_1', 'image_2', 'image_3', 'resume', 'body', 'slug')
+    fields = ('category', 'title', 'link', 'date', 'image', 'resume', 'body', 'slug')
     list_display = ('category', 'title', 'link', 'date',)
     search_fields = ('title',)
     ordering = ('-date', 'title')
