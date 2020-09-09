@@ -5,6 +5,13 @@
     height: auto;
 }
 
+.ckeditor a {
+    max-width: 50vw;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+}
+
 .ckeditor a:link {
     color: rgba(0, 34, 128, 0.8);
   }
