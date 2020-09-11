@@ -5,13 +5,15 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import now
+from django_ckeditor_5.fields import CKEditor5Field
+from django.utils.text import slugify
 
 from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
 from datetime import date, timedelta
 
-from Docencia.DatosPersonales.models import TeacherPersonalInformation
+from Docencia.DatosPersonales.models import TeacherPersonalInformation, StudentPersonalInformation
 
 
 class Sede(models.Model):
@@ -164,6 +166,7 @@ class CourseScheduleAdmin(admin.ModelAdmin):
 
 class CourseInformation(models.Model):
     """Model definition for Curso."""
+    slug = models.SlugField(max_length=250, default="")
     area = models.ForeignKey("Area", verbose_name="Area", on_delete=models.CASCADE)
     name = models.CharField(max_length=50, unique=True, verbose_name="Nombre")
     image = ImageField(upload_to=os.path.join('image', 'perfil', 'course'), null=True, blank=True)
@@ -226,12 +229,88 @@ class CourseInformation(models.Model):
     def isAvailableRegistre(self):
         return self.openregistre <= date.today() <= self.deadline
 
+    def _get_unique_slug(self):
+        slug = slugify("%s %s" % (self.area.name, self.name))
+        unique_slug = slug
+        num = 1
+        while CourseInformation.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
 @admin.register(CourseInformation)
 class CourseInformationAdmin(admin.ModelAdmin):
     fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
                 "description", "yearMin", "yearMax", "haveApplication", 
-                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts"]
+                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts", "slug"]
     ordering = ["area", "name", "capacity", "openregistre"]
     search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
+    readonly_fields = ('slug',)
     list_filter = ["sedes", "area", "category", "isService", "haveApplication"]
     list_display = ["name", "area", "category", "isService", "capacity", "haveApplication", "openregistre", "deadline"]
+
+class GroupInformation(models.Model):
+    """Model definition for GroupInformation."""
+    name = models.CharField(verbose_name="Nombre", max_length=150)
+    edition = models.ForeignKey(Edition, verbose_name="Edición", on_delete=models.CASCADE)
+    course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
+    teachers = models.ManyToManyField(TeacherPersonalInformation, verbose_name="Profesor(s)")
+    students = models.ManyToManyField(StudentPersonalInformation, verbose_name="Estudiante(s)", blank=True)
+
+    class Meta:
+        """Meta definition for GroupInformation."""
+        unique_together = [('name', 'edition', 'course')]
+        verbose_name = 'Grupo'
+        verbose_name_plural = 'Cursos - Grupos'
+
+    def __str__(self):
+        """Unicode representation of GroupInformation."""
+        return "%s-%s %s" % (self.course, self.edition, self.name)
+
+@admin.register(GroupInformation)
+class GroupInformationAdmin(admin.ModelAdmin):
+    '''Admin View for GroupInformation'''
+    list_display = ('name', 'edition', 'course')
+    list_filter = ('edition', 'course', 'course__area')
+    search_fields = ('name', 'edition__name', 'course__name', 'course__area__name', 'teachers__name', 'teachers__lastname',
+    'students__name', 'students__lastname')
+    ordering = ('name',)
+
+
+class SubjectInformation(models.Model):
+    # Asignatura
+    name = models.CharField(max_length=50, verbose_name="Nombre")
+    course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
+    credicts = models.SmallIntegerField(verbose_name="Creditos")
+    showCredicts = models.BooleanField(default=False, verbose_name="Mostrar Creditos")
+    # Certificacion de notas de la asginatura
+    needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")
+    
+    # TODO la boleta final en base a 10, 
+    
+    description = CKEditor5Field('Descripción', config_name='extends')
+    
+    evaluations = []
+    classes = []
+    
+    def __str__(self):
+        return "%s (%s)" % (self.name, self.course)
+
+    class Meta:
+        unique_together= ('name', 'course')
+        verbose_name = 'Curso - Asignatura'
+        verbose_name_plural = 'Curso - Asignaturas'
+        
+@admin.register(SubjectInformation)
+class SubjectInformationAdmin(admin.ModelAdmin):
+    fields = ["name", "course", "description", "credicts", "showCredicts", "needBallot"]
+    ordering = ["name", "course", "credicts"]
+    search_fields = ["name", "course__name", "course__name__area__name"]
+    list_filter = ["showCredicts", "needBallot", "course__area"]
+    list_display = ["name", "course", "credicts", "showCredicts", "needBallot"]
+# <> fin SubjectInformation

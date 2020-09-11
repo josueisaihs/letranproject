@@ -1,7 +1,7 @@
 {% extends './dashboard.html' %}
 {% block dashboard_content %}
-    <p class="h2">{{ clase.name }}</p>
-    <small class="text-muted">{{ clase.course.name }} | {{ clase.datepub|date:"D d M Y" }}</small>
+    <p class="h2 text-capitalize">{{ clase.name }}</p>
+    <small class="text-muted">{{ clase.subject.course.name }} | {{ clase.datepub|date:"D d M y" }}</small>
     <div class="ckeditor row">
         {{ clase.body|safe }}
     </div>

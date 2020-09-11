@@ -187,9 +187,20 @@
                                 </tr>
                             {% endfor %}
                             </tbody>
-                        </table>       
+                        </table> 
+                        <div class="">
+                            <ul class="list-group text-dark">
+                                <li class="list-group-item disabled" aria-disabled="true">Leyenda de Estados</li>
+                                <li class="list-group-item">En espera  - Su solicitud aún no ha sido evaluada por el coordinador del curso, diplomado o grado.</li>
+                                <li class="list-group-item">En proceso - La solicitud ha sido evaluada y se encuentra en revisión. O que ha sido seleccionado para Entrevista en el caso de cursos, diplomados o grados que lo requieran.</li>
+                                <li class="list-group-item">En reserva - Ha sido seleccionado para ser aceptado en caso de falla, según lo disponga el reglamento del curso, diplomado o grado.</li>
+                                <li class="list-group-item">Aceptado   - Ha sido aceptado en el curso. En caso de los cursos presenciales, se formaliza su matrícula como está dispuesto en el reglamento del curso, diplomado o grado.</li>
+                                <li class="list-group-item">Denegado   - No ha sido aceptado en el curso.</li>
+                            </ul>
+                        </div>      
                         <p class="mt-4 text-muted text-center">Centro Fray Bartolomé de las Casas &copy; 1998-2020</p>
                     </div>
+                    
                 {% else %}
                     <small class="text-muted mt-4">No tenemos datos para mostrar aún</small>
                     <a href="{% url 'admision_seleccion_curso' %}">
@@ -247,6 +258,7 @@
             </main>
         </div>
     </div>
+   
 {% endblock contenido %}
 
 {% block importScripts %}

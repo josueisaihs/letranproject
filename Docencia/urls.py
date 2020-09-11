@@ -19,7 +19,8 @@ urlpatterns = [
     path("politicaprivacidad/", views.politicaprivacidad, name="politicaprivacidad"),
 
     # path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma"),
-    path("plataforma/dashboard/clase/<int:pk>/", views.plataforma.clase, name="plataforma_clase"),
+    path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
+    path("plataforma/dashboard/clase/<slug:slug>/", views.plataforma.clase, name="plataforma_clase"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),

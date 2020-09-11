@@ -4,6 +4,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 
+from Docencia.DatosPersonales.models import StudentPersonalInformation
+from Docencia.Admision.models import Application, Edition
+
+from datetime import datetime
+
 import requests
 
 def isTeacher(user):
