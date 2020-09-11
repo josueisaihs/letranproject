@@ -32,4 +32,18 @@
     font-family: "Font Awesome 5 Free";
     font-weight: 600;
     font-size: 0.75rem;
-  }
+}
+
+.ckeditor blockquote {
+    color: #555;
+    font-style: italic;
+    padding: 2.5% 5%;
+    background-color: #e4e4e4;
+    border-radius: 10px;
+}
+
+.ckeditor blockquote::before{
+content: open-quote;
+font-size: xx-large;
+font-family: Roboto Slab;
+}
