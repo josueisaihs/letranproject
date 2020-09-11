@@ -18,3 +18,18 @@ def isTeacher(user):
 def isStudent(user):
     usermod = User.objects.filter(groups__name="Estudiantes", username=user.username)
     return usermod.__len__() > 0
+    
+def isStudentAceptado(user):
+    if isStudent(user):
+        user_ = User.objects.get(groups__name="Estudiantes", username=user.username)
+        student = StudentPersonalInformation.objects.get(user=user_.pk)
+        edition = Edition.objects.get(
+                dateinit__gte=datetime.today(), 
+                dateend__gte=datetime.today()
+                )
+
+        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+        return apps.__len__() > 0
+    else:
+        return False
+        

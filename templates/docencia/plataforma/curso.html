@@ -1,0 +1,23 @@
+{% extends './dashboard.html' %}
+{% load thumbnail %}
+{% block dashboard_content %}
+<div class="">  
+    <ul class="list-group">
+        <li class="list-group-item disabled" aria-disabled="true">{{ curso.name }}</li>        
+        {% for subject in curso.subjects %}
+            <li class="list-group-item">
+                <a class="nav-link collapse-title" data-toggle="collapse" href="#{{ subject.slug }}" role="button" aria-expanded="false" aria-controls="{{ subject.slug }}"> {{ subject.name }}</a>
+                <div id="{{ subject.slug }}" class="collapse">
+                    <div class="ckeditor">{{ subject.description|safe}}</div>
+                    <ul class="list-group">
+                        <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge bg-primary">{{ subject.classes|length }}</span></li>
+                        {% for clase in subject.classes %}
+                            <li class="list-group-item text-capitalize"><a href="{% url 'plataforma_clase' clase.slug %}">{{ clase.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </li>
+        {% endfor %}           
+    </ul>
+</div>
+{% endblock dashboard_content %}}

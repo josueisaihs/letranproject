@@ -284,6 +284,7 @@ class GroupInformationAdmin(admin.ModelAdmin):
 
 class SubjectInformation(models.Model):
     # Asignatura
+    slug = models.SlugField(max_length=250, default="")
     name = models.CharField(max_length=50, verbose_name="Nombre")
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
     credicts = models.SmallIntegerField(verbose_name="Creditos")
@@ -305,12 +306,27 @@ class SubjectInformation(models.Model):
         unique_together= ('name', 'course')
         verbose_name = 'Curso - Asignatura'
         verbose_name_plural = 'Curso - Asignaturas'
+
+    def _get_unique_slug(self):
+        slug = slugify("%s %s %s" % (self.course.area.name, self.course.name, self.name))
+        unique_slug = slug
+        num = 1
+        while CourseInformation.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
         
 @admin.register(SubjectInformation)
 class SubjectInformationAdmin(admin.ModelAdmin):
-    fields = ["name", "course", "description", "credicts", "showCredicts", "needBallot"]
+    fields = ["name", "course", "description", "credicts", "showCredicts", "needBallot", "slug"]
     ordering = ["name", "course", "credicts"]
     search_fields = ["name", "course__name", "course__name__area__name"]
     list_filter = ["showCredicts", "needBallot", "course__area"]
     list_display = ["name", "course", "credicts", "showCredicts", "needBallot"]
+    readonly_fields = ["slug",]
 # <> fin SubjectInformation

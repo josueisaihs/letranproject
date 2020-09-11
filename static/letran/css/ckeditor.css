@@ -24,4 +24,12 @@
 /* selected link */
 .ckeditor a:active {
     color: rgba(2, 44, 160, 0.842);;
-} 
+}
+
+.ckeditor a::after{
+    content: "\f35d";
+    margin-left: 0.2%;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 600;
+    font-size: 0.75rem;
+  }

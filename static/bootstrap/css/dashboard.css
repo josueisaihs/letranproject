@@ -2,6 +2,11 @@ body {
   font-size: .875rem;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .feather {
   width: 16px;
   height: 16px;
@@ -93,4 +98,61 @@ body {
 .form-control-dark:focus {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.collapse-title{
+  display: block;
+  position: relative;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.collapse-title[aria-expanded="true"]::before{
+  content: "\f107";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  /* font-size: 18px; */
+}
+
+.collapse-title[aria-expanded="false"]::before{
+  content: "\f105";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  /* font-size: 18px; */
+}
+
+.collapse-folder-title{
+  display: block;
+  position: relative;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.collapse-folder-title[aria-expanded="true"]::before{
+  content: "\f07c";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  /* font-size: 18px; */
+}
+
+.collapse-folder-title[aria-expanded="false"]::before{
+  content: "\f07b";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  /* font-size: 18px; */
+}
+
+.link-icon {
+  display: block;
+  position: relative;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.link-icon::after{
+  content: "\f35d";
+  margin-left: 0.2%;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  font-size: 0.75rem;
 }

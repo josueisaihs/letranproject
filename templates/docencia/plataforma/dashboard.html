@@ -1,7 +1,7 @@
 
 {% extends './base.html' %}
 {% load static %}
-{% block titleHead %}Administración{% endblock titleHead %}
+{% block titleHead %}Docencia{% endblock titleHead %}
 {% block importCSS %}
     <!-- View -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/dashboard.css' %}">
@@ -15,7 +15,7 @@
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input id="id_buscar" list="datalistOptions" class="form-control form-control-dark w-100" type="text" placeholder="Buscar ..." aria-label="Buscar">
+        <!-- <input id="id_buscar" list="datalistOptions" class="form-control form-control-dark w-100" type="text" placeholder="Buscar ..." aria-label="Buscar"> -->
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="{% url 'logout' %}">Cerrar Sessión</a>
@@ -29,7 +29,7 @@
                 <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
+                        <a class="nav-link {{ index }}" aria-current="page" href="{% url 'plataforma_dashboard' %}">
                             <span data-feather="home"></span>
                             Inicio
                         </a>
@@ -38,31 +38,31 @@
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>Mis Cursos</span>
                         </h6>
-                        <ul class="nav flex-column mb-2">
+                        <ul class="nav flex-column mb-2 nav-cursos">
                             {% for app in apps %}                                
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                    <a class="collapse-title nav-link {% ifequal app.course.pk clase.subject.course.pk %}{% endifequal %}"
+                                        data-toggle="collapse" href="#{{ app.course.slug }}" role="button" aria-expanded="{% ifequal app.course.pk clase.subject.course.pk %}true{% else %}false{% endifequal %}" {% ifequal app.course.pk clase.subject.course.pk %}aria-current="true"{% endifequal %}>
                                         {{ app.course.name }}
                                     </a>
                                 </li>
-                                
-                                {% for subject in app.course.subjects %}
-                                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 ml-2 mt-1 mb-1 text-muted">
-                                        <span>{{ subject.name }}</span>
-                                    </h6>
-                                    <ul class="nav flex-column mb-2 ml-2">
-                                    {% for clase in subject.classes %}
-                                        <li class="nav-item">
-                                            <a class="nav-link text-capitalize" href="{% url 'plataforma_clase' clase.slug %}">
-                                                {{ clase.name }}
-                                            </a>
-                                        </li>
+                                <div class="collapse {% ifequal app.course.pk clase.subject.course.pk %}show{% endifequal %}" id="{{ app.course.slug }}">
+                                    {% for subject in app.course.subjects %}
+                                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 ml-2 mt-1 mb-1 text-muted">
+                                            <span>{{ subject.name }}</span>
+                                        </h6>
+                                        <ul class="nav flex-column mb-2 ml-2">
+                                        {% for clase_ in subject.classes %}
+                                            <li class="nav-item">
+                                                <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" href="{% url 'plataforma_clase' clase_.slug %}">
+                                                    {{ clase_.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                            
                                     {% endfor %}
-                                    </ul>
-                                        
-                                {% endfor %}
-                                    
+                                </div>
                             {% endfor %}
                         </ul>
                     </li>
@@ -80,21 +80,15 @@
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Hola {{ student.name }}</h1>
                 </div>
-                
-
-                 {% if messages%}
+                 {% if messages %}
                     {% for message in messages %}
-                                                    
                         {% ifequal message.level 40 %}
                             <div class="alert alert-danger lg" role="alert">
                                 {{ message }}
                             </div>
                         {% endifequal %}
-                            
                     {% endfor %}
                 {% endif %}
-
-                
                 {% block dashboard_content %}
                 {% endblock dashboard_content %}
             </main>
