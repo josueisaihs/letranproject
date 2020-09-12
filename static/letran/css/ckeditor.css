@@ -5,6 +5,18 @@
     height: auto;
 }
 
+@media screen and (max-width: 800px){
+    .ckeditor figure {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 640px){
+    .ckeditor figure {
+        width: 80%;
+    }
+}
+
 @media screen and (max-width: 480px){
     .ckeditor figure {
         width: 100%;
