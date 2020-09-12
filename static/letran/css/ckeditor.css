@@ -5,7 +5,11 @@
     height: auto;
 }
 
-
+@media screen and (max-width: 480px){
+    .ckeditor figure {
+        width: 100%;
+    }
+}
 
 .ckeditor a:link {
     color: rgba(0, 34, 128, 0.8);
