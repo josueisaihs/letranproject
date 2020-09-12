@@ -59,6 +59,7 @@
     padding: 2.5% 5%;
     background-color: #e4e4e4;
     border-radius: 10px;
+    margin: 2.5%;
 }
 
 .ckeditor blockquote::before{
