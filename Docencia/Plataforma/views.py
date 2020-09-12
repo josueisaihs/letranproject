@@ -31,7 +31,7 @@ def dashboard(req):
                                 app.course.subjects = []
                                 for subject in SubjectInformation.objects.filter(course=app.course.pk):
                                         subject.classes = []
-                                        for clase in Class.objects.filter(subject=subject.pk):
+                                        for clase in Class.objects.filter(subject=subject.pk, datepub__gte=datetime.today()).order_by('datepub'):
                                                 subject.classes.append(clase)
                                         app.course.subjects.append(subject)
                         del subject
@@ -64,7 +64,7 @@ def clase(req, slug):
                         app.course.subjects = []
                         for subject in SubjectInformation.objects.filter(course=app.course.pk):
                                 subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__gte=datetime.today()).order_by('datepub'):
                                         subject.classes.append(clase)
                                 app.course.subjects.append(subject)
 
@@ -74,7 +74,6 @@ def clase(req, slug):
                 del edition
 
                 clase = Class.objects.get(slug=slug)
-
                 return render(req, TEMPLETE_PATH % "clase", locals())
         except:
                 messages.error(req, "Este usuario no tiene acceso a este servicio")
