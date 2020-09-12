@@ -64,7 +64,7 @@ def clase(req, slug):
                         app.course.subjects = []
                         for subject in SubjectInformation.objects.filter(course=app.course.pk):
                                 subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk, datepub__gte=datetime.today()).order_by('datepub'):
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
                                         subject.classes.append(clase)
                                 app.course.subjects.append(subject)
 
