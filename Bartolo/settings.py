@@ -46,13 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'captcha',
-    #'adminrestrict',
     'Docencia',
     'easy_thumbnails',
     'debug_toolbar',
     'background_task',
     'django_ckeditor_5',
-    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    #'adminrestrict.middleware.AdminPagesRestrictMiddleware',
 ]
 
 ROOT_URLCONF = 'Bartolo.urls'
@@ -138,8 +135,8 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -171,6 +168,7 @@ MESSAGES_INFO = 50
 JET_DEFAULT_THEME = 'light-gray'
 JET_SIDE_MENU_COMPACT = False
 JET_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+JET_APP_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultAppIndexDashboard'
 JET_THEMES = [
     {
         'theme': 'default', # theme folder name
