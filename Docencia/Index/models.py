@@ -340,31 +340,54 @@ class SectionCommentsAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 class Recurso(models.Model):
+    slug = models.SlugField(max_length=140, default="")
     name = models.CharField(max_length=50, verbose_name="Nombre")
     recurso = models.FileField(verbose_name="Recurso", 
     upload_to=os.path.join('static', 'recurso'), null=True, blank=True,)
+    image = ImageField(upload_to=os.path.join('static', 'recurso', 'miniatura'), null=True, blank=True)
     tipo = models.CharField(max_length=20, verbose_name="Tipo", 
-    choices=(
-        ("imagen", "Imagen"), 
-        ("documento", "Documento"),
-        ("video", "Video"),
-        )
+        choices=(
+            ("imagen", "Imagen"), 
+            ("documento", "Documento"),
+            ("video", "Video"),
+            ("conferencia", "Conferencia"),
+            )
     )
     uploaddate = models.DateField(verbose_name="Fecha", auto_now=True, blank=False, 
         editable=False)
+    access = models.BooleanField(verbose_name="Acceso Público", default=False, 
+    help_text="Si mantiene sin marcar solo podrá ser descargado por los usuarios a los que le comparta el link")
+
+    courses = models.ManyToManyField("Docencia.CourseInformation", verbose_name="Asignar Curso", blank=True, 
+    help_text="Si agrega curso(s) este recurso será visible para los estudiantes, en caso de NO haber marcado Acceso Público.")
+    
     class Meta:
         verbose_name = 'Recurso'
         verbose_name_plural = 'Index - Recursos'
 
     def __str__(self):
         return "%s" % self.name
+    
+    def _get_unique_slug(self):
+        slug = slugify(self.name)
+        unique_slug = slug
+        num = 1
+        while News.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
 
 @admin.register(Recurso)
 class RecursoAdmin(admin.ModelAdmin):    
     list_display = ('name', 'tipo')
-    list_filter = ('tipo',)
-    readonly_fields = ('uploaddate',)
-    search_fields = ('name', 'tipo')
+    list_filter = ('tipo', 'access')
+    readonly_fields = ('uploaddate', 'slug')
+    search_fields = ('name', 'tipo', 'courses__name')
     ordering = ('-uploaddate',)
 
 

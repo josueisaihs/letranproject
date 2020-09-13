@@ -13,3 +13,9 @@ Bartolo/__pycache__/
 Bartolo/setting.py
 media/
 Docencia/migrations/
+static/admin/
+static/debug_toolbar/
+static/django_ckeditor_5/
+static/jet/
+static/jet.dashboard/
+static/range_filter/
