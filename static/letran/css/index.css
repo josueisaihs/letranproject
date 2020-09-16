@@ -341,18 +341,8 @@ blockquote::before{
   font-family: Roboto Slab;
 }
 
-img {
-  display:block;
-  position:relative;
-  width:fit-content;
-  height: fit-content;
-  min-width:250px;
-  min-height:80px;
-  font-family: 'Open Sans', sans-serif;
-  font-size:15px;
-}
 
-img:before {
+.img-h-enlace:before {
   /*Solo se muestra en imágenes rotas*/
   display:block;
   box-sizing: border-box;
