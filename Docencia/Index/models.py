@@ -347,15 +347,9 @@ class Recurso(models.Model):
     image = ImageField(upload_to=os.path.join('static', 'recurso', 'miniatura'), null=True, blank=True)
     tipo = models.CharField(max_length=20, verbose_name="Tipo", 
         choices=(
-                ("imagen", "Imagen"), 
-                ("documento", "Documento"),
-                ("video", "Video"),
-                ("conferencia", "Conferencia"),
-                ("audio", "Audio"),
-                ("html", "HTML"),
-                ("css", "CSS"),
-                ("js", "JavaScript"),
-                ("python", "Python")
+                ("imagen", "Imagen"), ("documento", "Documento"), ("video", "Video"), ("audio", "Audio"),
+                ("conferencia", "Conferencia"), ("programa", "Programa"), ("reglamento", "Reglamento"),
+                ("html", "HTML"), ("css", "CSS"), ("js", "JavaScript"), ("python", "Python")
             )
     )
     uploaddate = models.DateField(verbose_name="Fecha", auto_now=True, blank=False, 
