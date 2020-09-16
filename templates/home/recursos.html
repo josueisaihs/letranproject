@@ -33,12 +33,12 @@
 <div class="py-4 bg-white">
     <nav class="mt-2">
         <ul class="pagination pagination-sm justify-content-center">
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q={{ query }}">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}>
                 <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}&q={{ query }}" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
                 </a>
             </li>
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q=''">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}>
                 <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}&q={{ query }}" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
                 </a>
