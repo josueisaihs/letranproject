@@ -340,3 +340,33 @@ blockquote::before{
   font-size: xx-large;
   font-family: Roboto Slab;
 }
+
+img {
+  display:block;
+  position:relative;
+  width:fit-content;
+  height: fit-content;
+  min-width:250px;
+  min-height:80px;
+  font-family: 'Open Sans', sans-serif;
+  font-size:15px;
+}
+
+img:before {
+  /*Solo se muestra en imágenes rotas*/
+  display:block;
+  box-sizing: border-box;
+  content: "\f03e";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  font-size: xxx-large;
+  white-space: pre-wrap;
+  position: absolute;
+  background-color:gainsboro;
+  color:#555;
+  text-align:center;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}

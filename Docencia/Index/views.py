@@ -205,9 +205,12 @@ def noticia(req, slug):
 
 def recursos(req):
     navrecursos = "active"
-    paginador = Paginator( Recurso.objects.filter(access=True).order_by("-uploaddate"), 20)    
+    query = req.GET.get('q', '')
+    paginador = Paginator( Recurso.objects.filter(access=True, tipo__icontains=query).order_by("-uploaddate"), 10)    
     page_number = req.GET.get('page')
     page_obj = paginador.get_page(page_number)
+    
+    categories = Recurso.objects.order_by('tipo').values_list('tipo', flat=True).distinct()
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)

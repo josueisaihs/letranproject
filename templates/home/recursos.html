@@ -33,13 +33,13 @@
 <div class="py-4 bg-white">
     <nav class="mt-2">
         <ul class="pagination pagination-sm justify-content-center">
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q={{ query }}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}&q={{ query }}" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
                 </a>
             </li>
-            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}&q=''">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}&q={{ query }}" aria-label="Previous">
                     <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
                 </a>
             </li>              
@@ -49,32 +49,75 @@
                 </a>
             </li>
             <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}&q={{ query }}" aria-label="Next">
                     <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
                 </a>
             </li>
             <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
-                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}&q={{ query }}" aria-label="Next">
                     <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
                 </a>
             </li>          
         </ul>
     </nav>
-
-    <div class="row g-4 container justify-content-center">
-        {% for recurso in page_obj %}
-            <div class="col-sm-6 col-md-3 col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recurso.name }}</h5>
-                        <small class="text-muted">{{ recurso.tipo }} | {{ recurso.uploaddate|date:"D d M Y" }}</small>
-                        {% if recurso.recurso %}
-                            <br><a href="{{ recurso.recurso.url }}" class="btn btn-primary" download>Descargar</a>
-                        {% endif %}
-                    </div>
+    <div class="row g-4 mt-4 mx-auto container">
+        <div class="col-lg-4">
+            <div class="row row-cols-md-3 row-cols-lg-1 row-cols-sm-1 row-cols-1">
+                <div class="col mt-5">
+                    <h6>Categorías</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link 
+                            {% ifequal query '' %} 
+                                text-primary
+                            {% endifequal %}
+                                " aria-current="page" role="button" 
+                                href="{% url 'recursos' %}?page=1">
+                                Todas
+                            </a>
+                        </li>
+                        
+                        {% for category in categories %}
+                            <li class="nav-item">
+                                <a class="nav-link text-capitalize  
+                                {% ifequal query category %} 
+                                    text-primary
+                                {% endifequal %}
+                                    " aria-current="page" role="button" 
+                                   href="{% url 'recursos' %}?page=1&q={{ category }}">
+                                    {{ category }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                            
+                    </ul>
                 </div>
             </div>
-        {% endfor %}
+        </div>
+        <div class="col-lg-8"> 
+            <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">    
+                {% for recurso in page_obj %}
+                    {% if recurso.recurso %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4 image-box">
+                                    <img loading="lazy" src="{{ recurso.image|thumbnail_url:'img-640' }}" srcset="
+                                        {{ recurso.image|thumbnail_url:'img-640' }} 800w,
+                                        {{ recurso.image|thumbnail_url:'img-1100' }} 2000w" class="img-h-enlace">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title font-weight-bold">{{ recurso.name }}</h5>
+                                        <small class="text-small text-primary font-weight-bold">{{ recurso.uploaddate|date:"D d M Y" }} · <span class="text-capitalize">{{ recurso.tipo }}</span></small>
+                                            <br><a href="{{ recurso.recurso.url }}" class="btn btn-primary" download>Descargar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}                
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
