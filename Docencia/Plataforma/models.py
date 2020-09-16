@@ -14,7 +14,7 @@ class Class(models.Model):
     body=CKEditor5Field('Cuerpo', config_name='extends')
     uploaddate = models.DateField('Fecha Creación', auto_now=True)
     datepub = models.DateTimeField('Fecha Pub.', auto_now=False, auto_now_add=False)
-    resources =  models.ManyToManyField("Docencia.Recurso", verbose_name="Recursos", limit_choices_to={'access': False})
+    resources =  models.ManyToManyField("Docencia.Recurso", verbose_name="Recursos", blank=True, limit_choices_to={'access': False})
 
     class Meta:
         """Meta definition for Class."""
