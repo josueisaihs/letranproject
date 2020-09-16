@@ -98,7 +98,7 @@
                     <div class="carousel-item {% if forloop.first %}active{% endif %} p-lg-5 p-1 text-white">
                         <div class="container text-center p-lg-5 px-1 py-3">
                             <h5> {{ comunicado.title }}</h5>
-                            <p class="text-left px-lg-5 px-1">{{ comunicado.resume }}</p>
+                            <p class="text-left px-lg-5 px-1 text-center">{{ comunicado.resume }}</p>
                             <span><small>{{ comunicado.date|date:"D d M Y h:i" }}</small></span><br><br>
                             <a role="button" href="{% url 'comunicado' comunicado.slug %}" 
                             class="btn btn-primary">Leer más</a><br>                            
