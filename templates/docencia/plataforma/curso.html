@@ -12,7 +12,7 @@
                     <ul class="list-group">
                         <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge bg-primary">{{ subject.classes|length }}</span></li>
                         {% for clase in subject.classes %}
-                            <li class="list-group-item text-capitalize"><a href="{% url 'plataforma_clase' clase.slug %}">{{ clase.name }}</a></li>
+                            <li class="list-group-item text-capitalize"><a target="_blank" href="{% url 'plataforma_clase' clase.slug %}">{{ clase.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
