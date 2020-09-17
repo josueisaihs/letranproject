@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -12,6 +12,7 @@ from Docencia.Plataforma.models import Class
 from Docencia.Index.models import Recurso
 
 from datetime import datetime
+import mimetypes
 
 TEMPLETE_PATH = "docencia/plataforma/%s.html"
 
@@ -85,6 +86,16 @@ def clase(req, slug):
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def downloadResource(req, slug):
+        # resource = Recurso.objects.get(slug=slug)
+        # return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
+        fl_path = '/file/path'
+        filename = 'downloaded_file_name.extension'
         resource = Recurso.objects.get(slug=slug)
-        return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
+        fl_path = resource.recurso.file.__str__()
+
+        fl = open(fl_path, 'r')
+        mime_type, _ = mimetypes.guess_type(fl_path)
+        response = HttpResponse(fl, content_type=mime_type)
+        response['Content-Disposition'] = "attachment; filename=%s" % resource.name
+        return response
 
