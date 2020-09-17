@@ -5,10 +5,26 @@
     <div class="ckeditor row">
         {{ clase.body|safe }}
     </div>
-    <div class="row m-2">
+    <div class="row m-2 g-2">
         {% for recurso in clase.resources.all %}   
-            <div class="col-12 col-md-6 col-lg-4 p-2">
-                <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}" class="p-2 border rounded"><i class="far fa-file-image"></i> {{ recurso.name }} <i class="fa fa-download"></i></a>
+            <div class="col-12 col-md-6 col-lg-4 p-2 border rounded">
+                <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}"><i class="far
+                {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
+                 fa-file-code
+                {% endif %}                
+                {% if recurso.tipo == 'audio' %}
+                 fa-file-audio
+                {% endif %}                
+                {% if recurso.tipo == 'video' %}
+                 fa-file-video
+                {% endif %}
+                {% if recurso.tipo == 'imagen' %}
+                 fa-file-image
+                {% endif %}                
+                {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
+                 fa-file-alt 
+                {% endif %}                    
+                "></i> {{ recurso.name }}</a>
             </div>
         {% endfor %}
     </div>
