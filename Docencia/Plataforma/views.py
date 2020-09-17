@@ -54,38 +54,37 @@ def dashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def clase(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
-        edition = Edition.objects.get(
-                dateinit__gte=datetime.today(), 
-                dateend__gte=datetime.today()
-                )
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                edition = Edition.objects.get(
+                        dateinit__gte=datetime.today(), 
+                        dateend__gte=datetime.today()
+                        )
 
-        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-        for app in apps:
-                app.course.subjects = []
-                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                        subject.classes = []
-                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                subject.classes.append(clase)
-                        app.course.subjects.append(subject)
+                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+                for app in apps:
+                        app.course.subjects = []
+                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                app.course.subjects.append(subject)
 
-        del subject
-        del clase
-        del app
-        del edition
+                del subject
+                del clase
+                del app
+                del edition
 
-        clase = Class.objects.get(slug=slug)
-        return render(req, TEMPLETE_PATH % "clase", locals())
-        # except:
-        #         messages.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+                clase = Class.objects.get(slug=slug)
+                return render(req, TEMPLETE_PATH % "clase", locals())
+        except:
+                messages.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def downloadResource(req, slug):
         resource = Recurso.objects.get(slug=slug)
-        archivo = resource.recurso.file.__str__()
         return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
 
