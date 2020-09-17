@@ -7,7 +7,7 @@
     </div>
     <div class="row m-2 g-2">
         {% for recurso in clase.resources.all %}   
-            <div class="col-12 col-md-6 col-lg-4 p-2 border rounded">
+            <div class="col-12 col-md-6 col-lg-4 p-2">
                 <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}"><i class="far
                 {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
                  fa-file-code
