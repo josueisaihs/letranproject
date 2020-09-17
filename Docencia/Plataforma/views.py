@@ -2,12 +2,14 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import FileResponse
 
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation
 from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado
 from Docencia.Plataforma.models import Class
+from Docencia.Index.models import Recurso
 
 from datetime import datetime
 
@@ -78,3 +80,11 @@ def clase(req, slug):
         except:
                 messages.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def downloadResource(req, slug):
+        resource = Recurso.objects.get(slug=slug)
+        return FileResponse(open(resource.recurso, 'rb'))
+
