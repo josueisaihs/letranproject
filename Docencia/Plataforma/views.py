@@ -86,16 +86,16 @@ def clase(req, slug):
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def downloadResource(req, slug):
-        # resource = Recurso.objects.get(slug=slug)
-        # return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
-        fl_path = '/file/path'
-        filename = 'downloaded_file_name.extension'
         resource = Recurso.objects.get(slug=slug)
-        fl_path = resource.recurso.file.__str__()
+        return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
+        # fl_path = '/file/path'
+        # filename = 'downloaded_file_name.extension'
+        # resource = Recurso.objects.get(slug=slug)
+        # fl_path = resource.recurso.file.__str__()
 
-        fl = open(fl_path, 'rb')
-        mime_type, _ = mimetypes.guess_type(fl_path)
-        response = HttpResponse(fl, content_type=mime_type)
-        response['Content-Disposition'] = "attachment; filename=%s" % resource.name
-        return response
+        # fl = open(fl_path, 'rb')
+        # mime_type, _ = mimetypes.guess_type(fl_path)
+        # response = HttpResponse(fl, content_type=mime_type)
+        # response['Content-Disposition'] = "attachment; filename=%s" % resource.name
+        # return response
 
