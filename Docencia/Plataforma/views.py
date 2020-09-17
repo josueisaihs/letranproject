@@ -93,7 +93,7 @@ def downloadResource(req, slug):
         resource = Recurso.objects.get(slug=slug)
         fl_path = resource.recurso.file.__str__()
 
-        fl = open(fl_path, 'r')
+        fl = open(fl_path, 'rb')
         mime_type, _ = mimetypes.guess_type(fl_path)
         response = HttpResponse(fl, content_type=mime_type)
         response['Content-Disposition'] = "attachment; filename=%s" % resource.name
