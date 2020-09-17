@@ -7,7 +7,7 @@
     </div>
     <div class="row m-2">
         {% for recurso in clase.resources.all %}   
-            <div class="col p-2">
+            <div class="col-12 col-md-6 col-lg-4 p-2">
                 <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}" class="p-2 border rounded"><i class="far fa-file-image"></i> {{ recurso.name }} <i class="fa fa-download"></i></a>
             </div>
         {% endfor %}
