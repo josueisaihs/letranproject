@@ -86,6 +86,6 @@ def clase(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def downloadResource(req, slug):
         resource = Recurso.objects.get(slug=slug)
-        archivo = resource.recurso.file
-        return FileResponse(open(resource.recurso.file, 'rb'))
+        archivo = resource.recurso.file.File
+        return FileResponse(open(resource.recurso.file.File, 'rb'))
 
