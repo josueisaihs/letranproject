@@ -1,0 +1,134 @@
+Internal Server Error: /admision/registro/
+Traceback (most recent call last):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/letranproject/Docencia/DatosPersonales/views.py", line 70, in registro
+    if validate_email(username, verify=True):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/validate_email.py", line 131, in validate_email
+    raise Exception('For check the mx records or check if the email exists you must '
+Exception: For check the mx records or check if the email exists you must have installed pyDNS python package
+"POST /admision/registro/ HTTP/1.1" 500 108064
+Internal Server Error: /admision/registro/
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/urllib/request.py", line 1324, in do_open
+    encode_chunked=req.has_header('Transfer-encoding'))
+  File "/usr/lib/python3.7/http/client.py", line 1262, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1308, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1257, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1028, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.7/http/client.py", line 968, in send
+    self.connect()
+  File "/usr/lib/python3.7/http/client.py", line 1424, in connect
+    super().connect()
+  File "/usr/lib/python3.7/http/client.py", line 940, in connect
+    (self.host,self.port), self.timeout, self.source_address)
+  File "/usr/lib/python3.7/socket.py", line 727, in create_connection
+    raise err
+  File "/usr/lib/python3.7/socket.py", line 716, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/letranproject/Docencia/DatosPersonales/views.py", line 53, in registro
+    if form.is_valid():
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 177, in is_valid
+    return self.is_bound and not self.errors
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 172, in errors
+    self.full_clean()
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 374, in full_clean
+    self._clean_fields()
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 392, in _clean_fields
+    value = field.clean(value)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/fields.py", line 150, in clean
+    self.validate(value)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/fields.py", line 76, in validate
+    remoteip=self.get_remote_ip(),
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/client.py", line 66, in submit
+    response = recaptcha_request(params)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/client.py", line 44, in recaptcha_request
+    timeout=getattr(settings, "RECAPTCHA_VERIFY_REQUEST_TIMEOUT", 10)
+  File "/usr/lib/python3.7/urllib/request.py", line 525, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.7/urllib/request.py", line 543, in _open
+    '_open', req)
+  File "/usr/lib/python3.7/urllib/request.py", line 503, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.7/urllib/request.py", line 1367, in https_open
+    context=self._context, check_hostname=self._check_hostname)
+  File "/usr/lib/python3.7/urllib/request.py", line 1326, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 101] Network is unreachable>
+"POST /admision/registro/ HTTP/1.1" 500 212402
+Internal Server Error: /admision/registro/
+Traceback (most recent call last):
+  File "/usr/lib/python3.7/urllib/request.py", line 1324, in do_open
+    encode_chunked=req.has_header('Transfer-encoding'))
+  File "/usr/lib/python3.7/http/client.py", line 1262, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1308, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1257, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.7/http/client.py", line 1028, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.7/http/client.py", line 968, in send
+    self.connect()
+  File "/usr/lib/python3.7/http/client.py", line 1424, in connect
+    super().connect()
+  File "/usr/lib/python3.7/http/client.py", line 940, in connect
+    (self.host,self.port), self.timeout, self.source_address)
+  File "/usr/lib/python3.7/socket.py", line 727, in create_connection
+    raise err
+  File "/usr/lib/python3.7/socket.py", line 716, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/letranproject/Docencia/DatosPersonales/views.py", line 53, in registro
+    if form.is_valid():
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 177, in is_valid
+    return self.is_bound and not self.errors
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 172, in errors
+    self.full_clean()
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 374, in full_clean
+    self._clean_fields()
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/forms.py", line 392, in _clean_fields
+    value = field.clean(value)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/forms/fields.py", line 150, in clean
+    self.validate(value)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/fields.py", line 76, in validate
+    remoteip=self.get_remote_ip(),
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/client.py", line 66, in submit
+    response = recaptcha_request(params)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/captcha/client.py", line 44, in recaptcha_request
+    timeout=getattr(settings, "RECAPTCHA_VERIFY_REQUEST_TIMEOUT", 10)
+  File "/usr/lib/python3.7/urllib/request.py", line 525, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.7/urllib/request.py", line 543, in _open
+    '_open', req)
+  File "/usr/lib/python3.7/urllib/request.py", line 503, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.7/urllib/request.py", line 1367, in https_open
+    context=self._context, check_hostname=self._check_hostname)
+  File "/usr/lib/python3.7/urllib/request.py", line 1326, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 101] Network is unreachable>
+"POST /admision/registro/ HTTP/1.1" 500 212402
