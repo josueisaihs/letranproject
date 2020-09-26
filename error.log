@@ -132,3 +132,15 @@ Traceback (most recent call last):
     raise URLError(err)
 urllib.error.URLError: <urlopen error [Errno 101] Network is unreachable>
 "POST /admision/registro/ HTTP/1.1" 500 212402
+Internal Server Error: /admision/registro/
+Traceback (most recent call last):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/django/core/handlers/base.py", line 179, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/letranproject/Docencia/DatosPersonales/views.py", line 70, in registro
+    if validate_email(username, verify=True):
+  File "/media/josueisaihs/Josue/Negocios/ElijoSoft/LETRAN_PROJECT/env/lib/python3.7/site-packages/validate_email.py", line 131, in validate_email
+    raise Exception('For check the mx records or check if the email exists you must '
+Exception: For check the mx records or check if the email exists you must have installed pyDNS python package
+"POST /admision/registro/ HTTP/1.1" 500 108378

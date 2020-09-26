@@ -42,6 +42,7 @@ class Release(models.Model):
     """Model definition for Release."""
     title = models.CharField(max_length=100, verbose_name="Título")
     resume = models.TextField(verbose_name="Resumen", max_length=150, default="", null=True)
+    background = ImageField(upload_to=os.path.join('static', 'image', 'release'), null=True, blank=True, verbose_name="Imagen Fondo")
     slug = models.SlugField(max_length=140, unique=True)
     body = CKEditor5Field('Cuerpo', config_name='default')
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
@@ -77,7 +78,7 @@ class Release(models.Model):
 @admin.register(Release)
 class ReleaseAdmin(admin.ModelAdmin):
     '''Admin View for Release'''
-    list_display = ('title', 'date', 'slug', 'publicar')
+    list_display = ('title', 'date', 'slug', 'publicar', 'background')
     readonly_fields = ('slug',)
     list_filter = ('publicar',)
     search_fields = ('title',)

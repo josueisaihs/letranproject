@@ -232,77 +232,33 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Ejecucion de las tareas de forma asincornica
 # BACKGROUND_TASK_RUN_ASYNC = True
 ADMINS =(('josueisaihs','josueisaihs@gmail.com'),)
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'debug.log'),
-#         },
-#         'mail_admins': {
-#             'level': 'ERROR',
-#             'class': 'django.utils.log.AdminEmailHandler',
-#             'include_html': True,
-#         },
-#     },
-#     'formatters': {
-#         'verbose': {
-#             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-#             'style': '{',
-#         },
-#         'simple': {
-#             'format': '{levelname} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
+
 LOGGING = { 
- 'version': 1, 
- 'disable_existing_loggers': False, 
- 'handlers': { 
-  # Include the default Django email handler for errors 
-  # This is what you'd get without configuring logging at all. 
-  'mail_admins': { 
-   'class': 'django.utils.log.AdminEmailHandler', 
-   'level': 'ERROR',
-   # But the emails are plain text by default - HTML is nicer 
-   'include_html': True, 
-  }, 
-  # Log to a text file that can be rotated by logrotate 
-  'logfile': { 
-   'class': 'logging.handlers.WatchedFileHandler', 
-   'filename': os.path.join(BASE_DIR, "error.log") 
-  }, 
- }, 
- 'loggers': { 
-  # Again, default Django configuration to email unhandled exceptions 
-  'django.request': { 
-   'handlers': ['mail_admins'], 
-   'level': 'ERROR', 
-   'propagate': True, 
-  }, 
-  # Might as well log any errors anywhere else in Django 
-  'django': { 
-   'handlers': ['logfile', 'mail_admins'], 
-   'level': 'ERROR', 
-   'propagate': False, 
-  }, 
-  # Your own app - this assumes all your logger names start with "myapp." 
-  'myapp': { 
-   'handlers': ['logfile'], 
-   'level': 'WARNING', # Or maybe INFO or DEBUG 
-   'propagate': False 
-  }, 
- }, 
+    'version': 1, 
+    'disable_existing_loggers': False, 
+    'handlers': { 
+        'mail_admins': { 
+            'class': 'django.utils.log.AdminEmailHandler', 
+            'level': 'ERROR',
+            'include_html': True, 
+        },
+        'logfile': { 
+            'class': 'logging.handlers.WatchedFileHandler', 
+            'filename': os.path.join(BASE_DIR, "debug.log") 
+        }, 
+    }, 
+    'loggers': { 
+        'django.request': { 
+            'handlers': ['mail_admins'], 
+            'level': 'ERROR', 
+            'propagate': True, 
+        }, 
+        'django': { 
+            'handlers': ['logfile', 'mail_admins'], 
+            'level': 'ERROR', 
+            'propagate': False, 
+        },
+    }, 
 } 
 
 customColorPalette = [

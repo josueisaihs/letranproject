@@ -81,33 +81,37 @@
 </header>
 <!-- Comunicado -->
     {% if comunicados %}
-    <div >
-        <div id="carouselComunicados" class="carousel slide bg-dark" data-ride="carousel" style="min-height: 50vh; max-height: 50vh;">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                
                 {% for comunicado in comunicados %}                    
                     {% if forloop.first %}
-                        <li data-target="#carouselComunicados" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                     {% else %}
-                        <li data-target="#carouselComunicados" data-slide-to="{{ forloop.counter0 }}"></li>
+                        <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"></li>
                     {% endif %}                        
                 {% endfor %}
             </ol>
-            <div class="carousel-inner">                
+            <div class="carousel-inner">
                 {% for comunicado in comunicados %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %} p-lg-5 p-1 text-white">
-                        <div class="container text-center p-lg-5 px-1 py-3">
-                            <h5> {{ comunicado.title }}</h5>
-                            <p class="text-left px-lg-5 px-1 text-center">{{ comunicado.resume }}</p>
-                            <span><small>{{ comunicado.date|date:"D d M Y h:i" }}</small></span><br><br>
+                    <div class="carousel-item active">
+                        <img src="{{ comunicado.background.url }}" class="d-block img-carousel w-100" 
+                        alt="{{ comunicado.title }}">
+                        <div class="carousel-caption bg-gradient rounded bg-fondo-transparente">
+                            <h5>{{ comunicado.title }}</h5>
+                            <p class="d-none d-md-block">{{ comunicado.resume }}</p>
+                            <span>
+                                <small>{{ comunicado.date|date:"D d M Y h:i" }}</small>
+                            </span>
                             <a role="button" href="{% url 'comunicado' comunicado.slug %}" 
-                            class="btn btn-primary">Leer más</a><br>                            
+                                class="btn btn-primary mt-3">
+                                Leer más
+                            </a>
+                            <br>
                         </div>
-                    </div> 
+                    </div>
                 {% endfor %}
             </div>
         </div>
-    </div>
     {% endif %}
 <!-- Fin Comunicado -->
 <!-- Noticias -->

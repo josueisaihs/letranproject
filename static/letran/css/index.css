@@ -7,7 +7,7 @@ body {
 }
 
 .bg-whatsapp {
-  background-color: #6FD468;
+  background-color: #6fd468;
 }
 
 .spinner-wrapper {
@@ -185,7 +185,9 @@ div {
     overflow: auto;
   }
 
-  .whatsapp { display: none }
+  .whatsapp {
+    display: none;
+  }
 }
 
 .text-small {
@@ -220,18 +222,18 @@ div {
 }
 
 .v-container {
-	position: relative;
-	padding-bottom: 56.25%; /* proporción 16:9 */
-	padding-top: 25px;
-	height: 0;
+  position: relative;
+  padding-bottom: 56.25%; /* proporción 16:9 */
+  padding-top: 25px;
+  height: 0;
 }
 
 .v-container iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .activo {
@@ -320,7 +322,7 @@ image-box .img-v {
 
 @keyframes shimmy {
   0% {
-    transform: translate(0, 0);    
+    transform: translate(0, 0);
   }
   100% {
     transform: translate(0px, 25px);
@@ -335,16 +337,15 @@ blockquote {
   border-radius: 10px;
 }
 
-blockquote::before{
+blockquote::before {
   content: open-quote;
   font-size: xx-large;
   font-family: Roboto Slab;
 }
 
-
 .img-h-enlace:before {
   /*Solo se muestra en imágenes rotas*/
-  display:block;
+  display: block;
   box-sizing: border-box;
   content: "\f03e";
   font-family: "Font Awesome 5 Free";
@@ -352,11 +353,41 @@ blockquote::before{
   font-size: xxx-large;
   white-space: pre-wrap;
   position: absolute;
-  background-color:gainsboro;
-  color:#555;
-  text-align:center;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
+  background-color: gainsboro;
+  color: #555;
+  text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.img-carousel {
+  max-height: 50vh;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 800px){
+  .img-carousel {
+    max-height: 50vh;
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 640px){
+  .img-carousel {
+    max-height: 75vh;
+    object-fit: cover;
+  }
+}
+
+@media screen and (max-width: 480px){
+  .img-carousel {
+    max-height: 100vh;
+    object-fit: cover;
+  }
+}
+
+.bg-fondo-transparente {
+  background-color: rgba(0, 0, 0, 0.6);
 }
