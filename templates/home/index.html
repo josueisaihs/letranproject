@@ -82,7 +82,7 @@
 <!-- Comunicado -->
     {% if comunicados %}
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+            <!-- <ol class="carousel-indicators">
                 {% for comunicado in comunicados %}                    
                     {% if forloop.first %}
                         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -90,11 +90,11 @@
                         <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"></li>
                     {% endif %}                        
                 {% endfor %}
-            </ol>
+            </ol> -->
             <div class="carousel-inner">
                 {% for comunicado in comunicados %}
-                    <div class="carousel-item active">
-                        <img src="{{ comunicado.background.url }}" class="d-block img-carousel w-100" 
+                    <div class="carousel-item active" data-interval="1000">
+                        <img src="{{ comunicado.background|thumbnail_url:'img-1100' }}" class="d-block img-carousel w-100" 
                         alt="{{ comunicado.title }}">
                         <div class="carousel-caption bg-gradient rounded bg-fondo-transparente">
                             <h5>{{ comunicado.title }}</h5>
