@@ -97,7 +97,7 @@
                         <img loading="lazy" src="{{ comunicado.background|thumbnail_url:'img-1100' }}" class="d-block img-carousel w-100" 
                         alt="{{ comunicado.title }}">
                         <div class="carousel-caption bg-gradient rounded bg-fondo-transparente">
-                            <h5>{{ comunicado.title }}</h5>
+                            <h5>{{ comunicado.title|truncatechars:50 }}</h5>
                             <p class="d-none d-md-block">{{ comunicado.resume }}</p>
                             <span>
                                 <small>{{ comunicado.date|date:"D d M Y h:i" }}</small>
