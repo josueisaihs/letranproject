@@ -368,7 +368,7 @@ blockquote::before {
   object-fit: cover;
 }
 
-@media screen and (max-width: 800px){
+/* @media screen and (max-width: 800px) {
   .img-carousel {
     max-height: 50vh;
     min-width: 50vh;
@@ -376,7 +376,7 @@ blockquote::before {
   }
 }
 
-@media screen and (max-width: 640px){
+@media screen and (max-width: 640px) {
   .img-carousel {
     max-height: 75vh;
     min-height: 75vh;
@@ -384,13 +384,13 @@ blockquote::before {
   }
 }
 
-@media screen and (max-width: 480px){
+@media screen and (max-width: 480px) {
   .img-carousel {
     max-height: 100vh;
     min-height: 100vh;
     object-fit: cover;
   }
-}
+} */
 
 .bg-fondo-transparente {
   background-color: rgba(0, 0, 0, 0.6);
