@@ -342,7 +342,7 @@ class SectionCommentsAdmin(admin.ModelAdmin):
 
 class Recurso(models.Model):
     slug = models.SlugField(max_length=140, default="")
-    name = models.CharField(max_length=50, verbose_name="Nombre")
+    name = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
     recurso = models.FileField(verbose_name="Recurso", 
     upload_to=os.path.join('static', 'recurso'), null=True, blank=True,)
     image = ImageField(upload_to=os.path.join('static', 'recurso', 'miniatura'), null=True, blank=True)
