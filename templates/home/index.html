@@ -85,15 +85,15 @@
             <!-- <ol class="carousel-indicators">
                 {% for comunicado in comunicados %}                    
                     {% if forloop.first %}
-                        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselComunicado" data-slide-to="0" class="active"></li>
                     {% else %}
-                        <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}"></li>
+                        <li data-target="#carouselComunicado" data-slide-to="{{ forloop.counter0 }}"></li>
                     {% endif %}                        
                 {% endfor %}
             </ol> -->
             <div class="carousel-inner">
                 {% for comunicado in comunicados %}
-                    <div class="carousel-item active" data-interval="1000">
+                    <div class="carousel-item{% if forloop.first %} active{% endif %}" data-interval="3000">
                         <img loading="lazy" src="{{ comunicado.background|thumbnail_url:'img-1100' }}" class="d-block img-carousel w-100" 
                         alt="{{ comunicado.title }}">
                         <div class="carousel-caption bg-gradient rounded bg-fondo-transparente">
@@ -101,7 +101,7 @@
                             <p class="d-none d-md-block">{{ comunicado.resume }}</p>
                             <span>
                                 <small>{{ comunicado.date|date:"D d M Y h:i" }}</small>
-                            </span>
+                            </span><br>
                             <a role="button" href="{% url 'comunicado' comunicado.slug %}" 
                                 class="btn btn-primary mt-3">
                                 Leer más
@@ -456,6 +456,7 @@
 </div>
 <!-- Fin Que Hacemos-->
 {% endblock contenido %}
+
 {% block headerScripts%}
 {% endblock headerScripts%}
     

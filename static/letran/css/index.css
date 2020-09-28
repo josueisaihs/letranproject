@@ -364,12 +364,14 @@ blockquote::before {
 
 .img-carousel {
   max-height: 50vh;
+  min-height: 50vh;
   object-fit: cover;
 }
 
 @media screen and (max-width: 800px){
   .img-carousel {
     max-height: 50vh;
+    min-width: 50vh;
     object-fit: cover;
   }
 }
@@ -377,6 +379,7 @@ blockquote::before {
 @media screen and (max-width: 640px){
   .img-carousel {
     max-height: 75vh;
+    min-height: 75vh;
     object-fit: cover;
   }
 }
@@ -384,6 +387,7 @@ blockquote::before {
 @media screen and (max-width: 480px){
   .img-carousel {
     max-height: 100vh;
+    min-height: 100vh;
     object-fit: cover;
   }
 }
