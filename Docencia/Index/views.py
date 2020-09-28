@@ -142,10 +142,10 @@ def cursos(req):
     return render(req, TEMPLETE_PATH % "cursos", locals())
 
 # @cache_page(60 * 15)
-def curso(req, pk):
+def curso(req, slug):
     navcursos = "active"
-    curso = CourseInformation.objects.get(pk=pk)
-    courses_ = CourseInformation.objects.filter(area=curso.area.pk).exclude(pk=pk)[:6]
+    curso = CourseInformation.objects.get(slug=slug)
+    courses_ = CourseInformation.objects.filter(area=curso.area.pk).exclude(slug=slug)[:6]
 
     # Requeridos en todo el Index
     header = HeaderIndex.objects.get(isVisible=True)

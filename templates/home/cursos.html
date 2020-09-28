@@ -79,7 +79,7 @@
         <div class="col-lg-8"> 
             <div class="row row-cols-1 g-0 row-cols-md-1 mr-lg-5 ml-md-3">    
                 {% for course in courses %}
-                    <div class="card mb-3" data-area="{{ course.area.name }}" data-tipo="{{ course.category.name }}" data-course="{{ course.name }}" data-admision="{% if course.isAvailableRegistre %}Abierta{% else %}Cerrada{% endif %}" onclick="window.location.href='{% url 'curso' course.pk %}'">
+                    <div class="card mb-3" data-area="{{ course.area.name }}" data-tipo="{{ course.category.name }}" data-course="{{ course.name }}" data-admision="{% if course.isAvailableRegistre %}Abierta{% else %}Cerrada{% endif %}" onclick="window.location.href='{% url 'curso' course.slug %}'">
                         <div class="row g-0">
                             <div class="col-md-4 image-box">
                                 <img loading="lazy" src="{{ course.image|thumbnail_url:'img-640' }}" srcset="

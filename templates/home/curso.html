@@ -119,7 +119,7 @@
                     <ul class="mt-2">
                         {% for course in courses_ %}
                             <div class="border-bottom">
-                                <a class="p-1" href="{% url 'curso' course.pk %}" rel="canonical">
+                                <a class="p-1" href="{% url 'curso' course.slug %}" rel="canonical">
                                     <div><h5 class="text-roboto-slab">{{ course.name }}</h5>
                                     <p class="text-roboto-slab text-dark">{{ course.description|truncatechars:50 }}</p>
                                     <small class="text-roboto-slab text-muted">{{ course.area.name }}</small></div>

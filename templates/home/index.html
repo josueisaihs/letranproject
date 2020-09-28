@@ -381,7 +381,7 @@
                 {% regroup courses by area as courses_list %}          
                 {% for course in courses %}  
                         <div data-course="{{ course.area }}" class="curso-contenedor col">
-                            <div class="card" onclick="window.location.href='{% url 'curso' course.pk %}'">
+                            <div class="card" onclick="window.location.href='{% url 'curso' course.slug %}'">
                                 <div class="image-box">
                                     <img src="{{ course.image.url|thumbnail_url:'img-600' }}" class="card-img-top img-fluid" 
                                     srcset="
