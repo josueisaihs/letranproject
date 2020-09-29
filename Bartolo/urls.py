@@ -41,7 +41,8 @@ urlpatterns = [
     # Aplicacion
     path('docencia/', include('Docencia.urls')),
     path('', include('Docencia.urls')),
-    path("ckeditor5/", include('django_ckeditor_5.urls')),
+    # path("ckeditor/", include('django_ckeditor_5.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     
     # Social Auth
     path('social/', include('social_django.urls', namespace='social')),

@@ -11,6 +11,8 @@ from Docencia.decorators import isStudentAceptado
 from Docencia.Plataforma.models import Class
 from Docencia.Index.models import Recurso
 
+from Docencia.Plataforma.forms import ClassForm
+
 from datetime import datetime
 import mimetypes
 
@@ -99,3 +101,5 @@ def downloadResource(req, slug):
         # response['Content-Disposition'] = "attachment; filename=%s" % resource.name
         # return response
 
+def createclass(req):
+        return render(req, TEMPLETE_PATH % "classform", locals())        

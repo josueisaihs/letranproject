@@ -22,6 +22,7 @@ urlpatterns = [
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
     path("plataforma/dashboard/clase/<slug:slug>/", views.plataforma.clase, name="plataforma_clase"),
     path("plataforma/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadResource, name="plataforma_recurso"),
+    path("clase/crear/", views.plataforma.createclass, name="plataforma_create_clase"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),
