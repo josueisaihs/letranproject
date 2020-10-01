@@ -18,10 +18,17 @@ urlpatterns = [
     path("recursos/", views.index.recursos, name="recursos"),
     path("politicaprivacidad/", views.politicaprivacidad, name="politicaprivacidad"),
 
-    # path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma"),
+    # Plataforma Estudiantes
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
     path("plataforma/dashboard/clase/<slug:slug>/", views.plataforma.clase, name="plataforma_clase"),
     path("plataforma/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadResource, name="plataforma_recurso"),
+
+    #Plataforma Profesores
+    path("plataforma/admin/dashboard/", views.plataforma.admindashboard, name="plataforma_admin_index"),
+    path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),
+    path("plataforma/admin/dashboard/<slug:slug>/clase/<slug:slugclass>/editar/", views.plataforma.adminclass_edit, name="plataforma_admin_clase_editar"),
+    path("plataforma/admin/dashboard/clase/file/upload/", views.plataforma.uploadfile, name="plataforma_admin_upload"),
+    path("plataforma/admin/dashboard/clase/file/delete/", views.plataforma.deletefile, name="plataforma_admin_delete"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),

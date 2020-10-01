@@ -1,0 +1,109 @@
+
+{% extends './base.html' %}
+{% load static %}
+{% block titleHead %}Docencia{% endblock titleHead %}
+{% block importCSS %}
+    <!-- View -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/dashboard.css' %}">
+    {% comment %} <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> {% endcomment %}
+{% endblock importCSS %}
+{% block contenido %}
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="{% url 'plataforma_admin_index' %}">
+            CFBC
+        </a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- <input class="form-control w-100" type="text" value="Centro Fray Bartolomé de las Casas" readonly> -->
+        
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {{ index }}" aria-current="page" href="{% url 'plataforma_admin_index' %}">
+                            <span data-feather="home"></span>
+                            Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>Mis Cursos</span>
+                        </h6>
+                        <ul class="nav flex-column mb-2 nav-cursos">
+                            {% for course in courses %}                                
+                                <li class="nav-item">
+                                    <a class="collapse-title nav-link"
+                                        data-toggle="collapse" href="#{{ course.slug }}" role="button" aria-expanded="{% ifequal course.pk clase.subject.course.pk %}true{% else %}false{% endifequal %}" {% ifequal course.pk clase.subject.course.pk %}aria-current="true"{% endifequal %}>
+                                        {{ course.name }}
+                                    </a>
+                                </li>
+                                <div class="collapse {% ifequal course.pk clase.subject.course.pk %}show{% endifequal %}" id="{{ course.slug }}">
+                                    {% for subject in course.subjects %}
+                                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 ml-2 mt-1 mb-1 text-muted">
+                                            <span>{{ subject.name }}</span>
+                                        </h6>
+                                        <ul class="nav flex-column mb-2 ml-2">
+                                        {% for clase_ in subject.classes %}
+                                            <li class="nav-item">
+                                                <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" href="{% url 'plataforma_admin_clase_editar' subject.slug clase_.slug %}">
+                                                    {{ clase_.name }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                            
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item border-top">
+                        <a class="nav-link" href="{% url 'pwdreset' %}">
+                            <span data-feather="bookmark"></span>
+                            Gestión Contraseña
+                        </a>
+                    </li>
+                    <li class="nav-item border-top">
+                        <a class="nav-link" href="{% url 'logout' %}">Cerrar Sessión</a>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Hola {{ student.name }}</h1>
+                </div>
+                 {% if messages %}
+                    {% for message in messages %}
+                        {% ifequal message.level 40 %}
+                            <div class="alert alert-danger lg" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endifequal %}
+                    {% endfor %}
+                {% endif %}
+                {% block dashboard_content %}
+                {% endblock dashboard_content %}
+            </main>
+                
+        </div>
+    </div>
+{% endblock contenido %}
+
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/ajaxdjango.js' %}"></script>
+{% endblock importScripts %}
+
+
+{% block scripts %}
+   
+{% endblock scripts %}
+    
+    
+    

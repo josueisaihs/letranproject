@@ -24,7 +24,6 @@ class StudentPersonalInformationForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'José María',
                 'autofocus': 'on'
-                
             }),
             "lastname": forms.TextInput(attrs={
                 'class': 'form-control',

@@ -1,0 +1,161 @@
+{% extends './admindashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <form action="." method="POST" id="id_classform">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="row mb-3 g-3">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text">Título</span>
+                    {{ form.name }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="input-group date" id="id_datepub_div" data-target-input="nearest">
+                    {{ form.datepub }}
+                    <button class="btn btn-outline-secondary" type="button" data-target="#id_datepub_div" data-toggle="datetimepicker"><i class="fa fa-calendar"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ckeditor mb-3">
+            <label class="required" for="id_classbody"></label>
+            {{ form.classbody }}
+            <!-- <script id="id_classbody_script" type="application/json">
+                {"toolbar": ["heading", "|", "outdent", "indent", "|", "bold", "italic", "link", "underline", "strikethrough", "code", "subscript", "superscript", "highlight", "|", "bulletedList", "numberedList", "todoList", "|", "blockQuote", "imageUpload", "|", "fontSize", "fontFamily", "fontColor", "fontBackgroundColor", "mediaEmbed", "removeFormat", "insertTable"], "blockToolbar": ["paragraph", "heading1", "heading2", "heading3", "|", "bulletedList", "numberedList", "|", "blockQuote", "imageUpload"], "image": {"toolbar": ["imageTextAlternative", "imageTitle", "|", "imageStyle:alignLeft", "imageStyle:full", "imageStyle:alignRight", "imageStyle:alignCenter", "imageStyle:side"], "styles": ["full", "side", "alignLeft", "alignRight", "alignCenter"]}, "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells", "tableProperties", "tableCellProperties"], "tableProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}, "tableCellProperties": {"borderColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}], "backgroundColors": [{"color": "hsl(4, 90%, 58%)", "label": "Red"}, {"color": "hsl(340, 82%, 52%)", "label": "Pink"}, {"color": "hsl(291, 64%, 42%)", "label": "Purple"}, {"color": "hsl(262, 52%, 47%)", "label": "Deep Purple"}, {"color": "hsl(231, 48%, 48%)", "label": "Indigo"}, {"color": "hsl(207, 90%, 54%)", "label": "Blue"}]}}, "heading": {"options": [{"model": "paragraph", "title": "Paragraph", "class": "ck-heading_paragraph"}, {"model": "heading1", "view": "h1", "title": "Heading 1", "class": "ck-heading_heading1 h1"}, {"model": "heading2", "view": "h2", "title": "Heading 2", "class": "ck-heading_heading2 h2"}, {"model": "heading3", "view": "h3", "title": "Heading 3", "class": "ck-heading_heading3 h3"}, {"model": "heading4", "view": "h4", "title": "Heading 4", "class": "ck-heading_heading4 h4"}, {"model": "heading5", "view": "h5", "title": "Heading 5", "class": "ck-heading_heading5 h5"}, {"model": "heading6", "view": "h6", "title": "Heading 6", "class": "ck-heading_heading6 h6"}]}}
+            </script> -->
+        </div>
+
+        <div class="border rounded py-4 px-2">
+            <div enctype="multipart/form-data" id="id_uploadfile_form">
+                <p><i class="fas fa-paperclip"></i> Archivos Adjuntos <span class="badge rounded-pill bg-primary badge-files invisible"></span> <span class="files-size text-secondary invisible float-rigth"></span></p>
+                <div class="input-group">
+                    <div class="form-file">
+                        <input type="file" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="form-file-label" for="inputGroupFile01">
+                            <span class="form-file-text file-name">Archivo...</span>
+                            <span class="form-file-button">Buscar</span>
+                        </label>
+                    </div>                
+                </div>
+                <div class="d-flex align-items-center form-upload invisible">
+                    <strong class="text"></strong>
+                    <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+                </div>
+            </div>
+            
+            <div id="id_toastError" class="toast fixed-bottom my-5 mx-2" data-delay="10000" data-animation="true" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header bg-danger text-white">
+                    <strong class="mr-auto"><i class="fa fa-exclamation-circle fa-lg mr-2"></i> Error</strong>
+                    <small class="">Ahora</small>
+                    <button type="button" class="ml-2 mb-1 close text-white" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body toast-error-text">
+                    Ha ocurrido un error
+                </div>
+            </div>    
+
+            <div class="files-upload">
+                <div class="d-flex align-items-stretch mt-2">
+                    
+                    {% for resource in class_edit.resources.all %}
+                        <a class="d-inline-flex border px-2 rounded m-1" role="button" onclick="$(this).remove();removeFile('{{ resource.name }}', {{ resource.recurso.size }});">
+                            <div class="d-flex flex-column text-center text-small py-1">
+                                <div class="text-primary">
+                                    <i class="fa                                     
+                                    {% with resource as recurso %}                                        
+                                        {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
+                                            fa-file-code
+                                            {% endif %}                
+                                            {% if recurso.tipo == 'audio' %}
+                                            fa-file-audio
+                                            {% endif %}                
+                                            {% if recurso.tipo == 'video' %}
+                                            fa-file-video
+                                            {% endif %}
+                                            {% if recurso.tipo == 'imagen' %}
+                                            fa-file-image
+                                            {% endif %}                
+                                            {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
+                                            fa-file-alt 
+                                        {% endif %}
+                                    {% endwith %}"></i> {{ resource.name }}
+                                </div>
+                            </div>
+                            <div class="ml-2 flex-fill align-self-center text-small">
+                                {{ resource.recurso.size|filesizeformat }}
+                            </div>
+                            <div class="ml-2 flex-fill align-self-center text-small">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        </a>
+                    {% endfor %}
+                        
+                </div>
+            </div>
+        </div>
+        
+        {{ form.subject }}
+        {{ form.recursosjson }}
+        
+        <input type="submit" id="id_salvar" value="Salvar" class="btn btn-primary mt-3"/>
+    </form>
+
+    
+    
+{% endblock %}
+
+{% block importScripts %}
+<link href="{% static 'django_ckeditor_5/dist/styles.css' %}" type="text/css" media="all" rel="stylesheet">
+<script defer src="{% static 'django_ckeditor_5/dist/bundle.js' %}"></script>
+<!-- Calendario -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+
+<!-- Tempus Dominus Bootstrap 4 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+<script defer src="{% static 'letran/js/datetimepicker.js' %}"></script>
+
+<script defer src="{% static 'letran/js/ajaxupload.js' %}"></script>
+{% endblock importScripts %}
+
+
+{% block scripts %}
+    const urlupload = "{% url 'plataforma_admin_upload' %}";
+    const urldelete = "{% url 'plataforma_admin_delete' %}";
+    const subject = {{ subject.pk }};
+    let filess = 0;
+    {% if class_edit %}
+        const filesm = {{ class_edit.resources.all|length }}
+        
+        {% for resource in class_edit.resources.all %}
+            filess += {{ resource.recurso.size }};
+        {% endfor %}
+            
+    {% else %} 
+        const filesm = 0;       
+    {% endif %}
+        
+    
+{% endblock scripts %}
+    
+    
