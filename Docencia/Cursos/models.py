@@ -289,7 +289,7 @@ class SubjectInformation(models.Model):
     slug = models.SlugField(max_length=250, default="")
     name = models.CharField(max_length=50, verbose_name="Nombre")
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
-    credicts = models.DecimalField(verbose_name="Creditos", max_digits=3, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
+    credicts = models.DecimalField(verbose_name="Creditos", max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     showCredicts = models.BooleanField(default=False, verbose_name="Mostrar Creditos")
     # Certificacion de notas de la asginatura
     needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")
