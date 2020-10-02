@@ -164,7 +164,7 @@ def adminclass(request, slug):
                         form = ClassForm()
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
         except:
-                messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 def uploadfile(req):
@@ -229,5 +229,5 @@ def adminclass_edit(request, slug, slugclass):
                         form = ClassForm(instance=class_edit)
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
         except:
-                messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
