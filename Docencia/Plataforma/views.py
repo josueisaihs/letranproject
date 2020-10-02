@@ -156,7 +156,10 @@ def adminclass(request, slug):
                         recursos = []
                         for filename in form.cleaned_data['recursosjson']['name']:
                                 recursos.append(Recurso.objects.get(name=filename))
-                        class_.resources.set(recursos)
+                        if recursos.__len__() > 0:
+                                class_.resources.set(recursos)
+                        else:
+                                class_.resources.clear()
 
                         class_.save()
                         return HttpResponseRedirect('/plataforma/admin/dashboard/')
@@ -221,7 +224,10 @@ def adminclass_edit(request, slug, slugclass):
                         recursos = []
                         for filename in form.cleaned_data['recursosjson']['name']:
                                 recursos.append(Recurso.objects.get(name=filename))
-                        class_.resources.set(recursos)
+                        if recursos.__len__() > 0:
+                                class_.resources.set(recursos)
+                        else:
+                                class_.resources.clear()
                                 
                         class_.save()
                         return HttpResponseRedirect('/plataforma/admin/dashboard/')
