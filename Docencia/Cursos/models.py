@@ -5,8 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.timezone import now
-# from django_ckeditor_5.fields import CKEditor5Field
-from ckeditor_uploader.fields import RichTextUploadingField
+from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.text import slugify
 
 from easy_thumbnails.fields import ThumbnailerImageField as ImageField
@@ -295,8 +294,7 @@ class SubjectInformation(models.Model):
     teachers = models.ManyToManyField("Docencia.TeacherPersonalInformation", verbose_name="Profesor(es)")
     # TODO la boleta final en base a 10, 
     
-    # description = CKEditor5Field('Descripción', config_name='extends')
-    description = RichTextUploadingField()
+    description = CKEditor5Field('Descripción', config_name='extends')
     
     evaluations = []
     classes = []

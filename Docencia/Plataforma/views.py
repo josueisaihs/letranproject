@@ -13,8 +13,6 @@ from Docencia.Index.models import Recurso
 from Docencia.Plataforma.forms import ClassForm
 from Docencia.Index.forms import RecursoForm
 
-from Docencia.Plataforma.forms import ClassForm
-
 from datetime import datetime
 import mimetypes
 
