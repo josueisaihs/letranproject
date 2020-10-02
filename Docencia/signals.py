@@ -12,12 +12,12 @@ from Docencia.Cursos.models import Edition
 
 @receiver(post_save, sender=Edition)
 def signal_enviar_email_admision(sender, instance, **kwargs):
-    # if (kwargs.get('created', False)):
-    delta = instance.dateinit - date.today()
-    enviar_admitidos(
-        instance.pk,
-        schedule=delta
-    )
+    if (kwargs.get('created', False)):
+        delta = instance.dateinit - date.today()
+        enviar_admitidos(
+            instance.pk,
+            schedule=delta
+        )
 
 @receiver(post_save, sender=News)
 def signal_enviar_email(sender, instance, **kwargs):
