@@ -24,50 +24,57 @@ def admindashboard(req):
     user = User.objects.get(username=req.user.username)
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
     courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
+    try:
+        edition = Edition.objects.get(
+            dateinit__gte=datetime.today(), 
+            dateend__gte=datetime.today()
+        )
 
-    edition = Edition.objects.get(
-        dateinit__gte=datetime.today(), 
-        dateend__gte=datetime.today()
-    )
+        apps = []
+        for course in courses:
+            for app in Application.objects.filter(edition=edition, course=course):
+                apps.append(app)
+        
+        coursepk = courses[0].pk
 
-    apps = []
-    for course in courses:
-        for app in Application.objects.filter(edition=edition, course=course):
-            apps.append(app)
-    
-    coursepk = courses[0].pk
-
-    return render(
-        req, TEMPLETE_PATH % "appTables", locals())
+        return render(
+            req, TEMPLETE_PATH % "appTables", locals())
+    except:
+        messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(dec.isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def admindashboard_course(req, coursepk):
     user = User.objects.get(username=req.user.username)
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-    edition = Edition.objects.get(
-        dateinit__gte=datetime.today(), 
-        dateend__gte=datetime.today()
-    )
-
-    courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
-
-    course = CourseInformation.objects.get(pk = coursepk)
     try:
-        apps = Application.objects.filter(edition=edition, course=course)
+        edition = Edition.objects.get(
+            dateinit__gte=datetime.today(), 
+            dateend__gte=datetime.today()
+        )
 
-        paginador = Paginator(apps, 25)
-    
-        page_number = req.GET.get('page')
-        page_obj = paginador.get_page(page_number)
+        courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
 
-        del apps
+        course = CourseInformation.objects.get(pk = coursepk)
+        try:
+            apps = Application.objects.filter(edition=edition, course=course)
+
+            paginador = Paginator(apps, 25)
+        
+            page_number = req.GET.get('page')
+            page_obj = paginador.get_page(page_number)
+
+            del apps
+        except:
+            messages.error(req, "No hay aplicaciones")
+
+        VIEW = "LIST"
+        
+        return render(req, TEMPLETE_PATH % "appTables", locals())
     except:
-        messages.error(req, "No hay aplicaciones")
-
-    VIEW = "LIST"
-    
-    return render(req, TEMPLETE_PATH % "appTables", locals())
+        messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @require_POST
 @user_passes_test(dec.isTeacher, login_url="/login/", redirect_field_name="next")
@@ -107,69 +114,77 @@ def admindashboard_accion(req):
 def admindashboard_detail(req, coursepk):
     user = User.objects.get(username=req.user.username)
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-    edition = Edition.objects.get(
-        dateinit__gte=datetime.today(), 
-        dateend__gte=datetime.today()
-    )
-
-    courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
-
-    course = CourseInformation.objects.get(pk = coursepk)
     try:
-        apps_obj = Application.objects.filter(edition=edition, course=course)
-        apps = []
+        edition = Edition.objects.get(
+            dateinit__gte=datetime.today(), 
+            dateend__gte=datetime.today()
+        )
 
-        for app in apps_obj:
-            answers = AnswerApplication.objects.filter(student=app.student, askApp__app__course=course.pk).order_by('askApp__order')
-            app.answers = answers
-            apps.append(app)
+        courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
 
-        paginador = Paginator(apps, 1)
-        
-        page_number = req.GET.get('page')
-        page_obj = paginador.get_page(page_number)
+        course = CourseInformation.objects.get(pk = coursepk)
+        try:
+            apps_obj = Application.objects.filter(edition=edition, course=course)
+            apps = []
 
-        del apps_obj
-        del answers
+            for app in apps_obj:
+                answers = AnswerApplication.objects.filter(student=app.student, askApp__app__course=course.pk).order_by('askApp__order')
+                app.answers = answers
+                apps.append(app)
 
-        VIEW = "DETAIL"
+            paginador = Paginator(apps, 1)
+            
+            page_number = req.GET.get('page')
+            page_obj = paginador.get_page(page_number)
+
+            del apps_obj
+            del answers
+
+            VIEW = "DETAIL"
+        except:
+            messages.error(req, "No hay aplicaciones")    
+
+        return render(req, TEMPLETE_PATH % "appDetail", locals())
     except:
-        messages.error(req, "No hay aplicaciones")    
-
-    return render(req, TEMPLETE_PATH % "appDetail", locals())
+        messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(dec.isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def admindashboard_student_detail(req, apppk):
     user = User.objects.get(username=req.user.username)
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-    edition = Edition.objects.get(
-        dateinit__gte=datetime.today(), 
-        dateend__gte=datetime.today()
-    )
+    try:
+        edition = Edition.objects.get(
+            dateinit__gte=datetime.today(), 
+            dateend__gte=datetime.today()
+        )
 
-    courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
+        courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
 
-    # try:
-    app_obj = Application.objects.get(pk = apppk)
-    course = CourseInformation.objects.get(pk = app_obj.course.pk)
-    coursepk = course.pk
-    apps = []
+        try:
+            app_obj = Application.objects.get(pk = apppk)
+            course = CourseInformation.objects.get(pk = app_obj.course.pk)
+            coursepk = course.pk
+            apps = []
 
-    answers = AnswerApplication.objects.filter(student=app_obj.student, askApp__app__course=course.pk).order_by('askApp__order')
-    app_obj.answers = answers
-    apps.append(app_obj)
+            answers = AnswerApplication.objects.filter(student=app_obj.student, askApp__app__course=course.pk).order_by('askApp__order')
+            app_obj.answers = answers
+            apps.append(app_obj)
 
-    paginador = Paginator(apps, 1)
-    
-    page_number = req.GET.get('page')
-    page_obj = paginador.get_page(page_number)
+            paginador = Paginator(apps, 1)
+            
+            page_number = req.GET.get('page')
+            page_obj = paginador.get_page(page_number)
 
-    del app_obj
-    del answers
+            del app_obj
+            del answers
 
-    VIEW = "STUDENT"
-    # except:
-    #     messages.error(req, "No hay aplicaciones")    
+            VIEW = "STUDENT"
+        except:
+            messages.error(req, "No hay aplicaciones")    
 
-    return render(req, TEMPLETE_PATH % "appDetail", locals())
+        return render(req, TEMPLETE_PATH % "appDetail", locals())
+    except:
+        messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")

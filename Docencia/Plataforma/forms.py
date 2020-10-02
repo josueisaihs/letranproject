@@ -1,5 +1,4 @@
 from django import forms
-from django_ckeditor_5.fields import CKEditor5Field
 
 from Docencia.Plataforma.models import Class
 import json

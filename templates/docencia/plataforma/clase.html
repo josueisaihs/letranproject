@@ -3,7 +3,7 @@
     <p class="h2 text-capitalize">{{ clase.name }}</p>
     <small class="text-muted">{{ clase.subject.course.name }} | {{ clase.datepub|date:"D d M y" }}</small>
     <div class="ckeditor row">
-        {{ clase.body|safe }}
+        {{ clase.classbody|safe }}
     </div>
     <div class="row m-2 g-2">
         <div class="col-12">
