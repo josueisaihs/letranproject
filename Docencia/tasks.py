@@ -150,3 +150,19 @@ def enviar_evento_suscriptores(pk, title, resumen):
     email.content_subtype = "html" 
     email.send(fail_silently=True)
 
+@background(schedule=10)
+def enviar_admitidos(edition_pk):
+    # lookup user by id and send them a message
+    edition = Edition.objects.get(pk=edition_pk)
+
+    apps = Application.objects.filter(edition=edition, status="aceptado")
+    for app in apps:
+        student = StudentPersonalInformation.objects.get(pk=app.student.pk)
+        email = EmailMessage(
+                    "Admitido en el Centro Fray Bartolomé de las Casas", 
+                    "Al recibir este correo electrónico, tenemos el placer de informarle que ha sido admitido para cursar el %s de %s. Para iniciar sus actividades chequée el CAMPUS VIRTUAL: https://bartolo.org/plataforma/dashboard/" % (app.course.category.name, app.course.name),
+                    to=[student.email],
+        )
+        email.send(fail_silently=False)
+   
+
