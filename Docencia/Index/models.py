@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-# from django_ckeditor_5.fields import CKEditor5Field
+from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from django.utils.timezone import now
@@ -44,7 +44,7 @@ class Release(models.Model):
     resume = models.TextField(verbose_name="Resumen", max_length=150, default="", null=True)
     background = ImageField(upload_to=os.path.join('static', 'image', 'release'), null=True, blank=True, verbose_name="Imagen Fondo")
     slug = models.SlugField(max_length=140, unique=True)
-    # body = CKEditor5Field('Cuerpo', config_name='default')
+    body = CKEditor5Field('Cuerpo', config_name='default')
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
     publicar = models.BooleanField(verbose_name="¿Publicar?", default=False)
 
@@ -55,8 +55,7 @@ class Release(models.Model):
         verbose_name_plural = 'Index - Comunicados'
 
     def bodysend(self, m=100):
-        # return self.body[:m].replace("<p>", "").replace("</p>", "\n")
-        return ""
+        return self.body[:m].replace("<p>", "").replace("</p>", "\n")
     
     def _get_unique_slug(self):
         slug = slugify(self.title)
@@ -100,7 +99,7 @@ class News(models.Model):
     resume = models.TextField(verbose_name="Resumen", max_length=250, default="")
     title = models.CharField(max_length=100, verbose_name="Título")
     slug = models.SlugField(max_length=140, default="")
-    # body = CKEditor5Field('Cuerpo', config_name='extends')
+    body = CKEditor5Field('Cuerpo', config_name='extends')
     link = models.URLField(verbose_name="Enlace", blank=True)
     image = ImageField(upload_to=os.path.join('static', 'image', 'news'), null=True, blank=True, verbose_name="Imagen Principal")
     date = models.DateTimeField(verbose_name="Fecha de Publicación")
@@ -138,7 +137,7 @@ class News(models.Model):
     
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
-    fields = ('category', 'title', 'link', 'date', 'image', 'resume', 'slug')
+    fields = ('category', 'title', 'link', 'date', 'image', 'resume', 'body', 'slug')
     list_display = ('category', 'title', 'link', 'date',)
     search_fields = ('title',)
     ordering = ('-date', 'title')
