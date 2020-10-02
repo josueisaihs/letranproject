@@ -7,11 +7,13 @@ from django.utils import timezone
 from django.utils.timezone import now
 from django_ckeditor_5.fields import CKEditor5Field
 from django.utils.text import slugify
+from django.core.validators import MinValueValidator
 
 from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
 from datetime import date, timedelta
+from decimal import Decimal
 
 from Docencia.DatosPersonales.models import TeacherPersonalInformation, StudentPersonalInformation
 
@@ -287,7 +289,7 @@ class SubjectInformation(models.Model):
     slug = models.SlugField(max_length=250, default="")
     name = models.CharField(max_length=50, verbose_name="Nombre")
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
-    credicts = models.SmallIntegerField(verbose_name="Creditos")
+    credicts = models.DecimalField(verbose_name="Creditos", decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     showCredicts = models.BooleanField(default=False, verbose_name="Mostrar Creditos")
     # Certificacion de notas de la asginatura
     needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")
