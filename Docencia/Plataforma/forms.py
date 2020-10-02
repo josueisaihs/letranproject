@@ -1,24 +1,32 @@
 from django import forms
-from django.core.exceptions import NON_FIELD_ERRORS
-from .models import *
-from django.utils.translation import gettext_lazy as _
-
-__author__ = "Josue Isai Hernandez Sanchez"
-__email__ = "josueisaihs@gmail.com"
 
 from Docencia.Plataforma.models import Class
+import json
 
-class ClassForm(forms.ModelForm):    
+
+class ClassForm(forms.ModelForm):
+    recursosjson = forms.JSONField(
+        max_length=1024,
+        widget=forms.HiddenInput()
+    )
+
     class Meta:
         model = Class
-        fields = ("subject", "name", "body", "datepub", "resources")
-        labels = {
-            "subject": "Asignatura",
-            "name": "Título",
-            "body": "Cuerpo",
-            "datepub": "Fecha de Publicación",
-            "resources": "Recursos"
+        fields = ('subject', 'name', 'classbody', 'datepub')
+        widgets = {            
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Clase X',
+                'autofocus': 'on'
+            }),
+            'subject': forms.Select(attrs={
+                'class': 'form-label-group form-select form-select-md d-none'
+            }),
+            'body': forms.Textarea(attrs={
+                'class': 'django_ckeditor_5'
+            }),
+            'datepub': forms.DateTimeInput(attrs={
+                'class': 'form-control datetimepicker-input',
+                'data-target': '#id_datepub_div',
+            })
         }
-
-
-

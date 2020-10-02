@@ -1,5 +1,5 @@
 from django.db import models
-# from django_ckeditor_5.fields import CKEditor5Field
+from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib import admin
 from django.utils.text import slugify
 
@@ -11,8 +11,7 @@ class Class(models.Model):
     subject = models.ForeignKey("Docencia.SubjectInformation", verbose_name="Asignatura", 
     on_delete=models.CASCADE, default=1)
     name = models.CharField(verbose_name="Nombre", max_length=100)
-    # body=CKEditor5Field('Cuerpo', config_name='extends')
-    body = models.TextField()
+    classbody=CKEditor5Field('Cuerpo', config_name='extends')
     uploaddate = models.DateField('Fecha Creación', auto_now=True)
     datepub = models.DateTimeField('Fecha Pub.', auto_now=False, auto_now_add=False)
     resources =  models.ManyToManyField("Docencia.Recurso", verbose_name="Recursos", blank=True, limit_choices_to={'access': False})

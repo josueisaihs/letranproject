@@ -292,7 +292,7 @@ class SubjectInformation(models.Model):
     showCredicts = models.BooleanField(default=False, verbose_name="Mostrar Creditos")
     # Certificacion de notas de la asginatura
     needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")
-    
+    teachers = models.ManyToManyField("Docencia.TeacherPersonalInformation", verbose_name="Profesor(es)")
     # TODO la boleta final en base a 10, 
     
     # description = CKEditor5Field('Descripción', config_name='extends')
@@ -325,7 +325,7 @@ class SubjectInformation(models.Model):
         
 @admin.register(SubjectInformation)
 class SubjectInformationAdmin(admin.ModelAdmin):
-    fields = ["name", "course", "description", "credicts", "showCredicts", "needBallot", "slug"]
+    fields = ["name", "teachers", "course", "description", "credicts", "showCredicts", "needBallot", "slug"]
     ordering = ["name", "course", "credicts"]
     search_fields = ["name", "course__name", "course__name__area__name"]
     list_filter = ["showCredicts", "needBallot", "course__area"]
