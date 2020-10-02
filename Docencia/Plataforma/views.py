@@ -151,7 +151,7 @@ def adminclass(request, slug):
         if request.method == "POST":
                 form = ClassForm(request.POST)
                 if form.is_valid():
-                        class_ = form.save(commit=False)
+                        class_ = form.save()
 
                         recursos = []
                         for filename in form.cleaned_data['recursosjson']['name']:
@@ -160,8 +160,6 @@ def adminclass(request, slug):
                                 class_.resources.set(recursos)
                         else:
                                 class_.resources.clear()
-
-                        class_.save()
                         return HttpResponseRedirect('/plataforma/admin/dashboard/')
         else:
                 form = ClassForm()
@@ -219,7 +217,7 @@ def adminclass_edit(request, slug, slugclass):
         if request.method == "POST":
                 form = ClassForm(request.POST, instance=class_edit)
                 if form.is_valid():
-                        class_ = form.save(commit=False)
+                        class_ = form.save()
 
                         recursos = []
                         for filename in form.cleaned_data['recursosjson']['name']:
@@ -228,8 +226,6 @@ def adminclass_edit(request, slug, slugclass):
                                 class_.resources.set(recursos)
                         else:
                                 class_.resources.clear()
-                                
-                        class_.save()
                         return HttpResponseRedirect('/plataforma/admin/dashboard/')
         else:
                 form = ClassForm(instance=class_edit)
