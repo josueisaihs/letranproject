@@ -39,10 +39,6 @@ def dashboard(req):
                                         for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
                                                 subject.classes.append(clase)
                                         app.course.subjects.append(subject)
-                        del subject
-                        del clase
-                        del app
-                        del edition
 
                         return render(req, TEMPLETE_PATH % "index", locals())
                 else:
@@ -72,11 +68,6 @@ def clase(req, slug):
                                 for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
                                         subject.classes.append(clase)
                                 app.course.subjects.append(subject)
-
-                del subject
-                del clase
-                del app
-                del edition
 
                 clase = Class.objects.get(slug=slug)
                 return render(req, TEMPLETE_PATH % "clase", locals())
@@ -126,11 +117,6 @@ def admindashboard(req):
                                 subject.classes.append(clase)
                         course.subjects.append(subject)
                 courses.append(course)
-        del coursespk_
-        del course
-        del subject
-        del subjects
-        del clase
 
         return render(req, TEMPLETE_PATH % "adminindex", locals())
                 # else:
@@ -163,11 +149,6 @@ def adminclass(request, slug):
                                 subject.classes.append(clase)
                         course.subjects.append(subject)
                 courses.append(course)
-        del coursespk_
-        del course
-        del subject
-        del subjects
-        del clase
 
         subject = SubjectInformation.objects.get(slug=slug)
         if request.method == "POST":
@@ -228,11 +209,6 @@ def adminclass_edit(request, slug, slugclass):
                                 subject.classes.append(clase)
                         course.subjects.append(subject)
                 courses.append(course)
-        del coursespk_
-        del course
-        del subject
-        del subjects
-        del clase
 
         edit = True
         subject = SubjectInformation.objects.get(slug=slug)
