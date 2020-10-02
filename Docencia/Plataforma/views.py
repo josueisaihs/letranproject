@@ -127,7 +127,6 @@ def admindashboard(req):
                         course.subjects.append(subject)
                 courses.append(course)
         del coursespk_
-        del pk
         del course
         del subject
         del subjects
@@ -165,7 +164,6 @@ def adminclass(request, slug):
                         course.subjects.append(subject)
                 courses.append(course)
         del coursespk_
-        del pk
         del course
         del subject
         del subjects
@@ -231,7 +229,6 @@ def adminclass_edit(request, slug, slugclass):
                         course.subjects.append(subject)
                 courses.append(course)
         del coursespk_
-        del pk
         del course
         del subject
         del subjects
