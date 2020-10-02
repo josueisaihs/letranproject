@@ -143,19 +143,22 @@
     const urlupload = "{% url 'plataforma_admin_upload' %}";
     const urldelete = "{% url 'plataforma_admin_delete' %}";
     const subject = {{ subject.pk }};
+    let recursos = {name: []}
     let filess = 0;
     {% if class_edit %}
         const filesm = {{ class_edit.resources.all|length }}
         
         {% for resource in class_edit.resources.all %}
             filess += {{ resource.recurso.size }};
+            recursos.name.push("{{ resource.name }}");
         {% endfor %}
             
     {% else %} 
         const filesm = 0;       
     {% endif %}
-        
-    
+
+    let filesUpload = filesm;
+    let filesSize = filess;
 {% endblock scripts %}
     
     

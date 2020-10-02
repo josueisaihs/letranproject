@@ -1,7 +1,3 @@
-let filesUpload = filesm;
-let filesSize = filess;
-let recursos = {name: []}
-
 $(document).ready(function(){
     $(`#id_subject option[value=${subject}]`)[0].selected = true;
 
