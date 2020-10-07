@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import EmailMessage, BadHeaderError
+from django.core.exceptions import ObjectDoesNotExist
 from smtplib import SMTPException
 from django.conf import settings
 from django.contrib import messages
@@ -31,9 +32,13 @@ def dashboard(req):
     user = User.objects.get(username=req.user.username)
     try:
         student = StudentPersonalInformation.objects.get(user=user.pk)
-        edition = Edition.objects.get(
-                dateinit__gte=datetime.today(), 
-                dateend__gte=datetime.today())
+        try:
+            edition = Edition.objects.get(
+                    dateinit__gte=datetime.today(), 
+                    dateend__gte=datetime.today())
+        except ObjectDoesNotExist:
+            messages.error(req, "Este usuario ya no tiene acceso a este servicio. El período de admisión ha finalizado.")
+            return HttpResponseRedirect("/login/?next=/admision/dashboard/")
 
         apps = Application.objects.filter(student=student, edition=edition)
         if (len(courses) > 0):
