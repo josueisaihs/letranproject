@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 from Docencia.Index.models import Suscriptor, RedesSociales
 from Docencia.Cursos.models import Edition
+from Docencia.Admision.models import Application
+from Docencia.DatosPersonales.models import StudentPersonalInformation
 
 from validate_email import validate_email
 import tweepy
