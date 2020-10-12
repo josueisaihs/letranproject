@@ -5,6 +5,7 @@ from smtplib import SMTPException
 from django.contrib.auth.models import User
 
 from Docencia.Index.models import Suscriptor, RedesSociales
+from Docencia.Cursos.models import Edition
 
 from validate_email import validate_email
 import tweepy
