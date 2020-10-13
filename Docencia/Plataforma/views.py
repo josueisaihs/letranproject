@@ -234,3 +234,10 @@ def adminclass_edit(request, slug, slugclass):
         except:
                 messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+def deleteclass(req):
+        if req.is_ajax():
+                Class.objects.get(req.POST.get("data")).delete()
+                return JsonResponse({'response': True})
+        else:
+                return HttpResponseForbidden()

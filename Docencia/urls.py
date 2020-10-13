@@ -25,6 +25,7 @@ urlpatterns = [
     #Plataforma Profesores
     path("plataforma/admin/dashboard/", views.plataforma.admindashboard, name="plataforma_admin_index"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),
+    path("plataforma/admin/dashboard/<slug:slug>/clase/delete/", views.plataforma.deleteclass, name="plataforma_admin_clase_delete"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/<slug:slugclass>/editar/", views.plataforma.adminclass_edit, name="plataforma_admin_clase_editar"),
     path("plataforma/admin/dashboard/clase/file/upload/", views.plataforma.uploadfile, name="plataforma_admin_upload"),
     path("plataforma/admin/dashboard/clase/file/delete/", views.plataforma.deletefile, name="plataforma_admin_delete"),

@@ -168,3 +168,15 @@ function removeFile(name, fileSize){
     actualizarDatos();
 }
 
+function removeClass(slug){
+    $.ajax({
+        type: "post",
+        url: urldeleteclass,
+        data: slug,
+        success: function (response) {
+            if (response.response){
+                window.location = urlindex;
+            }
+        }
+    });
+}

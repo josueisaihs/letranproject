@@ -1,7 +1,7 @@
 {% extends './admindashboard.html' %}
 {% load static %}
 {% block dashboard_content %}
-    <form action="." method="POST" id="id_classform">
+    <form class="my-3" action="." method="POST" id="id_classform">
         {% csrf_token %}
 
         {% if form.errors %}
@@ -141,8 +141,10 @@
 
 
 {% block scripts %}
+    const urlindex = "{% url 'plataforma_admin_index' %}";
     const urlupload = "{% url 'plataforma_admin_upload' %}";
     const urldelete = "{% url 'plataforma_admin_delete' %}";
+    const urldeleteclass = "{% url 'plataforma_admin_clase_delete' %}";
     const subject = {{ subject.pk }};
     let recursos = {name: []}
     let filess = 0;
