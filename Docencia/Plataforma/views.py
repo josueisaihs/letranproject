@@ -237,7 +237,7 @@ def adminclass_edit(request, slug, slugclass):
 
 def deleteclass(req):
         if req.is_ajax():
-                Class.objects.get(req.POST.get("data")).delete()
+                Class.objects.get(req.POST.get("slug")).delete()
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()

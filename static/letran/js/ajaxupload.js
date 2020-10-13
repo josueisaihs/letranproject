@@ -172,7 +172,7 @@ function removeClass(slug){
     $.ajax({
         type: "post",
         url: urldeleteclass,
-        data: slug,
+        data: {"slug": slug},
         success: function (response) {
             if (response.response){
                 window.location = urlindex;
