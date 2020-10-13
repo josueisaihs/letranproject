@@ -177,6 +177,9 @@ function removeClass(slug){
             if (response.response){
                 window.location = urlindex;
             }
+        },
+        error: (xhr, errmsg, err)=>{
+            console.log(err, errmsg);
         }
     });
 }
