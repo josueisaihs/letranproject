@@ -35,7 +35,9 @@
                                 <ul class="list-group">
                                     <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge rounded-pill bg-primary">{{ subject.classes|length }}</span></li>
                                     {% for clase in subject.classes %}
-                                        <li class="list-group-item text-capitalize"><a class="link-icon" href="{% url 'plataforma_admin_clase_editar' subject.slug clase.slug %}">{{ clase.name }}</a></li>
+                                        <li class="list-group-item text-capitalize">
+                                            <a class="link-icon" href="{% url 'plataforma_admin_clase_editar' subject.slug clase.slug %}">{{ clase.name }}</a>
+                                        </li>
                                     {% endfor %}
                                     <li class="list-group-item text-capitalize">
                                         <div class="d-flex">
