@@ -192,52 +192,52 @@ def deletefile(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def adminclass_edit(request, slug, slugclass):
         user = User.objects.get(username=request.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
         try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-        
-        courses = []
-        coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
-        for pk in coursespk_:
-                course = CourseInformation.objects.get(pk=pk)
-                course.subjects = []
-                subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
-                for subject in subjects:
-                        subject.classes = []
-                        for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
-                                subject.classes.append(clase)
-                        course.subjects.append(subject)
-                courses.append(course)
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                
+                courses = []
+                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
+                for pk in coursespk_:
+                        course = CourseInformation.objects.get(pk=pk)
+                        course.subjects = []
+                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
+                        for subject in subjects:
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                course.subjects.append(subject)
+                        courses.append(course)
 
-        edit = True
-        subject = SubjectInformation.objects.get(slug=slug)
-        class_edit = Class.objects.get(slug=slugclass)
-        if request.method == "POST":
-                form = ClassForm(request.POST, instance=class_edit)
-                if form.is_valid():
-                        class_ = form.save()
+                edit = True
+                subject = SubjectInformation.objects.get(slug=slug)
+                class_edit = Class.objects.get(slug=slugclass)
+                if request.method == "POST":
+                        form = ClassForm(request.POST, instance=class_edit)
+                        if form.is_valid():
+                                class_ = form.save()
 
-                        recursos = []
-                        for filename in form.cleaned_data['recursosjson']['name']:
-                                recursos.append(Recurso.objects.get(name=filename))
-                        if recursos.__len__() > 0:
-                                class_.resources.set(recursos)
-                        else:
-                                class_.resources.clear()
-                        return HttpResponseRedirect('/plataforma/admin/dashboard/')
-        else:
-                form = ClassForm(instance=class_edit)
-        return render(request, TEMPLETE_PATH % "adminclass", locals())
-        # except:
-        #         messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                                recursos = []
+                                for filename in form.cleaned_data['recursosjson']['name']:
+                                        recursos.append(Recurso.objects.get(name=filename))
+                                if recursos.__len__() > 0:
+                                        class_.resources.set(recursos)
+                                else:
+                                        class_.resources.clear()
+                                return HttpResponseRedirect('/plataforma/admin/dashboard/')
+                else:
+                        form = ClassForm(instance=class_edit)
+                return render(request, TEMPLETE_PATH % "adminclass", locals())
+        except:
+                messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 def deleteclass(req):
         if req.is_ajax():
-                Class.objects.get(req.POST.get("slug")).delete()
+                Class.objects.get(slug=req.POST.get("slug")).delete()
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
