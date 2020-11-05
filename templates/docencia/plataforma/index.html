@@ -20,13 +20,14 @@
         {% endfor %}
             
     </ul>
-    <ul class="list-group">
+    <ul class="list-group mt-4">
         <li class="list-group-item disabled" aria-disabled="true">RECURSOS</li>        
         {% for app in apps %}            
-            {% for recurso in app.course.recursos|dictsortreversed:"datepub" %}
+            {% for recurso in app.course.recursos %}
                 <li class="list-group-item text-capitalize">
                     <div class="col-12 col-md-6 col-lg-4 p-2">
-                        <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}"><i class="far
+                        <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}">
+                            <i class="far
                         {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
                             fa-file-code
                         {% endif %}                
