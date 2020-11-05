@@ -46,6 +46,8 @@
                         "></i> {{ recurso.name }} | {{ recurso.course.name }}</a>
                     </div>
                 </li>
+            {% empty %}
+            <li class="list-group-item">No hay recursos para mostrar</li>
             {% endfor %}                
         {% endfor %}            
     </ul>
