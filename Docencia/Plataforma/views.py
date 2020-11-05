@@ -26,34 +26,34 @@ TEMPLETE_PATH = "docencia/plataforma/%s.html"
 def dashboard(req):    
         index = "active"
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
         try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
 
-        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-        if apps.__len__() > 0:
-                for app in apps:
-                        app.course.subjects = []
-                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                app.course.subjects.append(subject)
+                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+                if apps.__len__() > 0:
+                        for app in apps:
+                                app.course.subjects = []
+                                for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                                        subject.classes = []
+                                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                                subject.classes.append(clase)
+                                        app.course.subjects.append(subject)
 
-                        app.course.recursos = []
-                        for recurso in Recurso.objects.filter(courses=app.course.pk):
-                                app.course.recursos.append(recurso)
+                                app.course.recursos = []
+                                for recurso in Recurso.objects.filter(courses=app.course.pk):
+                                        app.course.recursos.append(recurso)
 
-                return render(req, TEMPLETE_PATH % "index", locals())
-        else:
+                        return render(req, TEMPLETE_PATH % "index", locals())
+                else:
+                        messages.error(req, "Este usuario no tiene acceso a este servicio")
+                        return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+        except:
                 messages.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
-        # except:
-        #         messages.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
