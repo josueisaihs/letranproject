@@ -5,7 +5,7 @@ from smtplib import SMTPException
 from django.contrib.auth.models import User
 
 from Docencia.Index.models import Suscriptor, RedesSociales
-comufrom Docencia.Cursos.models import Edition, CourseInformation
+from Docencia.Cursos.models import Edition, CourseInformation
 from Docencia.Admision.models import Application
 from Docencia.DatosPersonales.models import StudentPersonalInformation
 
