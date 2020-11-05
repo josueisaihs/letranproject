@@ -53,5 +53,33 @@
             </li>
         {% endfor %}           
     </ul>
+    <ul class="list-group mt-4">
+        <li class="list-group-item disabled" aria-disabled="true">ENVIAR COMUNICADO</li>        
+        <li class="list-group-item">
+            <div class="email">
+                <select id="sendmail_course" class="form-select" aria-label="multiple select">
+                    <option selected disabled value="none">Seleccione el curso</option>
+                    {% for course in courses %}
+                        <option value="{{ course.slug }}">{{ course.name }}</option>
+                    {% endfor %}
+                </select>
+                <input id="sendmail_subject" class="form-control mt-3" type="text" placeholder="Asunto">
+                <div class="form-text">El Asunto debe contener al menos 5 carácteres.</div>
+                <textarea id="sendmail_body" class="form-control mt-3" rows="3"></textarea>
+                <div class="form-text">El Cuerpo debe contener al menos 15 carácteres.</div>
+                <div class="alert alert-secondary mt-3" role="alert">
+                    Este comunicado se le enviará a todos los estudiantes del curso vía correo electrónico y una copia al correo del CFBC.
+                </div>
+                <button type="button" class="btn btn-primary" onclick="sendMail(this);">
+                    <div class="spinner-border spinner-border-sm invisible" role="status">
+                    </div> Enviar
+                </button>
+            </div>
+        </li>
+    </ul>
 </div>
 {% endblock dashboard_content %}}
+
+{% block scripts %}
+ const comunicadourl = "{% url 'plataforma_admin_comunicado' %}";   
+{% endblock scripts %}

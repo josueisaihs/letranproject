@@ -5,7 +5,7 @@ from smtplib import SMTPException
 from django.contrib.auth.models import User
 
 from Docencia.Index.models import Suscriptor, RedesSociales
-from Docencia.Cursos.models import Edition
+comufrom Docencia.Cursos.models import Edition, CourseInformation
 from Docencia.Admision.models import Application
 from Docencia.DatosPersonales.models import StudentPersonalInformation
 
@@ -168,4 +168,25 @@ def enviar_admitidos(edition_pk):
         )
         email.send(fail_silently=False)
    
+@background(schedule=10)
+def enviar_comunicado(edition_pk, course_pk, subject, body):
+    apps = Application.objects.filter(
+        edition=Edition.objects.get(pk=edition_pk), 
+        course=CourseInformation.objects.get(pk=course_pk),
+        status="aceptado"
+    )
 
+    email = EmailMessage(
+        "CAMPUS VIRTUAL. %s" % subject,
+        body + "\n\nNo conteste este correo electrónico",
+        to=["centrofbc@gmail.com"]
+    )
+    email.send(fail_silently=False)
+
+    for app in apps:
+        email = EmailMessage(
+            "CAMPUS VIRTUAL. %s" % subject,
+            body + "\n\nNo conteste este correo electrónico",
+            to=[app.student.email]
+        )
+        email.send(fail_silently=False)
