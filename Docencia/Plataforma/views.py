@@ -42,6 +42,10 @@ def dashboard(req):
                                         for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
                                                 subject.classes.append(clase)
                                         app.course.subjects.append(subject)
+                                        
+                                app.course.recursos = []
+                                for recurso in Recurso.objects.filter(course=app.course.pk):
+                                        app.course.recurso.append(recurso)
 
                         return render(req, TEMPLETE_PATH % "index", locals())
                 else:

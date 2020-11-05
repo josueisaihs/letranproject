@@ -195,6 +195,8 @@ class CourseInformation(models.Model):
     adminteachers = models.ManyToManyField(TeacherPersonalInformation, related_name="teachers", related_query_name="teacher_admin", verbose_name="Profesores Encargados")
     sedes = models.ManyToManyField(Sede, related_name="sedes", related_query_name="sedes", verbose_name="Sede(s)")
 
+    recursos = []
+
     programa = models.FileField(
         verbose_name="Programa", 
         upload_to=os.path.join('media', 'static', 'cursos', 'programas'), 
