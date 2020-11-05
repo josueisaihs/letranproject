@@ -116,7 +116,7 @@ function validateFileSize(number, dif=false){
 function detectarFileType(filePath){
     const imageExtensions = /(.jpg|.jpeg|.png)$/i;
     const videoExtensions = /(.mp4|.mpg|.ogg)$/i;
-    const documentExtensions = /(.doc|.docx|.pdf|.ppt|.pttx)$/i;
+    const documentExtensions = /(.doc|.docx|.pdf|.ppt|.pptx)$/i;
     const audioExtensions = /(.mp3|.wav)$/i;
     const htmlExtensions = /(.html)$/i;
     const cssExtensions = /(.css|.sass|.scss)$/i;
