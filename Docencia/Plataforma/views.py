@@ -45,7 +45,7 @@ def dashboard(req):
 
                         app.course.recursos = []
                         for recurso in Recurso.objects.filter(courses=app.course.pk):
-                                app.course.recurso.append(recurso)
+                                app.course.recursos.append(recurso)
 
                 return render(req, TEMPLETE_PATH % "index", locals())
         else:
