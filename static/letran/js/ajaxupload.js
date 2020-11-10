@@ -35,12 +35,14 @@ $(document).ready(function(){
                         $(".form-file").removeClass("invisible");
                         $(".form-upload").addClass("invisible");
 
+                        console.log(response)
+
                         if (response.response){
                             $(".file-name").html("Archivo...");
                             let atag = `<a class="d-inline-flex border px-2 rounded m-1" role="button" data-name="${curfiles[0].name}" onclick="$(this).remove();removeFile('${curfiles[0].name}', ${curfiles[0].size});">
                                 <div class="d-flex flex-column text-center text-small py-1">
                                     <div class="text-primary">
-                                        <i class="${typeFile.icon}"></i> ${curfiles[0].name}
+                                        <i class="${typeFile.icon}"></i> ${response.slug}
                                     </div>
                                 </div>
                                 <div class="ml-2 flex-fill align-self-center text-small">
@@ -56,8 +58,8 @@ $(document).ready(function(){
                             filesSize += curfiles[0].size;
                             
                             
-                            if (recursos.name.indexOf(curfiles[0].name) < 0)
-                                recursos.name.push(curfiles[0].name)
+                            if (recursos.name.indexOf(response.slug) < 0)
+                                recursos.name.push(response.slug)
                             
                             actualizarDatos();
                         }else{

@@ -233,33 +233,33 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # BACKGROUND_TASK_RUN_ASYNC = True
 ADMINS =(('josueisaihs','josueisaihs@gmail.com'),)
 
-LOGGING = { 
-    'version': 1, 
-    'disable_existing_loggers': False, 
-    'handlers': { 
-        'mail_admins': { 
-            'class': 'django.utils.log.AdminEmailHandler', 
-            'level': 'ERROR',
-            'include_html': True, 
-        },
-        'logfile': { 
-            'class': 'logging.handlers.WatchedFileHandler', 
-            'filename': os.path.join(BASE_DIR, "debug.log") 
-        }, 
-    }, 
-    'loggers': { 
-        'django.request': { 
-            'handlers': ['mail_admins'], 
-            'level': 'ERROR', 
-            'propagate': True, 
-        }, 
-        'django': { 
-            'handlers': ['logfile', 'mail_admins'], 
-            'level': 'ERROR', 
-            'propagate': False, 
-        },
-    }, 
-} 
+# LOGGING = { 
+#     'version': 1, 
+#     'disable_existing_loggers': False, 
+#     'handlers': { 
+#         'mail_admins': { 
+#             'class': 'django.utils.log.AdminEmailHandler', 
+#             'level': 'ERROR',
+#             'include_html': True, 
+#         },
+#         'logfile': { 
+#             'class': 'logging.handlers.WatchedFileHandler', 
+#             'filename': os.path.join(BASE_DIR, "debug.log") 
+#         }, 
+#     }, 
+#     'loggers': { 
+#         'django.request': { 
+#             'handlers': ['mail_admins'], 
+#             'level': 'ERROR', 
+#             'propagate': True, 
+#         }, 
+#         'django': { 
+#             'handlers': ['logfile', 'mail_admins'], 
+#             'level': 'ERROR', 
+#             'propagate': False, 
+#         },
+#     }, 
+# } 
 
 customColorPalette = [
         {

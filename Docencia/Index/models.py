@@ -344,7 +344,7 @@ class Recurso(models.Model):
     slug = models.SlugField(max_length=140, default="")
     name = models.CharField(max_length=50, verbose_name="Nombre", unique=True)
     recurso = models.FileField(verbose_name="Recurso", 
-    upload_to=os.path.join('static', 'recurso'), null=True, blank=True,)
+    upload_to='static/recurso/%Y/%m/%d/%H/%M/', null=True, blank=True)
     image = ImageField(upload_to=os.path.join('static', 'recurso', 'miniatura'), null=True, blank=True)
     tipo = models.CharField(max_length=20, verbose_name="Tipo", 
         choices=(
@@ -372,7 +372,7 @@ class Recurso(models.Model):
         slug = slugify(self.name)
         unique_slug = slug
         num = 1
-        while News.objects.filter(slug=unique_slug).exists():
+        while Recurso.objects.filter(slug=unique_slug).exists():
             unique_slug = '{}-{}'.format(slug, num)
             num += 1
         return unique_slug
@@ -380,6 +380,7 @@ class Recurso(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._get_unique_slug()
+            self.name = self.slug
         super().save(*args, **kwargs)
 
 @admin.register(Recurso)
