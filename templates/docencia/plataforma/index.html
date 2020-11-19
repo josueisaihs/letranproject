@@ -49,7 +49,7 @@
             {% endfor %}                
         {% endfor %}            
     </ul>
-    <ul class="list-group mt-4">
+    <ul class="list-group my-4">
         <li class="list-group-item disabled" aria-disabled="true">MIS CURSOS</li>        
         {% for app in apps %}
             <li class="list-group-item">
@@ -57,20 +57,20 @@
             
                 <div id="index-{{ app.course.slug }}" class="collapse {% if forloop.first %}show{% endif %} container">       
                     <div style="max-height: 50vh; overflow: auto;">
-                    {% for subject in app.course.subjects %}
-                        <div class="{% if not forloop.last %}border-bottom{% endif %} pb-2">
-                            <a class="nav-link collapse-title" data-toggle="collapse" href="#{{ subject.slug }}" role="button" aria-expanded="false" aria-controls="{{ subject.slug }}"> {{ subject.name }}</a>
-                            <div id="{{ subject.slug }}" class="collapse">
-                                <div class="ckeditor">{{ subject.description|safe}}</div>
-                                <ul class="list-group">
-                                    <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge rounded-pill bg-primary">{{ subject.classes|length }}</span></li>
-                                    {% for clase in subject.classes %}
-                                        <li class="list-group-item text-capitalize"><a class="link-icon" href="{% url 'plataforma_clase' clase.slug %}">{{ clase.name }}</a></li>
-                                    {% endfor %}
-                                </ul>
+                        {% for subject in app.course.subjects %}
+                            <div class="{% if not forloop.last %}border-bottom{% endif %} pb-2">
+                                <a class="nav-link collapse-title" data-toggle="collapse" href="#{{ subject.slug }}" role="button" aria-expanded="false" aria-controls="{{ subject.slug }}"> {{ subject.name }}</a>
+                                <div id="{{ subject.slug }}" class="collapse">
+                                    <div class="ckeditor">{{ subject.description|safe}}</div>
+                                    <ul class="list-group">
+                                        <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge rounded-pill bg-primary">{{ subject.classes|length }}</span></li>
+                                        {% for clase in subject.classes %}
+                                            <li class="list-group-item text-capitalize"><a class="link-icon" href="{% url 'plataforma_clase' clase.slug %}">{{ clase.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}    
+                        {% endfor %}   
                     </div>       
                 </div>
             </li>
