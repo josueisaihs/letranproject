@@ -34,11 +34,15 @@
                                 <div class="ckeditor">{{ subject.description|safe}}</div>
                                 <ul class="list-group">
                                     <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge rounded-pill bg-primary">{{ subject.classes|length }}</span></li>
-                                    {% for clase in subject.classes %}
-                                        <li class="list-group-item text-capitalize">
-                                            <a class="link-icon" href="{% url 'plataforma_admin_clase_editar' subject.slug clase.slug %}">{{ clase.name }}</a>
-                                        </li>
-                                    {% endfor %}
+                                    
+                                    <div style="max-height: 50vh; overflow: auto;">
+                                        {% for clase in subject.classes %}
+                                            <li class="list-group-item text-capitalize">
+                                                <a class="link-icon" href="{% url 'plataforma_admin_clase_editar' subject.slug clase.slug %}">{{ clase.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </div>
+
                                     <li class="list-group-item text-capitalize">
                                         <div class="d-flex">
                                         <a href="{% url 'plataforma_admin_clase' subject.slug %}" class="btn btn-primary active btn-sm m-1" role="button"><i class="fa fa-plus"></i> Clase</a>
@@ -48,7 +52,47 @@
                                 </ul>
                             </div>
                         </div>
-                    {% endfor %}                       
+                    {% endfor %}
+                    <div class="border-top">
+                        <div class="{% if not forloop.last %}border-bottom{% endif %} pb-2">
+                            <a class="nav-link collapse-title" data-toggle="collapse" href="#recurso-{{ course.slug }}" role="button" aria-expanded="false" aria-controls="recurso-{{ course.slug }}"> Recursos</a>
+                            <div id="recurso-{{ course.slug }}" class="collapse">
+                                <ul class="list-group">
+                                    <li class="list-group-item disabled" aria-disabled="true">Actividades <span class="badge rounded-pill bg-primary">
+                                        {{ course.recursos|length }}</span></li>                                    
+                                    
+                                    <div style="max-height: 50vh; overflow: auto;">
+                                        {% for recurso in course.recursos %}
+                                            <li class="list-group-item text-capitalize">
+                                                <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}"><i class="far
+                                                    {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
+                                                     fa-file-code
+                                                    {% endif %}                
+                                                    {% if recurso.tipo == 'audio' %}
+                                                     fa-file-audio
+                                                    {% endif %}                
+                                                    {% if recurso.tipo == 'video' %}
+                                                     fa-file-video
+                                                    {% endif %}
+                                                    {% if recurso.tipo == 'imagen' %}
+                                                     fa-file-image
+                                                    {% endif %}                
+                                                    {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
+                                                     fa-file-alt 
+                                                    {% endif %}"></i> {{ recurso.name }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <!-- <li class="list-group-item text-capitalize">
+                                        <div class="d-flex">
+                                            <a href="#" class="btn btn-primary active btn-sm m-1" data-toggle="modal" data-target="#recursoModal" role="button"><i class="fa fa-plus"></i> Nuevo Recurso</a>
+                                        </div>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </li>
         {% endfor %}           
@@ -77,6 +121,27 @@
             </div>
         </li>
     </ul>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="recursoModal" tabindex="-1" aria-labelledby="recursoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="recursoModalLabel">Nuevo Recurso</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form>
+
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock dashboard_content %}}
 
