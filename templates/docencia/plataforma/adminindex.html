@@ -64,7 +64,7 @@
                                     <div style="max-height: 50vh; overflow: auto;">
                                         {% for recurso in course.recursos %}
                                             <li class="list-group-item text-capitalize">
-                                                <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}"><i class="far
+                                                <a target="_blank" href="{% url 'plataforma_admin_recurso' recurso.slug %}"><i class="far
                                                     {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
                                                      fa-file-code
                                                     {% endif %}                
@@ -87,7 +87,8 @@
                                     <!-- <li class="list-group-item text-capitalize">
                                         <div class="d-flex">
                                             <a href="#" class="btn btn-primary active btn-sm m-1" data-toggle="modal" data-target="#recursoModal" role="button"><i class="fa fa-plus"></i> Nuevo Recurso</a>
-                                        </div>
+                                        </div
+                                        >
                                     </li> -->
                                 </ul>
                             </div>

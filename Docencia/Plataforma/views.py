@@ -132,7 +132,7 @@ def admindashboard(req):
                                 course.recursos = []
                                 for recurso in Recurso.objects.filter(courses=course.pk):
                                         course.recursos.append(recurso)
-                                        
+
                         courses.append(course)
 
                 return render(req, TEMPLETE_PATH % "adminindex", locals())
@@ -281,3 +281,9 @@ def sendmasivemail(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def downloadTeacherResource(req, slug):
+        resource = Recurso.objects.get(slug=slug)
+        return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
