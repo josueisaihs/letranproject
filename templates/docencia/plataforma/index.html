@@ -56,6 +56,7 @@
                 <a class="collapse-folder-title" data-toggle="collapse" href="#index-{{ app.course.slug }}" role="button" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="{{ app.course.slug }}"> {{ app.course.name }}</a>
             
                 <div id="index-{{ app.course.slug }}" class="collapse {% if forloop.first %}show{% endif %} container">       
+                    <div style="max-height: 50vh; overflow: auto;">
                     {% for subject in app.course.subjects %}
                         <div class="{% if not forloop.last %}border-bottom{% endif %} pb-2">
                             <a class="nav-link collapse-title" data-toggle="collapse" href="#{{ subject.slug }}" role="button" aria-expanded="false" aria-controls="{{ subject.slug }}"> {{ subject.name }}</a>
@@ -69,7 +70,8 @@
                                 </ul>
                             </div>
                         </div>
-                    {% endfor %}           
+                    {% endfor %}    
+                    </div>       
                 </div>
             </li>
         {% endfor %}           
