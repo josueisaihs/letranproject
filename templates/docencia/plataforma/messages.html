@@ -1,11 +1,24 @@
 {% extends './dashboard.html' %}
 {% block dashboard_content %}
-    <p class="h2 text-capitalize">{{ clase.name }}</p>
+    <p class="h2 text-capitalize">{{ clase.name }} | Foro</p>
     <small class="text-muted">{{ clase.subject.course.name }} | {{ clase.datepub|date:"D d M y" }}</small>
-    <div class="ckeditor row">
-        {{ clase.classbody|safe }}
+    
+    <div class="mt-2 p-1 rounded" style="background-color: #f0f0f0;">        
+        {% for message in messages %}
+            <div>
+                {{ message|safe }}
+            </div>
+        {% empty %}
+            <div class="text-secondary text-center"><i>No hay mensajes en este foro</i></div>
+        {% endfor %}            
     </div>
-    <div class="row m-2 g-2">
+    <div class="mt-2">
+        <div class="d-inline-flex">
+            <input type="text" class="form-control rounded-pill" value="" placeholder="Escribe un mensaje" />
+            <button type="button" class="btn btn-primary rounded-circle ml-1"><i class="fas fa-paper-plane"></i></button>
+        </div>        
+    </div>
+    <!-- <div class="row m-2 g-2">
         <div class="col-12">
             <p class="h6">Recursos</p>
             <p class="text-muted">Puede descargar los recursos. No tiene permisos de ditribuirlos. Están sujetos a derecho de autor.</p>
@@ -31,8 +44,5 @@
                 "></i> {{ recurso.name }}</a>
             </div>
         {% endfor %}
-    </div>
-    <a href="{% url 'plataforma_foro' clase.slug %}" class="float">
-        <i class="fa fa-comments"></i>
-    </a>
+    </div> -->
 {% endblock dashboard_content %}}

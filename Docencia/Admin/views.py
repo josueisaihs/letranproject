@@ -26,7 +26,7 @@ def admindashboard(req):
     courses = CourseInformation.objects.filter(adminteachers__pk=teacher.pk)
     try:
         edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today()
         )
 
@@ -50,7 +50,7 @@ def admindashboard_course(req, coursepk):
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
     try:
         edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today()
         )
 
@@ -116,7 +116,7 @@ def admindashboard_detail(req, coursepk):
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
     try:
         edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today()
         )
 
@@ -156,7 +156,7 @@ def admindashboard_student_detail(req, apppk):
     teacher = TeacherPersonalInformation.objects.get(user=user.pk)
     try:
         edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today()
         )
 

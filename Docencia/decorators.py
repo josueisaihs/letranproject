@@ -24,9 +24,10 @@ def isStudentAceptado(user):
         user_ = User.objects.get(groups__name="Estudiantes", username=user.username)
         student = StudentPersonalInformation.objects.get(user=user_.pk)
         edition = Edition.objects.get(
-                dateinit__gte=datetime.today(), 
+                dateinit__lte=datetime.today(), 
                 dateend__gte=datetime.today()
                 )
+        # edition = Edition.objects.all().first()
 
         apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
         return apps.__len__() > 0

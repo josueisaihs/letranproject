@@ -2,6 +2,7 @@ from django.db import models
 from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib import admin
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 from Docencia.Cursos.models import CourseInformation
 
@@ -51,3 +52,48 @@ class ClassAdmin(admin.ModelAdmin):
     search_fields = ('subject__course__name', 'subject__course__sede__name', 'subject__name', 'subject__course__area__name')
     ordering = ('-uploaddate',)
     readonly_fields = ('uploaddate', 'slug')
+
+class Message(models.Model):
+    """Model definition for MODELNAME."""
+    slug = models.SlugField(max_length=140, unique=True)
+    edition = models.ForeignKey("Edition", verbose_name="Edition", on_delete=models.CASCADE, default=1)
+    classpost = models.ForeignKey("Class", verbose_name="Clase", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    body = CKEditor5Field('Cuerpo', config_name='extends')
+    createdate = models.DateField('Fecha Creación', auto_now=True)
+    approved = models.BooleanField("Aprobación", default=False)
+
+    def approve(self):
+        self.approved = True
+        self.save()
+
+    class Meta:
+        """Meta definition for MODELNAME."""
+        verbose_name = 'Mensajes'
+        verbose_name_plural = 'Plataforma - Mensajes'
+
+    def __str__(self):
+        """Unicode representation of MODELNAME."""
+        return "%s" % self.user.name
+
+    def _get_unique_slug(self):
+        slug = slugify(self.classpost.name, self.edition.name)
+        unique_slug = slug
+        num = 1
+        while Message.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    '''Admin View for Message'''
+    list_display = ('classpost', 'user', 'createdate', 'approved', 'edition')
+    list_filter = ('approved', 'classpost__subject__course__area', 'edition')
+    search_fields = ('classport', 'user__name')
+    ordering = ('-createdate',)
