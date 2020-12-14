@@ -18,11 +18,16 @@ urlpatterns = [
     path("recursos/", views.index.recursos, name="recursos"),
     path("politicaprivacidad/", views.politicaprivacidad, name="politicaprivacidad"),
 
+    # Plataforma
+    path("plataforma/foro/<slug:slug>", views.plataforma.messages, name="plataforma_messages"),
+    path("plataforma/foro/send/", views.plataforma.send_message, name="plataforma_send_message"),
+    path("plataforma/foro/delete/", views.plataforma.delete_message, name="plataforma_delete_message"),
+    path("plataforma/foro/update/", views.plataforma.update_messages, name="plataforma_update_messages"),
+    path("plataforma/foro/user/",views.plataforma.user_message, name="plataforma_user_message"),
     # Plataforma Estudiantes
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
     path("plataforma/dashboard/clase/<slug:slug>/", views.plataforma.clase, name="plataforma_clase"),
     path("plataforma/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadResource, name="plataforma_recurso"),
-    path("plataforma/dashboard/clase/<slug:slug>/foro/", views.plataforma.messages, name="plataforma_foro"),
     #Plataforma Profesores
     path("plataforma/admin/dashboard/", views.plataforma.admindashboard, name="plataforma_admin_index"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),

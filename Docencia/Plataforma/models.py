@@ -57,11 +57,13 @@ class Message(models.Model):
     """Model definition for MODELNAME."""
     slug = models.SlugField(max_length=140, unique=True)
     edition = models.ForeignKey("Edition", verbose_name="Edition", on_delete=models.CASCADE, default=1)
-    classpost = models.ForeignKey("Class", verbose_name="Clase", on_delete=models.CASCADE)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    body = CKEditor5Field('Cuerpo', config_name='extends')
+    subject = models.ForeignKey("SubjectInformation", verbose_name="Asignatura", 
+    on_delete=models.CASCADE, default=1)
+    user = models.ForeignKey(User, verbose_name="Usuario", on_delete=models.CASCADE, default=1)
+    # body = CKEditor5Field('Cuerpo', config_name='extends')
+    body = models.CharField(verbose_name="Mensaje", max_length=180)
     createdate = models.DateField('Fecha Creación', auto_now=True)
-    approved = models.BooleanField("Aprobación", default=False)
+    approved = models.BooleanField("Aprobación", default=True)
 
     def approve(self):
         self.approved = True
@@ -74,10 +76,10 @@ class Message(models.Model):
 
     def __str__(self):
         """Unicode representation of MODELNAME."""
-        return "%s" % self.user.name
+        return "%s" % self.user.username
 
     def _get_unique_slug(self):
-        slug = slugify(self.classpost.name, self.edition.name)
+        slug = slugify("%s %s %s" % (self.subject.name, self.edition.name, self.user.username))
         unique_slug = slug
         num = 1
         while Message.objects.filter(slug=unique_slug).exists():
@@ -93,7 +95,7 @@ class Message(models.Model):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     '''Admin View for Message'''
-    list_display = ('classpost', 'user', 'createdate', 'approved', 'edition')
-    list_filter = ('approved', 'classpost__subject__course__area', 'edition')
-    search_fields = ('classport', 'user__name')
+    list_display = ('subject', 'user', 'createdate', 'approved', 'edition')
+    list_filter = ('approved', 'subject__course__area', 'edition')
+    search_fields = ('subject__name', 'user__name')
     ordering = ('-createdate',)

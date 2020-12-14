@@ -76,9 +76,9 @@
             </nav>
 
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <!-- <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Hola {{ student.name }}</h1>
-                </div>
+                </div> -->
                  {% if messages %}
                     {% for message in messages %}
                         {% ifequal message.level 40 %}
@@ -97,12 +97,10 @@
 {% endblock contenido %}
 
 {% block importScripts %}
-    <script defer src="{% static 'letran/js/ajaxdjango.js' %}"></script>
 {% endblock importScripts %}
 
 
-{% block scripts %}
-   
+{% block scripts %}   
 {% endblock scripts %}
     
     

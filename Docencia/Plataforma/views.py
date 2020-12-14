@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import FileResponse, HttpResponseForbidden, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.core import serializers
 
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation, GroupInformation
@@ -305,13 +306,60 @@ def messages(req, slug):
                         for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
                                 subject.classes.append(clase)
                         app.course.subjects.append(subject)
-                # Esto no hace falta aqui
-                # app.course.recursos = []
-                # for recurso in Recurso.objects.filter(courses=app.course.pk):
-                #         app.course.recursos.append(recurso)
 
-        messages = Message.objects.filter(classpost__slug=slug, edition=edition)
+        # messages = Message.objects.filter(
+        #         subject=SubjectInformation.objects.get(slug=slug), 
+        #         edition=edition,
+        #         approved=True
+        # )
+        # color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
         return render(req, TEMPLETE_PATH % "messages", locals())
         # except:
         #         messages.error(req, "Este usuario no tiene acceso a este servicio")
         #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+
+def send_message(req):
+        message = Message(
+                user=User.objects.get(
+                        pk=req.user.pk
+                ),
+                subject=SubjectInformation.objects.get(
+                        slug=req.POST.get('subjectslug')
+                ),
+                body=req.POST.get('msg'),
+                edition=Edition.objects.get(
+                        dateinit__lte=datetime.today(), 
+                        dateend__gte=datetime.today()
+                )
+        )
+        message.save()
+
+        return JsonResponse({'response': True, 'slug': message.slug})
+
+def update_messages(req):
+        edition = Edition.objects.get(
+                dateinit__lte=datetime.today(), 
+                dateend__gte=datetime.today()
+        )
+        messages = Message.objects.filter(
+                subject=SubjectInformation.objects.get(slug=req.POST.get('subjectslug')), 
+                edition=edition,
+                approved=True
+        )
+        color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
+
+        return JsonResponse({'data': serializers.serialize('json', messages)})
+
+def delete_message(req):
+        Message.objects.get(slug=req.POST.get("slug")).delete()
+
+        return JsonResponse({"response": True})
+
+def user_message(req):
+        user = User.objects.get(pk=req.POST.get('userpk'))
+        if (user.first_name != "" and user.last_name != ""): 
+                sal = "%s %s" % (user.first_name, user.last_name) 
+        else: 
+                sal = user.username
+
+        return JsonResponse({'response': sal})

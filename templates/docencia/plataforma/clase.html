@@ -32,7 +32,8 @@
             </div>
         {% endfor %}
     </div>
-    <a href="{% url 'plataforma_foro' clase.slug %}" class="float">
+    <a href="{% url 'plataforma_messages' clase.subject.slug %}" class="float">
         <i class="fa fa-comments"></i>
     </a>
-{% endblock dashboard_content %}}
+{% endblock dashboard_content %}
+    
