@@ -291,32 +291,57 @@ def downloadTeacherResource(req, slug):
 
 def messages(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
         try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
 
-        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-        for app in apps:
-                app.course.subjects = []
-                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                        subject.classes = []
-                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                subject.classes.append(clase)
-                        app.course.subjects.append(subject)
+                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+                for app in apps:
+                        app.course.subjects = []
+                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                app.course.subjects.append(subject)
+                return render(req, TEMPLETE_PATH % "messages", locals())
+        except:
+                messages.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
-        # messages = Message.objects.filter(
-        #         subject=SubjectInformation.objects.get(slug=slug), 
-        #         edition=edition,
-        #         approved=True
-        # )
-        # color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
-        return render(req, TEMPLETE_PATH % "messages", locals())
-        # except:
-        #         messages.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+def adminmessages(req, slug):
+        user = User.objects.get(username=req.user.username)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                
+                courses = []
+                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
+                for pk in coursespk_:
+                        course = CourseInformation.objects.get(pk=pk)
+                        course.subjects = []
+                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
+                        for subject in subjects:
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                course.subjects.append(subject)
+
+                                # Cargando los recursos del curso
+                                course.recursos = []
+                                for recurso in Recurso.objects.filter(courses=course.pk):
+                                        course.recursos.append(recurso)
+
+                        courses.append(course)
+                return render(req, TEMPLETE_PATH % "messages", locals())
+        except:
+                messages.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 def send_message(req):
         message = Message(

@@ -24,12 +24,12 @@
 {% endblock importScripts %}
 
 {% block scripts %}
-const subject = "{{ slug }}";
-const sendmsg = "{% url 'plataforma_send_message' %}";
-const updatemsg = "{% url 'plataforma_update_messages' %}";
-const deletemsg = "{% url 'plataforma_delete_message' %}";
-const usermsg = "{% url 'plataforma_user_message' %}";
-const userpk = {{ user.pk }};
+    const subject = "{{ slug }}";
+    const sendmsg = "{% url 'plataforma_send_message' %}";
+    const updatemsg = "{% url 'plataforma_update_messages' %}";
+    const deletemsg = "{% url 'plataforma_delete_message' %}";
+    const usermsg = "{% url 'plataforma_user_message' %}";
+    const userpk = {{ user.pk }};
 {% endblock scripts %}
     
     

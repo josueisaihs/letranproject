@@ -55,13 +55,19 @@
                                             <span>{{ subject.name }}</span>
                                         </h6>
                                         <ul class="nav flex-column mb-2 ml-2">
-                                        {% for clase_ in subject.classes %}
                                             <li class="nav-item">
-                                                <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" href="{% url 'plataforma_admin_clase_editar' subject.slug clase_.slug %}">
-                                                    {{ clase_.name }}
+                                                <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" 
+                                                href="{% url 'plataforma_adminmessages' subject.slug %}">
+                                                    <i class="fas fa-comments"></i> Mensajes
                                                 </a>
                                             </li>
-                                        {% endfor %}
+                                            {% for clase_ in subject.classes %}
+                                                <li class="nav-item">
+                                                    <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" href="{% url 'plataforma_admin_clase_editar' subject.slug clase_.slug %}">
+                                                        {{ clase_.name }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
                                         </ul>
                                             
                                     {% endfor %}

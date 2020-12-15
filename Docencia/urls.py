@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Plataforma
     path("plataforma/foro/<slug:slug>", views.plataforma.messages, name="plataforma_messages"),
+    path("plataforma/admin/foro/<slug:slug>", views.plataforma.adminmessages, name="plataforma_adminmessages"),
     path("plataforma/foro/send/", views.plataforma.send_message, name="plataforma_send_message"),
     path("plataforma/foro/delete/", views.plataforma.delete_message, name="plataforma_delete_message"),
     path("plataforma/foro/update/", views.plataforma.update_messages, name="plataforma_update_messages"),
