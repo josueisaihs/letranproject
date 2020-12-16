@@ -1,0 +1,30 @@
+{% extends './dashboard.html' %}
+{% load thumbnail %}
+{% block dashboard_content %}
+    <div class="">
+        <div class="row py-2 g-2">
+            <div class="border-bottom mb-3">
+                <h5>
+                    <a href="{% url 'plataforma_curso' subject.course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ app.course.name }} / {{ subject.name}}
+                </h5>
+            </div>
+            {% for class in subject.classes %}
+                <div class="col-sm-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ class.name }}</h5>                        
+                            <a href="{% url 'plataforma_clase' class.slug %}" type="button" 
+                            class="btn btn-outline-primary btn-sm">
+                                Ver
+                            </a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {{ class.datepub|timesince }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock%}

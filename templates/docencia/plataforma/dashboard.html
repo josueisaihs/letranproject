@@ -43,26 +43,16 @@
                                     </a>
                                 </li>
                                 <div class="collapse {% ifequal app.course.pk clase.subject.course.pk %}show{% endifequal %}" id="{{ app.course.slug }}">
-                                    {% for subject in app.course.subjects %}
-                                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 ml-2 mt-1 mb-1 text-muted">
-                                            <span>{{ subject.name }}</span>
-                                        </h6>
-                                        <ul class="nav flex-column mb-2 ml-2">
-                                            <li class="nav-item">
-                                                <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" 
-                                                href="{% url 'plataforma_messages' subject.slug %}">
-                                                    <i class="fas fa-comments"></i> Mensajes
-                                                </a>
-                                            </li>
-                                            {% for clase_ in subject.classes %}
-                                                <li class="nav-item">
-                                                    <a class="nav-link text-capitalize {% ifequal clase_.pk clase.pk  %}active{% endifequal %}" href="{% url 'plataforma_clase' clase_.slug %}">
-                                                        {{ clase_.name }}
-                                                    </a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endfor %}
+                                    <ul class="nav flex-column mb-2 ml-2">
+                                    {% for subject_ in app.course.subjects %}                                      
+                                        <li class="nav-item">
+                                            <a class="nav-link text-capitalize {% ifequal subject_.pk subject.pk  %}active{% endifequal %}" 
+                                            href="{% url 'plataforma_subject' subject_.slug %}">
+                                                {{ subject_.name }}
+                                            </a>
+                                        </li>                                        
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             {% endfor %}
                         </ul>

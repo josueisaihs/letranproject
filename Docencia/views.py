@@ -7,7 +7,6 @@ import Docencia.Admision.views as admision
 import Docencia.DatosPersonales.views as datospersonales
 import Docencia.Index.views as index
 import Docencia.Plataforma.views as plataforma
-
 #...
 #404: página no encontrada
 def pag_404_not_found(request, exception):

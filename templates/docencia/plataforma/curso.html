@@ -1,0 +1,40 @@
+{% extends './dashboard.html' %}
+{% load thumbnail %}
+{% block dashboard_content %}
+<div>
+    <div class="row py-2 g-2">
+        <div class="border-bottom mb-3">
+            <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ course.name }}</h5>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Recursos</h5>                   
+                    <a href="{% url 'plataforma_recursos' course.slug %}" type="button" class="btn btn-outline-primary btn-sm">
+                        Nuevos 
+                        <!-- <span class="badge bg-danger">2</span> -->
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% for subject in course.subjects %}
+            <div class="col-sm-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ subject.name }}</h5>
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <a href="{% url 'plataforma_subject' subject.slug %}" type="button" class="btn btn-outline-primary btn-sm">
+                                Clases
+                            </a>
+                            <a href="{% url 'plataforma_messages' subject.slug %}" type="button" class="btn btn-outline-primary btn-sm">
+                                Mensajes 
+                                <!-- <span class="badge bg-danger">10</span> -->
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
