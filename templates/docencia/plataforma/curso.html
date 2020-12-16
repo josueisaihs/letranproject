@@ -8,7 +8,7 @@
         </div>
         <div class="col-sm-4">
             <a href="{% url 'plataforma_recursos' course.slug %}">
-                <div class="card text-center">
+                <div class="card text-center h-100">
                     <div class="card-body">
                         <h5 class="card-title">Recursos</h5>                        
                     </div>
@@ -17,11 +17,11 @@
         </div>
         {% for subject in course.subjects %}
             <div class="col-sm-4">
-                <div class="card text-center">
+                <div class="card text-center h-100">
                     <div class="card-body">
                         <h5 class="card-title">{{ subject.name }}</h5>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer">
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
                             <a href="{% url 'plataforma_subject' subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
