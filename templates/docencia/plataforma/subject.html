@@ -25,4 +25,7 @@
             {% endfor %}
         </div>
     </div>
+    <a href="{% url 'plataforma_messages' clase.subject.slug %}" class="float">
+        <i class="fa fa-comments"></i>
+    </a>
 {% endblock%}

@@ -1,7 +1,9 @@
 {% extends './dashboard.html' %}
 {% block dashboard_content %}
-    <p class="h2 text-capitalize">{{ clase.name }}</p>
-    <small class="text-muted">{{ clase.subject.course.name }} | {{ clase.datepub|date:"D d M y" }}</small>
+    <div class="border-bottom mb-3">
+        <h5><a href="{% url 'plataforma_subject' clase.subject.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }}</h5>
+    </div>    
+    <small class="text-muted">{{ clase.datepub|date:"D d M y" }}</small>
     <div class="ckeditor row">
         {{ clase.classbody|safe }}
     </div>

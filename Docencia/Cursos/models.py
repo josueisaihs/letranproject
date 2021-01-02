@@ -214,6 +214,13 @@ class CourseInformation(models.Model):
     schedules = models.ManyToManyField("CourseSchedule", verbose_name="Horario(s)", blank=True)
     starts = models.SmallIntegerField(verbose_name="Puntuación", default=4)
 
+
+    minCredict = models.PositiveSmallIntegerField(
+        verbose_name="Creditos Minimos (Por semestre)",
+        default=6
+    )
+    duration = models.PositiveSmallIntegerField(verbose_name="Duración (Semestres)", default=2)
+
     class Meta:
         """Meta definition for Curso."""
         verbose_name = 'Curso / Servicio'
@@ -251,7 +258,8 @@ class CourseInformation(models.Model):
 class CourseInformationAdmin(admin.ModelAdmin):
     fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
                 "description", "yearMin", "yearMax", "haveApplication", 
-                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", "reglamento", "schedules", "starts", "slug"]
+                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", 
+                "reglamento", "schedules", "starts", "slug", "minCredit", "duration"]
     ordering = ["area", "name", "capacity", "openregistre"]
     search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
     readonly_fields = ('slug',)
@@ -293,10 +301,21 @@ class SubjectInformation(models.Model):
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
     credicts = models.DecimalField(verbose_name="Creditos", max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     showCredicts = models.BooleanField(default=False, verbose_name="Mostrar Creditos")
+    active = models.BooleanField(default=True, verbose_name="Activada")
+    mode = models.CharField(
+        verbose_name="Modo",
+        max_length=14,
+        choices=(
+            ("Troncal", "Troncal"),
+            ("Obligatoria", "Obligatoria"), 
+            ("Optativa", "Optativas"),
+            ("Libre Elección", "Libre Elección") 
+        ), default="Obligatioria"
+    )
     # Certificacion de notas de la asginatura
     needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")
     teachers = models.ManyToManyField("Docencia.TeacherPersonalInformation", verbose_name="Profesor(es)")
-    # TODO la boleta final en base a 10, 
+    # TODO la boleta final en base a 10 
     
     description = CKEditor5Field('Descripción', config_name='extends')
     
@@ -327,10 +346,11 @@ class SubjectInformation(models.Model):
         
 @admin.register(SubjectInformation)
 class SubjectInformationAdmin(admin.ModelAdmin):
-    fields = ["name", "teachers", "course", "description", "credicts", "showCredicts", "needBallot", "slug"]
+    fields = ["name", "teachers", "course", "description", "credicts", "showCredicts", 
+    "needBallot", "slug", "active", "mode"]
     ordering = ["name", "course", "credicts"]
     search_fields = ["name", "course__name", "course__name__area__name"]
-    list_filter = ["showCredicts", "needBallot", "course__area"]
+    list_filter = ["showCredicts", "active", "mode", "needBallot", "course__area"]
     list_display = ["name", "course", "credicts", "showCredicts", "needBallot"]
     readonly_fields = ["slug",]
 # <> fin SubjectInformation

@@ -144,10 +144,14 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 # gmail_send/settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'centrofbc@gmail.com'
-EMAIL_HOST_PASSWORD = 'wwdkyebpkxwovjkp' #past the key or password app here
+# EMAIL_HOST = 'smtp.gmail.com' # 172.16.0.15
+# EMAIL_PORT = 587 # 25
+# EMAIL_HOST_USER = 'centrofbc@gmail.com' # noreply@bartolo.org
+# EMAIL_HOST_PASSWORD = 'wwdkyebpkxwovjkp' # N0r3ply
+EMAIL_HOST = '172.16.0.15'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'noreply@bartolo.org'
+EMAIL_HOST_PASSWORD = 'N0r3ply'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

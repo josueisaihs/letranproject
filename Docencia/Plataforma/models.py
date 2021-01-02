@@ -3,6 +3,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib import admin
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from Docencia.Cursos.models import CourseInformation
 
@@ -99,3 +100,47 @@ class MessageAdmin(admin.ModelAdmin):
     list_filter = ('approved', 'subject__course__area', 'edition')
     search_fields = ('subject__name', 'user__name')
     ordering = ('-createdate',)
+
+
+class Enrollment(models.Model):
+    """Model definition for Enrollment."""
+    student = models.ForeignKey("Docencia.StudentPersonalInformation", verbose_name="Estudiante", 
+    on_delete=models.CASCADE)
+    subject = models.ForeignKey("Docencia.SubjectInformation", verbose_name="Asignatura", 
+    on_delete=models.CASCADE)
+    edition = models.ForeignKey("Docencia.Edition", verbose_name="Edition", 
+    on_delete=models.CASCADE)
+    status = models.CharField(verbose_name="Estado", 
+        choices=(
+            ('Aprobado', 'Aprobado'),
+            ('Suspenso', 'Suspenso'),
+            ('En curso', 'En curso')
+        ), max_length=8, default="En curso"
+    )
+    attempt = models.PositiveIntegerField(verbose_name="Intentos", default=1)
+
+    def newAttempt(self):
+        if self.attempt < 3:
+            self.attempt = self.attempt + 1
+            self.save()
+        else:
+            raise ValidationError('Ha alcanzado el máximo número de intentos')
+
+    class Meta:
+        """Meta definition for Enrollment."""
+        unique_together = ('subject', 'student', 'edition')
+        verbose_name = 'Enrollment'
+        verbose_name_plural = 'Enrollments'
+
+    def __str__(self):
+        """Unicode representation of Enrollment."""
+        return "%s %s %s" % (self.student.fullname(), self.subject, self.edition )
+
+@admin.register(Enrollment)
+class EnrollmentAdmin(admin.ModelAdmin):
+    '''Admin View for Enrollment'''
+    list_display = ('student', 'subject', 'edition', 'status', 'attempt')
+    list_filter = ('edition', 'status')
+    search_fields = ('student__name', 'student__lastname', 'subject__name', 'subject__course__name')
+    ordering = ('student', '-edition')
+
