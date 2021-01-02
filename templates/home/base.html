@@ -132,8 +132,16 @@
   </head>
   <body>
 
-    <div class="spinner-wrapper">
-      <span class="spinner"></span>
+    <div class="app-loader">
+      <div class="contenido text-center">
+        <h1 class="titulo text-white">Centro Fray Bartolomé de las Casas</h1>
+        <h3 class="subtitulo text-white">20 años arrojando luz</h3>
+        <small class="text-white">Conexiones Lentas</small><br>
+        <a href="#">Admisión</a>
+        <a href="#">Estudiantes</a>
+        <a href="#">Profesores</a>
+      </div>
+      <div class="drop drop-1"></div>
     </div>
 
     <main class="content" style="display: none;">
@@ -241,11 +249,11 @@
     {% endblock %}
 
     <script>
-      let spinnerwrapper = document.querySelector('.spinner-wrapper');
+      let loader = document.querySelector('.app-loader');
       let content = document.querySelector('.content');
       let footer = document.querySelector('.footer');
       window.addEventListener('load', function(){
-        spinnerwrapper.parentElement.removeChild(spinnerwrapper)
+        loader.parentElement.removeChild(loader)
         content.style.display = "block";
         footer.style.display = "block";
       });
