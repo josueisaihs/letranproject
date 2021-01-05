@@ -47,12 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'captcha',
     'Docencia',
-    'SapereAude',
     'easy_thumbnails',
     'debug_toolbar',
     'background_task',
     'django_ckeditor_5',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -373,11 +371,3 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
-
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
