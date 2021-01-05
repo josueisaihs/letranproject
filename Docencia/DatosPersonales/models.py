@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 import os
+from datetime import date
 
 def eliminarTildes(txt):
         w = (
