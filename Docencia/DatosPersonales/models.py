@@ -77,6 +77,26 @@ class StudentPersonalInformation(models.Model):
             pass
         super().save()
 
+    def getAge(self):
+        if (self.numberidentification.__len__() > 6):
+            try:
+                year = self.numberidentification[0:2]
+                month = self.numberidentification[2:4]
+                day = self.numberidentification[4:6]
+
+                if (int(year) > date.today().year - 2000):
+                    year = "19%s" % year
+                else:
+                    year = "20%" % year
+                
+                birth = date.fromisoformat('%s-%s-%s' % (year, month, day))
+                age  = (date.today() - birth).days // 365
+                return "%s Años" % age
+            except:
+                return "Edad no disponible[E]"
+        else:
+            return "%s" % 'Edad no disponible'
+
     def createUser(self):
         """ Crea un usuario con una contraseña cualquiera, despues se cambia"""
 
