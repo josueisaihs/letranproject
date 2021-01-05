@@ -92,7 +92,7 @@ class StudentPersonalInformation(models.Model):
                 
                 birth = date.fromisoformat('%s-%s-%s' % (year, month, day))
                 age  = (date.today() - birth).days // 365
-                return "%s Años (%s)" % (age, birth.strftime("%d/%m/%y"))
+                return "%s Años" % age
             except:
                 return "Edad no disponible[E]"
         else:
