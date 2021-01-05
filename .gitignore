@@ -19,3 +19,5 @@ static/django_ckeditor_5/
 static/jet/
 static/jet.dashboard/
 static/range_filter/
+SapereAude/migrations/
+SapereAude/__pycache__/
