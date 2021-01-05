@@ -249,11 +249,11 @@
     {% endblock %}
 
     <script>
-      let loader = document.querySelector('.app-loader');
+      let spinnerwrapper = document.querySelector('.spinner-wrapper');
       let content = document.querySelector('.content');
       let footer = document.querySelector('.footer');
       window.addEventListener('load', function(){
-        loader.parentElement.removeChild(loader)
+        spinnerwrapper.parentElement.removeChild(spinnerwrapper)
         content.style.display = "block";
         footer.style.display = "block";
       });
