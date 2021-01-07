@@ -2,10 +2,8 @@ $(document).ready(()=>{
 
     $('#updatecomments').on('click', ()=>{
         var textarea = document.querySelector('#comments')
-        const text = `${textarea.innerHTML} Última Actualización:${textarea.getAttribute('data-teacher')}`
+        const text = `${textarea.value} Última Actualización:${textarea.getAttribute('data-teacher')}`
         const pk = textarea.getAttribute('data-app')
-
-        console.log(text, pk)
 
         $.ajax({
             url: urls.accion,
