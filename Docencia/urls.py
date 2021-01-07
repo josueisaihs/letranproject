@@ -54,6 +54,7 @@ urlpatterns = [
     path('admision/admin/dashboard/<int:coursepk>/', views.admon.admindashboard_course, name='admision_admin_course'),
     path('api/admision/admin/dashboard/denegar/', views.admon.admindashboard_denegar, name='api_admision_denegar'),
     path('api/admision/admin/dashboard/accion/', views.admon.admindashboard_accion, name='api_admision_accion'),
+    path('api/admision/admin/dashboard/comment/', views.admon.updateComment, name='api_admision_comment'),
     path('admision/admin/dashboard/detail/<int:coursepk>/', views.admon.admindashboard_detail, name='admision_admin_detail'),
     path('admision/admin/dashboard/detail/student/<int:apppk>/', views.admon.admindashboard_student_detail, name='admision_admin_student_detail'),
 ]

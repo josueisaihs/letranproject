@@ -188,3 +188,18 @@ def admindashboard_student_detail(req, apppk):
     except:
         messages.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+
+@require_POST
+@user_passes_test(dec.isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def updateComment(req):
+    app = Application.objects.get(pk=req.POST.get("app"))
+    app.comments = req.POST.get("comment")
+    app.save()
+
+    response_data = {
+            'Exito': "True"
+    }
+
+    return JsonResponse(response_data)

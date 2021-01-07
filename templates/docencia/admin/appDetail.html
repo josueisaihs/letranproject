@@ -139,6 +139,15 @@
                             </div> 
                         </div>
                     {% endfor %}
+                    <div class="col">
+                        <div class="mb-3 rounded bg-secondary">
+                            <div class="">
+                                <p class="text-muted">Comentarios</p>
+                                <textarea id="comments" rows="5" data-teacher="{{ teacher.fullname }}">{{ app.comments }}</textarea>
+                                <button type="button" id="updatecomments" class="btn btn-outline-primary">Actualizar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

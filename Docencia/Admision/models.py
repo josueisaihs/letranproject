@@ -154,6 +154,7 @@ class Application(models.Model):
             ), 
         default="espera"
     )
+    comments = models.TextField(verbose_name='Comentarios', default="", blank=True)
 
     answers = []
 
@@ -177,5 +178,5 @@ class ApplicationAdmin(admin.ModelAdmin):
     fields = list_display
     list_filter = ["edition", "status"]
     search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
-    readonly_fields = ('appdate',)
+    readonly_fields = ('appdate', 'comments')
 # <> fin Application

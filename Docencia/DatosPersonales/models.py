@@ -173,6 +173,9 @@ class TeacherPersonalInformation(models.Model):
         verbose_name = 'Datos Personales - Profesor'
         verbose_name_plural = 'Datos Personales - Profesores'
 
+    def fullname(self):
+        return "%s %s" % (self.name, self.lastname)
+
     def __str__(self):
         """Unicode representation of TeacherPersonalInformation."""
         return "%s %s %s" % (self.degree, self.name, self.lastname)

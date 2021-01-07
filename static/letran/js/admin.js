@@ -1,4 +1,28 @@
 $(document).ready(()=>{
+
+    $('#updatecomments').on('click', ()=>{
+        var textarea = document.querySelector('comments')
+        const text = `${textarea.html()} Última Actualización:${textarea.getAttribute('data-teacher')}`
+        
+        $.ajax({
+            url: urls.accion,
+            type: "POST",
+            data: {
+                app: pk,
+                comment: text
+            },
+            success: function(json){
+                if (json.Exito === 'True'){
+                    textarea.html(text)
+                }else{
+                    console.log("Error");
+                }
+            },
+            error: function(xhr, errmsg, err){
+                console.log(errmsg, err);
+            }
+        });
+    })
     
     $("#id_buscar").on('keyup', ()=>{
         const txt = $("#id_buscar").val().toString().toLowerCase();
@@ -75,6 +99,30 @@ function eliminar(){
             else{
                 console.log("Error")
             }                        
+        },
+        error: function(xhr, errmsg, err){
+            console.log(errmsg, err);
+        }
+    });
+}
+
+function accion(){
+    const pk = $("#id_accion_btn").attr("data-app");
+    const accion = $("#id_accion_btn").attr("data-accion");
+
+    $.ajax({
+        url: urls.accion,
+        type: "POST",
+        data: {
+            app: pk,
+            status: accion
+        },
+        success: function(json){
+            if (json.Exito === 'True'){
+                location.reload();
+            }else{
+                console.log("Error");
+            }
         },
         error: function(xhr, errmsg, err){
             console.log(errmsg, err);
