@@ -1,10 +1,10 @@
 $(document).ready(()=>{
 
     $('#updatecomments').on('click', ()=>{
-        var textarea = document.querySelector('comments')
-        const text = `${textarea.html()} Última Actualización:${textarea.getAttribute('data-teacher')}`
+        var textarea = document.querySelector('#comments')
+        const text = `${textarea.innerHTML} Última Actualización:${textarea.getAttribute('data-teacher')}`
         const pk = textarea.getAttribute('data-app')
-        
+
         $.ajax({
             url: urls.accion,
             type: "POST",
