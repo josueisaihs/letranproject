@@ -5,13 +5,10 @@ from subprocess import check_output
 hostname = "bartolo.org"
 port = 7722
 
-# try:
 username = sys.argv[1]
 password = sys.argv[2]
 
-if __name__ == "__main__":
-    check_output('cd .. && git push', shell=True)
-
+def connect():
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostname, port, username, password)
@@ -28,5 +25,15 @@ if __name__ == "__main__":
 
     ssh.close()
 
-# except:
-#     print("Error no servidor ni contraseña")
+if __name__ == "__main__":
+    check_output('cd .. && git push', shell=True)
+
+    intentos = 0
+    while (intentos < 5):
+        try:
+            print("\n%s\nIntentos: %s\n\n" % ( 20 * "*", intentos))
+            connect()
+            break
+        except EOFError as error:
+            print("Error de conexion")
+            intentos += 1
