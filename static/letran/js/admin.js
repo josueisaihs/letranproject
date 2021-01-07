@@ -14,7 +14,7 @@ $(document).ready(()=>{
             },
             success: function(json){
                 if (json.Exito === 'True'){
-                    textarea.innerHTML = text
+                    textarea.value = text
                 }else{
                     console.log("Error");
                 }
