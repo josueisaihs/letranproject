@@ -6,7 +6,7 @@ $(document).ready(()=>{
         const pk = textarea.getAttribute('data-app')
 
         $.ajax({
-            url: urls.accion,
+            url: urls.comment,
             type: "POST",
             data: {
                 app: pk,
