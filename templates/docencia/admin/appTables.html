@@ -44,7 +44,11 @@
                     <tr id="id_app_{{ app.pk }}" data-show="1">
                         <td>{{ forloop.counter }}</td>
                         <td class="course-name">{{ app.course.name }}</td>
-                        <td class="app-student"><a href="{% url 'admision_admin_student_detail' app.pk %}">{{ app.student.fullname }} · {{ app.student.getAge }}</a></td>
+                        <td class="app-student">
+                            <a href="{% url 'admision_admin_student_detail' app.pk %}" id="app_{{ app.pk }}" class="a-tippy" data-atippy="{{ app.comments|default:"No hay comentarios" }}">
+                                {{ app.student.fullname }} · {{ app.student.getAge }}
+                            </a>
+                        </td>
                         <td>{{ edition.name }}</td>          
                         
                         {% ifequal app.status "espera" %}

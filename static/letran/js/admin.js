@@ -1,5 +1,17 @@
 $(document).ready(()=>{
 
+    var atippy = document.querySelectorAll(".a-tippy")
+    atippy.forEach((el)=>{
+        console.log('Creando atributo')
+        tippy(`#${el.id}`, {
+            content: el.getAttribute('data-atippy'),
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+    })
+
     $('#updatecomments').on('click', ()=>{
         var textarea = document.querySelector('#comments')
         const text = `${textarea.value}       << Por:${textarea.getAttribute('data-teacher')} >>`
