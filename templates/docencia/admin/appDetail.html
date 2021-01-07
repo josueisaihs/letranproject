@@ -143,7 +143,7 @@
                         <div class="mb-3 rounded">
                             <div class="p-4">
                                 <p class="text-muted">Comentarios</p>
-                                <textarea class="form-control" id="comments" rows="5" data-teacher="{{ teacher.fullname }}">{{ app.comments }}</textarea>
+                                <textarea class="form-control" id="comments" rows="5" data-teacher="{{ teacher.fullname }}" data-app="{{ app.pk }}">{{ app.comments }}</textarea>
                                 <button type="button" id="updatecomments" class="btn btn-outline-primary">Actualizar</button>
                             </div>
                         </div>
