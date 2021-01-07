@@ -13,11 +13,24 @@ class Edition(models.Model):
     name = models.CharField("Edición", max_length=50)
     datepub = models.DateField("Fecha Publicación", auto_now=True)
     dateupdate = models.DateField("Última Actualización", auto_now=True)
+    
+    prologuetitle = models.CharField('Prólogo Título', max_length=250, default="")
+    prologue = CKEditor5Field('Prólogo Cuerpo', config_name='extends', default="<p>Sin texto</p>")
+    author = models.ForeignKey("SapereAude.Author", verbose_name="Autor Prólogo", on_delete=models.CASCADE, blank=True, default=1)
 
     class Meta:
         unique_together = ('name', 'datepub')
         verbose_name = 'Edition'
         verbose_name_plural = 'Editions'
+
+    def getSections(self):
+        return Section.objects.filter(edition__pk=self.pk)
+
+    def getArticles(self):
+        return Article.objects.filter(section__edition__pk=self.pk)
+
+    def getRandomArticles(self):
+        return Article.objects.filter(section__edition__pk=self.pk).order_by('?')
 
     def __str__(self):
         return "%s" % self.name
@@ -40,8 +53,9 @@ class Edition(models.Model):
 
 @admin.register(Edition)
 class EditionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'datepub', 'dateupdate')
-    readonly_fields = ('datepub', 'slug', 'dateupdate')
+    list_display = ('name', 'datepub', 'dateupdate', 'prologuetitle', 'prologue', 'author')
+    # readonly_fields = ('datepub', 'slug', 'dateupdate')
+    readonly_fields = ('slug',)
     search_fields = ('name',)
     ordering = ('name', '-datepub')
 
@@ -61,6 +75,9 @@ class Section(models.Model):
     def __str__(self):
         """Unicode representation of Divition."""
         return "%s" % self.name
+
+    def getArticles(self):
+        return Article.objects.filter(section__pk=self.pk)
 
     def _get_unique_slug(self):
         slug = slugify(self.name)
@@ -92,6 +109,9 @@ class Author(models.Model):
     name = models.CharField('Nombre', max_length=50)
     lastname = models.CharField('Apellido', max_length=100)
     filial = models.CharField("Filial", max_length=250)
+
+    def fullname(self):
+        return "%s %s %s" % (self.grade, self.name, self.lastname)
 
     class Meta:
         """Meta definition for Author."""
@@ -134,7 +154,7 @@ class Article(models.Model):
     subtitle = models.CharField('Subtítulo', max_length=250)
     abstract = models.TextField("Resumen")
     image = models.ImageField('Imagen', upload_to='static/recurso/%Y/%m/%d/%H/%M/')
-    body = CKEditor5Field('Cuerpo', config_name='default', default="<p>Sin texto</p>")
+    body = CKEditor5Field('Cuerpo', config_name='extends', default="<p>Sin texto</p>")
     datepub = models.DateField('Publicación', auto_now=True)
     dateupdate = models.DateField('Publicación', auto_now=True)
 

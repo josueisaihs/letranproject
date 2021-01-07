@@ -56,61 +56,31 @@
     </div>
 
     <main class="container">
-        {% with edition.getRandomArticles as randomarticles %}
-                {% for article in randomarticles %}
-                    {% ifequal forloop.counter0 0 %}                    
-                        <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-                            <div class="high-news col-md-6 px-0">
-                                <h1 class="display-4 font-italic">{{ article.title }}</h1>
-                                <h6>{{ article.subtitle|capfirst }} · {{ article.datepub|naturalday|capfirst }}</h6>
-                                <p class="abstract lead my-3">{{ article.abstract|truncatechars:197 }}</p>
-                                <p class="lead mb-0">
-                                    <a href="{% url 'article' edition.slug article.slug %}" class="text-white fw-bold">
-                                        Continue leyendo...
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    {% endifequal %}
-                {% endfor %}    
-                <div class="row mb-2">
-                    {% for article in randomarticles %}
-                        {% if forloop.counter > 1 and forloop.counter < 4 %}
-                            <div class="col-md-6">
-                                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                    <div class="col p-4 d-flex flex-column position-static">
-                                        <strong class="d-inline-block mb-2 text-primary"></strong>
-                                        <h3 class="mb-0">{{ article.title }}</h3>
-                                        <div class="mb-1 text-muted">{{ article.datepub|naturalday|capfirst }}</div>
-                                        <p class="card-text mb-auto text-wrap">{{ article.abstract|truncatechars:100 }}</p>
-                                        <a href="{% url 'article' edition.slug article.slug %}" class="stretched-link">Continue leyendo...</a>
-                                    </div>
-                                    <div class="col-auto d-none d-lg-block">
-                                        <img class="high-news-img bd-placeholder-img" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
-                                    </div>
-                                </div>
-                            </div>  
-                        {% endif %}
-                    {% endfor %}
-                </div>
-        {% endwith %}
         <div class="row">
             <div class="col-md-8">
-                <h3 class="edition-name pb-4 mb-4 font-italic border-bottom" data-slug='{{ edition.slug }}'>{{ edition.name }}</h3>
-
+            <h3 class="edition-name pb-4 mb-4 font-italic border-bottom"><a href="{% url 'sapereaude_index' edition.slug %}">{{ edition.name }}</a> · <a href="{% url 'section' edition.slug article.section.slug %}">{{ article.section.name }}</a></h3>
                 <article class="blog-post">
-                    <h2 class="blog-post-title">{{ edition.prologuetitle }}</h2>
-                    <p class="blog-post-meta">{{ edition.datepub|naturalday|capfirst }} · Por <i>{{ edition.author.fullname }}</i></p>
-                    {{ edition.prologue|safe }}
+                    <h2 class="blog-post-title">{{ article.title }}<br><small>{{ article.subtitle }}</small></h2>
+                    <p class="blog-post-meta">{{ article.datepub|naturalday|capfirst }} · Por 
+                    {% for author in article.authors.all %}
+                        {% if forloop.counter > 1 and not forloop.last %}, {% endif %}
+                        {% if forloop.last and article.authors.all|length > 1 %} y {% endif %}
+                        <i>{{ author.fullname }}</i>
+                    {% endfor %}</p>
+                    <p>{{ article.abstract }}</p>
+                    <hr>
+                    {{ article.body|safe }}
                 </article>
 
-                {% for article in edition.getArticles %}
-                    <article class="blog-post border-top">
-                        <h2 class="blog-post-title">{{ article.title }}</h2>
-                        <p class="blog-post-meta">{{ article.datepub|naturalday|capfirst }} · Por {% for author in article.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article.authors.all|length > 1 %}y {% with article.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
-                        <p>{{ article.abstract|truncatechars:250 }}</p>
-                        <a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo...</a>
-                    </article>
+                {% for article_ in edition.getArticles %}                    
+                    {% ifnotequal article_.slug article.slug %}                        
+                        <article class="blog-post border-top">
+                            <h2 class="blog-post-title">{{ article_.title }}</h2>
+                            <p class="blog-post-meta">{{ article_.datepub|naturalday|capfirst }} · Por {% for author in article_.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article_.authors.all|length > 1 %}y {% with article_.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
+                            <p>{{ article_.abstract|truncatechars:250 }}</p>
+                            <a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo...</a>
+                        </article>
+                    {% endifnotequal %}
                 {% endfor %}
             </div>
 

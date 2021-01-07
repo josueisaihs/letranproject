@@ -4,6 +4,7 @@ from . import views
 __author__ = "Josue Isai Hernandez Sanchez"
 __email__ = "josueisaihs@gmail.com"
 
+
 urlpatterns = [
     path('', views.index.index, name='index'),
     path('api/suscribir', views.index.suscribeteAjax, name='api_index_suscribete'),

@@ -31,7 +31,6 @@ sitemaps = {
     "dynamic": Dynamic
 }
 
-
 urlpatterns = [
     # Admin
     path('jet/', include('jet.urls', 'jet')),

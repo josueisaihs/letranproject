@@ -11,13 +11,28 @@ TEMPLETE_PATH = "sapereaude/%s.html"
 
 
 def index(req, edition=""):
-    editionname = ''
     if (edition == ""):
-        edition = models.Edition.objects.all().order_by('-datepub').first().slug
-        editionname = models.Edition.objects.all().order_by('-datepub').first().name
-        print(editionname)
-        return redirect('/sapereaude/%s' % edition)
+        edition = models.Edition.objects.all().order_by('-datepub').first()
+        return redirect('/sapereaude/%s' % edition.slug)
+    else:
+        edition = models.Edition.objects.get(slug=edition)
+
+    editions = models.Edition.objects.all()
     return render(req, TEMPLETE_PATH % 'index', locals())
+
+def article(req, edition, article):
+    edition = models.Edition.objects.get(slug=edition)
+    article = models.Article.objects.get(slug=article)
+
+    editions = models.Edition.objects.all()
+    return render(req, TEMPLETE_PATH % 'article', locals())
+
+def section(req, edition, section):
+    edition = models.Edition.objects.get(slug=edition)
+    section = models.Section.objects.get(slug=section)
+
+    editions = models.Edition.objects.all()
+    return render(req, TEMPLETE_PATH % 'section', locals())
 
 class Edition(View):
     def get(self, request, *args, **kwargs):
