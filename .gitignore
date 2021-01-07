@@ -21,3 +21,4 @@ static/jet.dashboard/
 static/range_filter/
 SapereAude/migrations/
 SapereAude/__pycache__/
+paramiko/
