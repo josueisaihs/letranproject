@@ -16,7 +16,7 @@
                 <h2 class="blog-post-title" data-aos="fade-up" data-aos-delay="100" data-aos-duration="500">{{ article.title }}</h2>
                 <p class="blog-post-meta" data-aos="fade-up" data-aos-delay="200" data-aos-duration="500">{{ article.datepub|naturalday|capfirst }} · Por {% for author in article.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article.authors.all|length > 1 %}y {% with article.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
                 <p data-aos="fade-up" data-aos-delay="300" data-aos-duration="500">{{ article.abstract|truncatechars:250 }}</p>
-                <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="500"><a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo...</a></div>
+                <div data-aos="fade-up" data-aos-delay="400" data-aos-duration="500"><a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo <i class="fas fa-long-arrow-alt-right"></i></a></div>
             </article>
         {% endfor %}
     </div>
