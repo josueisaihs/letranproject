@@ -1,0 +1,170 @@
+{% load static %}
+{% load humanize %}
+
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sapere Aude</title>
+        <!-- Bootstrap core CSS -->
+        <link href="{% static 'letran/sapereaude/css/bootstrap.min.css' %}" rel="stylesheet" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+        crossorigin="anonymous"/>
+
+        <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+            }
+        }
+        a {
+            text-decoration: none;
+        }
+        
+        .content {
+            display: none;
+        }
+
+        .loader {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .titulo {
+            animation: opacar 2s ease-in-out alternate-reverse infinite;
+        }
+
+        .subtitulo {
+            animation: opacar 6s ease-in-out alternate-reverse infinite;
+        }
+
+        @keyframes opacar {
+            from {opacity: 1; }
+            to {opacity: .2;}
+        }
+        </style>
+
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" crossorigin="anonymous"/>
+        <!-- Custom styles for this template -->
+        <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="{% static 'letran/sapereaude/css/blog.css'%}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="loader">
+            <h1 class="titulo">SAPERE AUDE</h1>
+            <h6 class="subtitulo">Centro Fray Bartolomé de las Casas</h6>
+        </div>
+        <div class="content">
+            <div class="container">
+                <header class="blog-header py-3">
+                    <div class="row flex-nowrap justify-content-center align-items-center">
+                        <div class="col-8 text-center" data-aos="fade-down" data-aos-duration="500" data-aos-delay="100">
+                            <a class="blog-header-logo text-dark text-center" 
+                                href="{% url 'sapereaude_index' %}">
+                                SAPERE AUDE
+                            </a>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="nav-scroller py-1 mb-2">
+                    <nav id="nav" class="nav d-flex justify-content-between">
+                        {% for section_ in edition.getSections %}
+                            <li data-aos="fade-down" data-aos-delay="{{ forloop.counter }}00" data-aos-duration="500">
+                                <a class="p-2 {% if section_.slug == section.slug or article.section.slug == section_.slug %}link-dark border-bottom fw-bold{% else %}link-secondary{% endif %}" 
+                                    href="{% url 'section' edition.slug section_.slug %}" >
+                                    {{ section_.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </nav>
+                </div>
+            </div>
+
+            <main class="container">
+                
+                {% block hightarticles %}{% endblock hightarticles %}                
+                
+                <div class="row">
+                    {% block content %}{% endblock content %}                
+
+                    <div class="col-md-4">
+                        <div class="p-4">
+                            <h4 class="font-italic" data-aos="fade-left" data-aos-duration="500" data-aos-delay="500">Archivos</h4>
+                            <ol id="editions" class="list-unstyled mb-0">
+                                <!-- Las versiones de la revista en orden cronológico -->
+                                {% for edition_ in editions %}
+                                    <li data-aos="fade-left" data-aos-duration="500" data-aos-delay="{{ forloop.counter|add:'5' }}00">
+                                        <a href="{% url 'sapereaude_index' edition_.slug %}" 
+                                            class="{% if edition.slug == edition_.slug %}link-dark fw-bold{% else %}link-secondary{% endif %}">
+                                            {{ edition_.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+
+                        <div class="p-4">
+                            <h4 class="font-italic" data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Consejo Editorial</h4>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Lic. Fray Lester Rafael Zayas Díaz, OP<br><small class="text-secondary">Director</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Lic. René Gonazalez Medina<br><small class="text-secondary">Subdirector</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Lic. Aluned Moreno del Cristo<br><small class="text-secondary">Jefa Editorial</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500"><small class="text-secondary">Consejo Editorial</small><br>Fray Manuel Uña, OP<br>Fray Celio de Padua, OP<br>Fray Aridio Castro, OP<br>Dra. Reina Fleitas<br>Mtr.C. Reinaldo Martinez<br>Lic. Alejandro Hernández<br>Mtr.C. Claudio Caballero</p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Ing. Josué Isai Hernández Sánchez<br><small class="text-secondary">Desarrollador</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Mtr.C. Teresa Rojas<br><small class="text-secondary">Corrección Lengua Inglesa</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Ing. Derick Enriquez<br><small class="text-secondary">Diseño y Fotografía</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Dpto Publicaciones CFBC<br><small class="text-secondary">Impresión Y Maquetación</small></p>
+                            <p data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Centro Fray Bartolomé de las Casas<br><small class="text-secondary">Publicidad y Distribució</small></p>
+                        </div>
+
+                        <div class="p-4">
+                            <h4 class="font-italic" data-aos="fade-left" data-aos-delay="100" data-aos-duration="500">Síguenos en</h4>
+                            <ol class="list-unstyled">
+                                <li data-aos="fade-left" data-aos-delay="200" data-aos-delay="500"><a href="#" class="link-secondary"><i class="fab fa-linkedin-in"></i>  LinkedIn</a></li>
+                                <li data-aos="fade-left" data-aos-delay="300" data-aos-delay="500"><a href="#" class="link-secondary"><i class="fab fa-twitter"></i> Twitter</a></li>
+                                <li data-aos="fade-left" data-aos-delay="400" data-aos-delay="500"><a href="#" class="link-secondary"><i class="fab fa-facebook-f"></i>   Facebook</a></li>
+                            </ol>
+                        </div>
+                    </div>
+
+                </div><!-- /.row -->
+
+            </main><!-- /.container -->
+
+            <footer class="blog-footer" data-aos="fade-up" data-aos-delay="100" data-aos-delay="500">
+                <p>&copy; <a href="https://bartolo.org/" class="link-dark">CFBC</a> por <a href="https://twitter.com/josueisaihs" class="link-dark">@josueisaihs</a></p>
+                <p>
+                    <a href="#"><i class="fas fa-angle-up" style="font-size: 2rem;"></i></a>
+                </p>
+            </footer>
+        </div>
+        <script>
+            let loader = document.querySelector('.loader');
+            let content = document.querySelector('.content');
+            window.addEventListener('load', function(){
+                loader.parentElement.removeChild(loader)
+                content.style.display = "block";
+                AOS.init();
+            });
+        </script>
+        <script defer src="https://kit.fontawesome.com/8f55f7d0ff.js" crossorigion="anonymous"></script>
+        <script defer src="https://unpkg.com/aos@2.3.1/dist/aos.js" crossorigin="anonymous"></script>
+    </body>
+</html>

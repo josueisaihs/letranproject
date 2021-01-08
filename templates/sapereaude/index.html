@@ -1,155 +1,65 @@
+{% extends './base.html' %}
 {% load static %}
 {% load humanize %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sapere Aude</title>
-     <!-- Bootstrap core CSS -->
-    <link href="{% static 'sapereaude/css/bootstrap.min.css' %}" rel="stylesheet" />
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
-    crossorigin="anonymous"/>
-
-    <style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-    }
-
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-        font-size: 3.5rem;
-        }
-    }
-    </style>
-
-
-    <!-- Custom styles for this template -->
-    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="{% static 'letran/sapereaude/css/blog.css'%}" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <header class="blog-header py-3">
-            <div class="row flex-nowrap justify-content-center align-items-center">
-                <div class="col-8 text-center">
-                    <a class="blog-header-logo text-dark text-center" href="{% url 'sapereaude_index' %}">SAPERE AUDE</a>
+{% block hightarticles %}
+    {% with edition.getRandomArticles as randomarticles %}
+        {% for article in randomarticles %}
+            {% ifequal forloop.counter0 0 %}                    
+                <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+                    <div class="high-news col-md-6 px-0">
+                        <h1 class="display-4 font-italic">{{ article.title }}</h1>
+                        <h6>{{ article.subtitle|capfirst }} · {{ article.datepub|naturalday|capfirst }}</h6>
+                        <p class="abstract lead my-3">{{ article.abstract|truncatechars:197 }}</p>
+                        <p class="lead mb-0">
+                            <a href="{% url 'article' edition.slug article.slug %}" class="text-white fw-bold">
+                                Continue leyendo...
+                            </a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </header>
-
-        <div class="nav-scroller py-1 mb-2">
-            <nav id="nav" class="nav d-flex justify-content-between">
-                {% for section in edition.getSections %}
-                    <li><a class="p-2 link-secondary" href="{% url 'section' edition.slug section.slug %}">{{ section.name }}</a></li>
-                {% endfor %}
-            </nav>
-        </div>
-    </div>
-
-    <main class="container">
-        {% with edition.getRandomArticles as randomarticles %}
-                {% for article in randomarticles %}
-                    {% ifequal forloop.counter0 0 %}                    
-                        <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-                            <div class="high-news col-md-6 px-0">
-                                <h1 class="display-4 font-italic">{{ article.title }}</h1>
-                                <h6>{{ article.subtitle|capfirst }} · {{ article.datepub|naturalday|capfirst }}</h6>
-                                <p class="abstract lead my-3">{{ article.abstract|truncatechars:197 }}</p>
-                                <p class="lead mb-0">
-                                    <a href="{% url 'article' edition.slug article.slug %}" class="text-white fw-bold">
-                                        Continue leyendo...
-                                    </a>
-                                </p>
+            {% endifequal %}
+        {% endfor %}    
+        <div class="row mb-2">
+            {% for article in randomarticles %}
+                {% if forloop.counter > 1 and forloop.counter < 4 %}
+                    <div class="col-md-6">
+                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                            <div class="col p-4 d-flex flex-column position-static">
+                                <strong class="d-inline-block mb-2 text-primary"></strong>
+                                <h3 class="mb-0">{{ article.title }}</h3>
+                                <div class="mb-1 text-muted">{{ article.datepub|naturalday|capfirst }}</div>
+                                <p class="card-text mb-auto text-wrap">{{ article.abstract|truncatechars:100 }}</p>
+                                <a href="{% url 'article' edition.slug article.slug %}" class="stretched-link">Continue leyendo...</a>
+                            </div>
+                            <div class="col-auto d-none d-lg-block">
+                                <img class="high-news-img bd-placeholder-img" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
                             </div>
                         </div>
-                    {% endifequal %}
-                {% endfor %}    
-                <div class="row mb-2">
-                    {% for article in randomarticles %}
-                        {% if forloop.counter > 1 and forloop.counter < 4 %}
-                            <div class="col-md-6">
-                                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                    <div class="col p-4 d-flex flex-column position-static">
-                                        <strong class="d-inline-block mb-2 text-primary"></strong>
-                                        <h3 class="mb-0">{{ article.title }}</h3>
-                                        <div class="mb-1 text-muted">{{ article.datepub|naturalday|capfirst }}</div>
-                                        <p class="card-text mb-auto text-wrap">{{ article.abstract|truncatechars:100 }}</p>
-                                        <a href="{% url 'article' edition.slug article.slug %}" class="stretched-link">Continue leyendo...</a>
-                                    </div>
-                                    <div class="col-auto d-none d-lg-block">
-                                        <img class="high-news-img bd-placeholder-img" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
-                                    </div>
-                                </div>
-                            </div>  
-                        {% endif %}
-                    {% endfor %}
-                </div>
-        {% endwith %}
-        <div class="row">
-            <div class="col-md-8">
-                <h3 class="edition-name pb-4 mb-4 font-italic border-bottom" data-slug='{{ edition.slug }}'>{{ edition.name }}</h3>
+                    </div>  
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endwith %}
+{% endblock hightarticles %}
+{% block content %}
+    <div class="col-md-8">
+        <h3 class="edition-name pb-4 mb-4 font-italic border-bottom" data-slug='{{ edition.slug }}'>{{ edition.name }}</h3>
 
-                <article class="blog-post">
-                    <h2 class="blog-post-title">{{ edition.prologuetitle }}</h2>
-                    <p class="blog-post-meta">{{ edition.datepub|naturalday|capfirst }} · Por <i>{{ edition.author.fullname }}</i></p>
-                    {{ edition.prologue|safe }}
-                </article>
+        <article class="blog-post">
+            <h2 class="blog-post-title">{{ edition.prologuetitle }}</h2>
+            <p class="blog-post-meta">{{ edition.datepub|naturalday|capfirst }} · Por <i>{{ edition.author.fullname }}</i></p>
+            {{ edition.prologue|safe }}
+        </article>
 
-                {% for article in edition.getArticles %}
-                    <article class="blog-post border-top">
-                        <h2 class="blog-post-title">{{ article.title }}</h2>
-                        <p class="blog-post-meta">{{ article.datepub|naturalday|capfirst }} · Por {% for author in article.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article.authors.all|length > 1 %}y {% with article.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
-                        <p>{{ article.abstract|truncatechars:250 }}</p>
-                        <a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo...</a>
-                    </article>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-4">
-                <div class="p-4 mb-3 bg-light rounded">
-                    <h4 class="font-italic">Acerca de </h4>
-                    <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
-                </div>
-
-                <div class="p-4">
-                    <h4 class="font-italic">Archivos</h4>
-                    <ol id="editions" class="list-unstyled mb-0">
-                        <!-- Las versiones de la revista en orden cronológico -->
-                        {% for edition_ in editions %}
-                            <li><a href="{% url 'sapereaude_index' edition_.slug %}">{{ edition_.name }}</a></li>
-                        {% endfor %}
-                    </ol>
-                </div>
-
-                <div class="p-4">
-                    <h4 class="font-italic">Síguenos en</h4>
-                    <ol class="list-unstyled">
-                        <li><a href="#">LinkedIn</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Facebook</a></li>
-                    </ol>
-                </div>
-            </div>
-
-        </div><!-- /.row -->
-
-    </main><!-- /.container -->
-
-    <footer class="blog-footer">
-    <p>&copy; <a href="https://bartolo.org/">CFBC</a> por <a href="https://twitter.com/josueisaihs">@josueisaihs</a></p>
-    <p>
-    <a href="#"><i class="fas fa-angle-up" style="font-size: 2rem;"></i></a>
-    </p>
-    </footer>
-    <script defer src="https://kit.fontawesome.com/8f55f7d0ff.js" crossorigin="anonymous"></script>
-</body>
-</html>
+        {% for article in edition.getArticles %}
+            <article class="blog-post border-top">
+                <h2 class="blog-post-title">{{ article.title }}</h2>
+                <p class="blog-post-meta">{{ article.datepub|naturalday|capfirst }} · Por {% for author in article.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article.authors.all|length > 1 %}y {% with article.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
+                <p>{{ article.abstract|truncatechars:250 }}</p>
+                <a href="{% url 'article' edition.slug article.slug %}">Continuar leyendo...</a>
+            </article>
+        {% endfor %}
+    </div>
+{% endblock content %}
+    
