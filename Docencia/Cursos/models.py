@@ -16,6 +16,7 @@ from datetime import date, timedelta
 from decimal import Decimal
 
 from Docencia.DatosPersonales.models import TeacherPersonalInformation, StudentPersonalInformation
+from Docencia.Plataforma.models import Class
 
 
 class Sede(models.Model):
@@ -225,6 +226,12 @@ class CourseInformation(models.Model):
         """Meta definition for Curso."""
         verbose_name = 'Curso / Servicio'
         verbose_name_plural = 'Curso - Cursos y Servicios'
+    
+    def getSubjects(self):
+        return SubjectInformation.objects.filter(course=self.pk)
+
+    def getGroups(self):
+        return GroupInformation.objects.filter(course=self.pk)
 
     def __str__(self):
         """Unicode representation of Curso."""
@@ -268,6 +275,7 @@ class CourseInformationAdmin(admin.ModelAdmin):
 
 class GroupInformation(models.Model):
     """Model definition for GroupInformation."""
+    slug = models.SlugField('Slug', default="")
     name = models.CharField(verbose_name="Nombre", max_length=150)
     edition = models.ForeignKey(Edition, verbose_name="Edición", on_delete=models.CASCADE)
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
@@ -279,6 +287,20 @@ class GroupInformation(models.Model):
         unique_together = [('name', 'edition', 'course')]
         verbose_name = 'Grupo'
         verbose_name_plural = 'Cursos - Grupos'
+
+    def _get_unique_slug(self):
+        slug = slugify("%s %s %s" % (self.course.area.name, self.course.name, self.name))
+        unique_slug = slug
+        num = 1
+        while GroupInformation.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         """Unicode representation of GroupInformation."""
@@ -292,7 +314,7 @@ class GroupInformationAdmin(admin.ModelAdmin):
     search_fields = ('name', 'edition__name', 'course__name', 'course__area__name', 'teachers__name', 'teachers__lastname',
     'students__name', 'students__lastname')
     ordering = ('name',)
-
+    readonly_fields = ["slug",]
 
 class SubjectInformation(models.Model):
     # Asignatura
@@ -324,6 +346,9 @@ class SubjectInformation(models.Model):
     
     def __str__(self):
         return "%s (%s)" % (self.name, self.course)
+
+    def getClasses(self):
+        return Class.objects.filter(subject=self.pk)
 
     class Meta:
         unique_together= ('name', 'course')

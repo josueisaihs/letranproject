@@ -35,13 +35,16 @@ urlpatterns = [
     path("plataforma/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadResource, name="plataforma_recurso"),
     #Plataforma Profesores
     path("plataforma/admin/dashboard/", views.plataforma.admindashboard, name="plataforma_admin_index"),
+    path("plataforma/admin/dashboard/curso/<slug:slug>/", views.plataforma.admincourse, name="plataforma_admin_course"),
+    path("plataforma/admin/dashboard/subject/<slug:slug>/", views.plataforma.adminsubject, name="plataforma_admin_subject"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),
     path("plataforma/admin/dashboard/clase/delete/", views.plataforma.deleteclass, name="plataforma_admin_clase_delete"),
-    path("plataforma/admin/dashboard/<slug:slug>/clase/<slug:slugclass>/editar/", views.plataforma.adminclass_edit, name="plataforma_admin_clase_editar"),
+    path("plataforma/admin/dashboard/clase/<slug:slug>/editar/", views.plataforma.adminclass_edit, name="plataforma_admin_clase_editar"),
     path("plataforma/admin/dashboard/clase/file/upload/", views.plataforma.uploadfile, name="plataforma_admin_upload"),
     path("plataforma/admin/dashboard/clase/file/delete/", views.plataforma.deletefile, name="plataforma_admin_delete"),
     path("plataforma/admin/dashboard/comunicado/", views.plataforma.sendmasivemail, name="plataforma_admin_comunicado"),
     path("plataforma/admin/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadTeacherResource, name="plataforma_admin_recurso"),
+    path("plataforma/admin/dashboard/crear/grupo/", views.plataforma.creategroup, name="plataforma_admin_crear_grupo"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),

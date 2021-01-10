@@ -5,8 +5,6 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from Docencia.Cursos.models import CourseInformation
-
 class Class(models.Model):
     """Model definition for Class."""
     slug = models.SlugField(max_length=250, default="")

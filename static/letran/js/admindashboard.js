@@ -1,3 +1,26 @@
+function createGroup(){
+    const courseslug = $("#namenewgroup").attr('data-course');
+    const name = $("#namenewgroup").val()
+    // const name = "Grupo A"
+
+    if (name !== '' && courseslug !== ''){
+        $.ajax({
+            type: 'post',
+            url: creategroupurl,
+            data: {'name': name, 'course': courseslug},
+            success: (response)=>{
+                if (response.response){
+
+                }else{
+                    console.error("Error servidor")
+                }
+            },
+            error: (xhr, errmsg, err)=>{
+                console.error(errmsg.toString(), err.toString());
+            }
+        })
+    }
+}
 
 function sendMail(el){
     const courseslug = $("#sendmail_course option:selected").val().toString();

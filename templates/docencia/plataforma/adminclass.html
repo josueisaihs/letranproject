@@ -1,6 +1,12 @@
 {% extends './admindashboard.html' %}
 {% load static %}
 {% block dashboard_content %}
+    <div class="border-bottom">
+        <h5>
+            <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
+                <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
+        </h5>
+    </div>
     <form class="my-3" action="." method="POST" id="id_classform">
         {% csrf_token %}
 

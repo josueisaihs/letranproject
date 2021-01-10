@@ -1,0 +1,31 @@
+{% extends './admindashboard.html' %}
+{% load thumbnail %}
+{% block dashboard_content %}
+    <div class="">
+        <div class="row py-2 g-2">
+            <div class="border-bottom mb-3">
+                <h5>
+                    <a href="{% url 'plataforma_admin_course' subject.course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
+                </h5>
+            </div>
+            {% for class in subject.getClasses %}
+                <div class="col-sm-4">
+                    <a href="{% url 'plataforma_admin_clase_editar' class.slug %}">
+                        <div class="card text-center h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ class.name }}</h5>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{ class.datepub|timesince }}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <a href="#" class="float">
+        <i class="fa fa-comments"></i>
+    </a>
+{% endblock%}

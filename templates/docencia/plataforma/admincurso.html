@@ -1,0 +1,78 @@
+{% extends './admindashboard.html' %}}
+{% load thumbnail %}
+{% block dashboard_content %}
+<div>
+    <div class="row py-2 g-2">
+        <div class="border-bottom mb-3">
+            <h5><a href="{% url 'plataforma_admin_course' course.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ course.name }}</h5>
+        </div>
+        <div class="col-sm-4">
+            <a href="#">
+                <div class="card text-center h-100 ">
+                    <div class="card-body">
+                        <h5 class="card-title align-middle">Recursos</h5>                        
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% for subject in course.getSubjects %}
+            <div class="col-sm-4">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ subject.name }}</h5>
+                        <small>{{ subject.mode }}</small>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                            <a href="{% url 'plataforma_admin_subject' subject.slug %}" 
+                            type="button" class="btn btn-outline-primary btn-sm">
+                                Clases
+                            </a>
+                            <a href="#" 
+                            type="button" class="btn btn-outline-primary btn-sm">
+                                Mensajes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}            
+    </div>
+    
+    <div class="row py-2 g-2 border-top">
+        <h3 class="my-1">Grupos</h3>
+        <div class="col-sm-4">
+            <a href="#">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fa fa-plus"></i> Crear</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% for group in course.getGroups %}
+            <div class="col-sm-4">
+                <a href="#">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ group.name }}</h5>
+                        </div>
+                        <div class="card-footer">
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a href="#" 
+                                type="button" class="btn btn-outline-primary btn-sm">
+                                    Asistencia
+                                </a>
+                                <a href="#" 
+                                type="button" class="btn btn-outline-primary btn-sm">
+                                    Evaluaciones
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

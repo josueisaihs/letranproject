@@ -189,6 +189,30 @@ def recursos(req, slug):
 def downloadResource(req, slug):
         resource = Recurso.objects.get(slug=slug)
         return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def messages(req, slug):
+        user = User.objects.get(username=req.user.username)
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+
+                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+                for app in apps:
+                        app.course.subjects = []
+                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                app.course.subjects.append(subject)
+                return render(req, TEMPLETE_PATH % "messages", locals())
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
         
 
 # ******************* Profesores **********************************
@@ -230,32 +254,37 @@ def admindashboard(req):
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
+def admincourse(req, slug):
+        user = User.objects.get(username=req.user.username)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
+
+                return render(req, TEMPLETE_PATH % "admincurso", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminsubject(req, slug):
+        user = User.objects.get(username=req.user.username)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                subject =SubjectInformation.objects.get(slug=slug)
+
+                return render(req, TEMPLETE_PATH % "adminsubject", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def adminclass(request, slug):
         user = User.objects.get(username=request.user.username)
         try:
                 teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-                
-                courses = []
-                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
-                for pk in coursespk_:
-                        course = CourseInformation.objects.get(pk=pk)
-                        course.subjects = []
-                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
-                        for subject in subjects:
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                course.subjects.append(subject)
-                        # Cargando los recursos del curso
-                        course.recursos = []
-                        for recurso in Recurso.objects.filter(courses=course.pk):
-                                course.recursos.append(recurso)
-                        courses.append(course)
-
                 subject = SubjectInformation.objects.get(slug=slug)
                 if request.method == "POST":
                         form = ClassForm(request.POST)
@@ -298,35 +327,12 @@ def deletefile(req):
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
-def adminclass_edit(request, slug, slugclass):
+def adminclass_edit(request, slug):
         user = User.objects.get(username=request.user.username)
         try:
-                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-                
-                courses = []
-                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
-                for pk in coursespk_:
-                        course = CourseInformation.objects.get(pk=pk)
-                        course.subjects = []
-                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
-                        for subject in subjects:
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                course.subjects.append(subject)
-                        # Cargando los recursos del curso
-                        course.recursos = []
-                        for recurso in Recurso.objects.filter(courses=course.pk):
-                                course.recursos.append(recurso)
-                        courses.append(course)
-
                 edit = True
-                subject = SubjectInformation.objects.get(slug=slug)
-                class_edit = Class.objects.get(slug=slugclass)
+                class_edit = Class.objects.get(slug=slug)
+                subject = SubjectInformation.objects.get(pk=class_edit.subject.pk)
                 if request.method == "POST":
                         form = ClassForm(request.POST, instance=class_edit)
                         if form.is_valid():
@@ -347,6 +353,8 @@ def adminclass_edit(request, slug, slugclass):
                 messagesdj.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def deleteclass(req):
         if req.is_ajax():
                 Class.objects.get(slug=req.POST.get("slug")).delete()
@@ -354,6 +362,8 @@ def deleteclass(req):
         else:
                 return HttpResponseForbidden()
 
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def sendmasivemail(req):
         if req.is_ajax():
                 course = CourseInformation.objects.get(slug=req.POST.get('courseslug'))
@@ -361,8 +371,6 @@ def sendmasivemail(req):
                         edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
                 except ObjectDoesNotExist:
                         edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                print(edition.pk, course.pk, req.POST.get('subject'), req.POST.get('body'))
 
                 enviar_comunicado(edition.pk, course.pk, req.POST.get('subject'), req.POST.get('body'))
 
@@ -376,28 +384,8 @@ def downloadTeacherResource(req, slug):
         resource = Recurso.objects.get(slug=slug)
         return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
 
-def messages(req, slug):
-        user = User.objects.get(username=req.user.username)
-        try:
-                student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                for app in apps:
-                        app.course.subjects = []
-                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                app.course.subjects.append(subject)
-                return render(req, TEMPLETE_PATH % "messages", locals())
-        except:
-                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
-
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def adminmessages(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
@@ -431,36 +419,42 @@ def adminmessages(req, slug):
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 def send_message(req):
-        message = Message(
-                user=User.objects.get(
-                        pk=req.user.pk
-                ),
-                subject=SubjectInformation.objects.get(
-                        slug=req.POST.get('subjectslug')
-                ),
-                body=req.POST.get('msg'),
-                edition=Edition.objects.get(
+        if req.is_ajax():
+                message = Message(
+                        user=User.objects.get(
+                                pk=req.user.pk
+                        ),
+                        subject=SubjectInformation.objects.get(
+                                slug=req.POST.get('subjectslug')
+                        ),
+                        body=req.POST.get('msg'),
+                        edition=Edition.objects.get(
+                                dateinit__lte=datetime.today(), 
+                                dateend__gte=datetime.today()
+                        )
+                )
+                message.save()
+
+                return JsonResponse({'response': True, 'slug': message.slug})
+        else:
+                return JsonResponse({'response': False})
+
+def update_messages(req):
+        if req.is_ajax():
+                edition = Edition.objects.get(
                         dateinit__lte=datetime.today(), 
                         dateend__gte=datetime.today()
                 )
-        )
-        message.save()
+                messages = Message.objects.filter(
+                        subject=SubjectInformation.objects.get(slug=req.POST.get('subjectslug')), 
+                        edition=edition,
+                        approved=True
+                )
+                color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
 
-        return JsonResponse({'response': True, 'slug': message.slug})
-
-def update_messages(req):
-        edition = Edition.objects.get(
-                dateinit__lte=datetime.today(), 
-                dateend__gte=datetime.today()
-        )
-        messages = Message.objects.filter(
-                subject=SubjectInformation.objects.get(slug=req.POST.get('subjectslug')), 
-                edition=edition,
-                approved=True
-        )
-        color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
-
-        return JsonResponse({'data': serializers.serialize('json', messages)})
+                return JsonResponse({'data': serializers.serialize('json', messages)})
+        else:
+                return JsonResponse({'data': False})
 
 def delete_message(req):
         Message.objects.get(slug=req.POST.get("slug")).delete()
@@ -468,10 +462,29 @@ def delete_message(req):
         return JsonResponse({"response": True})
 
 def user_message(req):
-        user = User.objects.get(pk=req.POST.get('userpk'))
-        if (user.first_name != "" and user.last_name != ""): 
-                sal = "%s %s" % (user.first_name, user.last_name) 
-        else: 
-                sal = user.username
+        if req.is_ajax():
+                user = User.objects.get(pk=req.POST.get('userpk'))
+                if (user.first_name != "" and user.last_name != ""): 
+                        sal = "%s %s" % (user.first_name, user.last_name) 
+                else: 
+                        sal = user.username
 
-        return JsonResponse({'response': sal})
+                return JsonResponse({'response': sal})
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def creategroup(req):
+        if req.is_ajax():
+                teacher = TeacherPersonalInformation.objects.get(user=req.user.pk)
+                group = GroupInformation(
+                        name=req.POST.get('name'),
+                        edition=Edition.objects.get(
+                                dateinit__lte=datetime.today(), 
+                                dateend__gte=datetime.today()
+                        ),
+                        course=CourseInformation.objects.get(slug=req.POST.get('course')),
+                )
+                group.save()
+                group.teachers.set([teacher,])
+                group.save()
+                return JsonResponse({'response': True})
