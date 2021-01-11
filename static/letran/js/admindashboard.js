@@ -10,6 +10,7 @@ function createGroup(){
             url: creategroupurl,
             data: {'name': name, 'course': courseslug},
             success: function (response){
+                console.log(response)
                 if (response.response){
                     location.href = urlcourse
                 }else{
