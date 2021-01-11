@@ -34,7 +34,7 @@ def dashboard(req):
         student = StudentPersonalInformation.objects.get(user=user.pk)
         try:
             edition = Edition.objects.get(
-                    dateinit__gte=datetime.today(), 
+                    dateinit__lte=datetime.today(), 
                     dateend__gte=datetime.today())
         except ObjectDoesNotExist:
             messages.error(req, "Este usuario ya no tiene acceso a este servicio. El período de admisión ha finalizado.")

@@ -81,6 +81,7 @@ $(document).ready(()=>{
                         $("#id_send").prop("disabled", false);
                         $(".spinner-border").addClass("invisible");
                         $(".btn-text").html("Enviar")  
+                        console.error(json.Msg)
                     }                
                 },
                 error: (xhr, errmsg, err)=>{

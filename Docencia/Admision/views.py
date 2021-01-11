@@ -33,7 +33,7 @@ def selectcourse(req):
     student = StudentPersonalInformation.objects.get(user=user.pk)
 
     edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today())
 
     appls = Application.objects.filter(student=student.pk, edition=edition.pk)
@@ -67,7 +67,7 @@ def application(req, coursePk):
         course = CourseInformation.objects.get(pk=coursePk)
 
         edition = Edition.objects.get(
-            dateinit__gte=datetime.today(), 
+            dateinit__lte=datetime.today(), 
             dateend__gte=datetime.today())
                 
         try:
@@ -121,7 +121,7 @@ def applicationAjax(req):
             course = CourseInformation.objects.get(pk=enrollment.course.pk)
 
             edition = Edition.objects.get(
-                dateinit__gte=datetime.today(), 
+                dateinit__lte=datetime.today(), 
                 dateend__gte=datetime.today())
                     
             try:
@@ -143,9 +143,11 @@ def applicationAjax(req):
                 }
                 AnswerApplication.objects.filter(askApp=askPk, student=student.pk).delete()
                 answerApp.save()
-                estado = False                
+                estado = False
+                msg = ""             
         except ValueError as e:
             exito = False
+            msg = str(e)
             break
     
     if exito:
@@ -155,7 +157,8 @@ def applicationAjax(req):
             messages.success(req, "Nueva Aplicación enviada a %s\nSe eliminó su aplicación anterior" % enrollment.course.name)
 
     response_data = {
-        'Exito': str(exito)
+        'Exito': str(exito),
+        'Msg': msg
     }
     return JsonResponse(response_data)    
 # <> fin applicationAjax

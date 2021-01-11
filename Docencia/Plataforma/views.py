@@ -221,36 +221,19 @@ def messages(req, slug):
 def admindashboard(req):    
         index = "active"
         user = User.objects.get(username=req.user.username)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
         try:
-                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-                
-                courses = []
-                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
-                for pk in coursespk_:
-                        course = CourseInformation.objects.get(pk=pk)
-                        course.subjects = []
-                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
-                        for subject in subjects:
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                course.subjects.append(subject)
+                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+        except ObjectDoesNotExist:
+                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+        
+        courses = CourseInformation.obejcts.filter(edition=edition.pk, teacher=)
 
-                                # Cargando los recursos del curso
-                                course.recursos = []
-                                for recurso in Recurso.objects.filter(courses=course.pk):
-                                        course.recursos.append(recurso)
-
-                        courses.append(course)
-
-                return render(req, TEMPLETE_PATH % "adminindex", locals())
-        except:
-                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+        return render(req, TEMPLETE_PATH % "adminindex", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
