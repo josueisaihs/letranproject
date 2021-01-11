@@ -228,7 +228,7 @@ def admindashboard(req):
         except ObjectDoesNotExist:
                 edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
         
-        courses = CourseInformation.obejcts.filter(edition=edition.pk, teacher=)
+        # courses = CourseInformation.obejcts.filter(edition=edition.pk, teacher=)
 
         return render(req, TEMPLETE_PATH % "adminindex", locals())
         # except:
