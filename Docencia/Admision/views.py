@@ -19,7 +19,7 @@ from Docencia.decorators import isStudent
 
 TEMPLETE_PATH = "docencia/admision/%s.html"
 
-@cache_page(60 * 15)
+# @cache_page(60 * 15)
 @user_passes_test(isStudent, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def selectcourse(req):
@@ -95,6 +95,7 @@ def applicationAjax(req):
     # respuestas -> askPk, askType, answer
     exito = True
     estado = 0
+    msg = ""
     for askPk, askType, answer in respuestas:
         try:
             if askType == "o" or askType == "r":
@@ -144,7 +145,7 @@ def applicationAjax(req):
                 AnswerApplication.objects.filter(askApp=askPk, student=student.pk).delete()
                 answerApp.save()
                 estado = False
-                msg = ""             
+                msg = str(e)            
         except ValueError as e:
             exito = False
             msg = str(e)
