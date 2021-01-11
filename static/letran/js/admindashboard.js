@@ -9,7 +9,7 @@ function createGroup(){
             type: 'post',
             url: creategroupurl,
             data: {'name': name, 'course': courseslug},
-            success: (response)=>{
+            success: function (response){
                 if (response.response){
                     location.href = urlcourse
                 }else{
