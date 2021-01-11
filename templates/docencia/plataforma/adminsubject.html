@@ -9,6 +9,17 @@
                         <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
                 </h5>
             </div>
+            <div class="col-sm-4">
+                <a href="{% url 'plataforma_admin_clase' subject.slug %}">
+                    <div class="card text-center h-100">
+                        <div class="card-body justify-content-center align-items-center">
+                            <h5 class="card-title justify-content-center align-items-center">
+                                <i class="fa fa-plus"></i> Crear
+                            </h5>
+                        </div>
+                    </div>
+                </a>
+            </div>
             {% for class in subject.getClasses %}
                 <div class="col-sm-4">
                     <a href="{% url 'plataforma_admin_clase_editar' class.slug %}">
@@ -25,7 +36,7 @@
             {% endfor %}
         </div>
     </div>
-    <a href="#" class="float">
+    <a href="{% url 'plataforma_adminmessages' subject.slug %}" class="float">
         <i class="fa fa-comments"></i>
     </a>
 {% endblock%}

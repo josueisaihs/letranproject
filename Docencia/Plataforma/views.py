@@ -220,15 +220,10 @@ def messages(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admindashboard(req):    
         index = "active"
-        user = User.objects.get(username=req.user.username)
         # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-        try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+        teacher = TeacherPersonalInformation.objects.get(user=User.objects.get(username=req.user.username))
         
-        # courses = CourseInformation.obejcts.filter(edition=edition.pk, teacher=)
+        courses = teacher.getCourses()
 
         return render(req, TEMPLETE_PATH % "adminindex", locals())
         # except:
@@ -239,14 +234,14 @@ def admindashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admincourse(req, slug):
         user = User.objects.get(username=req.user.username)
-        try:
-                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-                course = CourseInformation.objects.get(slug=slug)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+        course = CourseInformation.objects.get(slug=slug)
 
-                return render(req, TEMPLETE_PATH % "admincurso", locals())
-        except:
-                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+        return render(req, TEMPLETE_PATH % "admincurso", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -281,13 +276,65 @@ def adminclass(request, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                                return HttpResponseRedirect('/plataforma/admin/dashboard/')
+                                return HttpResponseRedirect('/plataforma/admin/dashboard/subject/%s' % slug)
                 else:
                         form = ClassForm()
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
         except:
                 messagesdj.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def creategroup(req, slug):
+        user = User.objects.get(username=req.user.username)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+        course = CourseInformation.objects.get(slug=slug)
+
+        return render(req, TEMPLETE_PATH % "admingroup", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def createcomunicate(req, slug):
+        user = User.objects.get(username=req.user.username)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+        course = CourseInformation.objects.get(slug=slug)
+
+        return render(req, TEMPLETE_PATH % "admincomunicado", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminrecursos(req, slug):
+        user = User.objects.get(username=req.user.username)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+        course = CourseInformation.objects.get(slug=slug)
+
+        return render(req, TEMPLETE_PATH % "adminrecurso", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def downloadAdminResource(req, slug):
+        resource = Recurso.objects.get(slug=slug)
+        return FileResponse(open(resource.recurso.file.__str__(), 'rb'))
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def deleteAdminResource(req, slug, slugclass):
+        resource = Recurso.objects.get(slug=slug)
+        resource.delete()
+        return HttpResponseRedirect('/plataforma/admin/dashboard/curso/recursos/%s' % slugclass)
 
 def uploadfile(req):
         if req.is_ajax():
@@ -328,7 +375,7 @@ def adminclass_edit(request, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                                return HttpResponseRedirect('/plataforma/admin/dashboard/')
+                                return HttpResponseRedirect('/plataforma/admin/dashboard/subject/%s' % slug)
                 else:
                         form = ClassForm(instance=class_edit)
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
@@ -456,7 +503,7 @@ def user_message(req):
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
-def creategroup(req):
+def apicreategroup(req):
         if req.is_ajax():
                 teacher = TeacherPersonalInformation.objects.get(user=req.user.pk)
                 group = GroupInformation(

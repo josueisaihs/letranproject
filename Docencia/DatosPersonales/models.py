@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 import os
 from datetime import date
+from Docencia.Cursos.models import SubjectInformation, CourseInformation
 
 def eliminarTildes(txt):
         w = (
@@ -193,6 +194,9 @@ class TeacherPersonalInformation(models.Model):
     #     except IntegrityError:
     #         pass
     #     super().save()
+
+    def getCourses(self):
+        return CourseInformation.objects.filter(pk__in=SubjectInformation.objects.filter(teachers=self.pk).order_by('course').values_list('course', flat=True).distinct())
 
     def createUser(self):
         """ Crea un usuario con una contraseña cualquiera, despues se cambia"""

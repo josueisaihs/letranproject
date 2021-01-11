@@ -1,7 +1,24 @@
 {% extends './dashboard.html' %}
 {% load static %}
 {% block dashboard_content %}
-    <div>                
+    <div class="mt-2">            
+        {% if subject %}
+             <div class="border-bottom mb-3">
+                <h5>
+                    <a href="{% url 'plataforma_admin_course' subject.course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
+                </h5>
+            </div>
+        {% else %}
+            <div class="border-bottom mb-3">
+                <h5>
+                    <a href="{% url 'plataforma_admin_course' clase.subject.course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name}}
+                </h5>
+            </div>
+        {% endif %}
+                        
+       
         <div id="id_msg_pool" class="p-1" style="max-height: 80vh; overflow: auto;">
             <p class="text-dark h2 text-capitalize mx-auto">{{ clase.name }}</p>
             <small class="text-black-50 text-center">{{ clase.subject.course.name }} | {{ clase.datepub|date:"D d M y" }}</small>

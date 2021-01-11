@@ -10,7 +10,7 @@ function createGroup(){
             data: {'name': name, 'course': courseslug},
             success: (response)=>{
                 if (response.response){
-
+                    location.href = urlcourse
                 }else{
                     console.error("Error servidor")
                 }
@@ -23,7 +23,7 @@ function createGroup(){
 }
 
 function sendMail(el){
-    const courseslug = $("#sendmail_course option:selected").val().toString();
+    const courseslug = $("#sendmail_subject").attr('data-course');
     const subject = $("#sendmail_subject").val().toString();
     const body = $("#sendmail_body").val().toString();
 
@@ -44,6 +44,8 @@ function sendMail(el){
 
                     $("#sendmail_subject").val("")
                     $("#sendmail_body").val("")
+
+                    location.href = urlcourse
                 }
             },
             error: (xhr, errmsg, err)=>{

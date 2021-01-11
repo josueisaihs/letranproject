@@ -15,8 +15,8 @@ import os
 from datetime import date, timedelta
 from decimal import Decimal
 
-from Docencia.DatosPersonales.models import TeacherPersonalInformation, StudentPersonalInformation
 from Docencia.Plataforma.models import Class
+from Docencia.Index.models import Recurso
 
 
 class Sede(models.Model):
@@ -193,7 +193,7 @@ class CourseInformation(models.Model):
     groups = []    
     subjects = []
 
-    adminteachers = models.ManyToManyField(TeacherPersonalInformation, related_name="teachers", related_query_name="teacher_admin", verbose_name="Profesores Encargados")
+    adminteachers = models.ManyToManyField('Docencia.TeacherPersonalInformation', related_name="teachers", related_query_name="teacher_admin", verbose_name="Profesores Encargados")
     sedes = models.ManyToManyField(Sede, related_name="sedes", related_query_name="sedes", verbose_name="Sede(s)")
 
     recursos = []
@@ -232,6 +232,9 @@ class CourseInformation(models.Model):
 
     def getGroups(self):
         return GroupInformation.objects.filter(course=self.pk)
+
+    def getRecursos(self):
+        return Recurso.objects.filter(courses=self.pk)
 
     def __str__(self):
         """Unicode representation of Curso."""
@@ -279,8 +282,8 @@ class GroupInformation(models.Model):
     name = models.CharField(verbose_name="Nombre", max_length=150)
     edition = models.ForeignKey(Edition, verbose_name="Edición", on_delete=models.CASCADE)
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
-    teachers = models.ManyToManyField(TeacherPersonalInformation, verbose_name="Profesor(s)")
-    students = models.ManyToManyField(StudentPersonalInformation, verbose_name="Estudiante(s)", blank=True)
+    teachers = models.ManyToManyField('Docencia.TeacherPersonalInformation', verbose_name="Profesor(s)")
+    students = models.ManyToManyField('Docencia.StudentPersonalInformation', verbose_name="Estudiante(s)", blank=True)
 
     class Meta:
         """Meta definition for GroupInformation."""

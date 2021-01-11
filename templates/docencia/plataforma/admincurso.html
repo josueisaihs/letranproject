@@ -1,17 +1,26 @@
 {% extends './admindashboard.html' %}}
 {% load thumbnail %}
 {% block dashboard_content %}
-<div>
+<div class="py-2">
     <div class="row py-2 g-2">
         <div class="border-bottom mb-3">
             <h5><a href="{% url 'plataforma_admin_index' %}" class="">
                 <i class="fas fa-arrow-left"></i></a> {{ course.name }}</h5>
         </div>
         <div class="col-sm-4">
-            <a href="#">
+            <a href="{% url 'plataforma_admin_recursos' course.slug %}">
                 <div class="card text-center h-100 ">
                     <div class="card-body">
-                        <h5 class="card-title align-middle">Recursos</h5>                        
+                        <h5 class="card-title align-middle"><i class="far fa-file"></i> Recursos</h5>                        
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'plataforma_admin_comunicate' course.slug %}">
+                <div class="card text-center h-100 ">
+                    <div class="card-body">
+                        <h5 class="card-title align-middle"><i class="fas fa-bullhorn"></i> Comunicado</h5>                        
                     </div>
                 </div>
             </a>
@@ -24,12 +33,12 @@
                         <small>{{ subject.mode }}</small>
                     </div>
                     <div class="card-footer">
-                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <div class="btn-group" role="group" aria-label="">
                             <a href="{% url 'plataforma_admin_subject' subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Clases
                             </a>
-                            <a href="#" 
+                            <a  href="{% url 'plataforma_adminmessages' subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Mensajes
                             </a>
@@ -43,7 +52,7 @@
     <div class="row py-2 g-2 border-top mt-1">
         <h3 class="my-1">Grupos</h3>
         <div class="col-sm-4">
-            <a href="#">
+            <a href="{% url 'plataforma_admin_crear_grupo' course.slug %}">
                 <div class="card text-center h-100">
                     <div class="card-body justify-content-center align-items-center">
                         <h5 class="card-title justify-content-center align-items-center">
@@ -77,3 +86,11 @@
     </div>
 </div>
 {% endblock %}
+
+{% block modal %}
+{% endblock modal %}
+    
+{% block scripts %}
+ const comunicadourl = "{% url 'plataforma_admin_comunicado' %}"  
+ const creategroupurl = "{% url 'api_plataforma_admin_crear_grupo'%}"
+{% endblock scripts %}

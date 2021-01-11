@@ -1,0 +1,39 @@
+{% extends './admindashboard.html' %}}
+{% load thumbnail %}
+{% load static %}
+{% block dashboard_content %}
+<div class="py-2">
+    <div class="row py-2 g-2">
+        <div class="border-bottom mb-3">
+            <h5>
+                <a href="{% url 'plataforma_admin_course' course.slug %}" class="">
+                    <i class="fas fa-arrow-left"></i>
+                </a> {{ course.name }} / Nuevo Comunicado
+            </h5>
+        </div>
+        <div class="col-sm-12">
+            <div>
+                <label for="sendmail_subject">Asunto</label>
+                <input class="form-control mb-2" id="sendmail_subject" placeholder="Asunto" data-course="{{ course.slug }}">
+                <label for="sendmail_body">Cuerpo</label>
+                <textarea class="form-control mb-2" value="" placeholder="Texto del comunicado..." 
+                id="sendmail_body" rows="10"></textarea>
+                <button type="button" class="btn btn-primary" onclick="sendMail(this)">
+                    <div class="spinner-border spinner-border-sm invisible" role="status">
+                        <span class="visually-hidden"></span>
+                    </div> Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}
+
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/admindashboard.js' %}"></script>
+{% endblock importScripts %}
+    
+{% block scripts %}
+  const comunicadourl = "{% url 'plataforma_admin_comunicado' %}"
+  const urlcourse = "{% url 'plataforma_admin_course' course.slug %}"
+{% endblock scripts %}
