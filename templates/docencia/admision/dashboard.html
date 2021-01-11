@@ -97,7 +97,10 @@
                                 <div class="alert alert-primary lg" role="alert">
                                     Tenemos convocatorias disponibles. Puedes 
                                     <a href="{% url 'admision_seleccion_curso' %}" class="alert-link">aplicar</a>
-                                    hasta el {{ message }}
+                                    hasta el {{ message }}.
+                                </div>
+                                <div class="alert alert-warning lg" role="alert">
+                                    La matrícula se confirma en el Acto de Inicio de Curso. La inasistencia al mismo invalida su Admisión y pasará a otro aspirante. <strong>NO SE ADMITEN RECLAMACIONES</strong>
                                 </div>
                             {% endifequal %}
                         {% endif %}
