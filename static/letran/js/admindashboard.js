@@ -2,6 +2,7 @@ function createGroup(){
     const courseslug = $("#namenewgroup").attr('data-course');
     const name = $("#namenewgroup").val()
     // const name = "Grupo A"
+    console.log(name, courseslug, creategroupurl)
 
     if (name !== '' && courseslug !== ''){
         $.ajax({
