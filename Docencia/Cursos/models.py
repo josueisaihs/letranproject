@@ -278,7 +278,7 @@ class CourseInformationAdmin(admin.ModelAdmin):
 
 class GroupInformation(models.Model):
     """Model definition for GroupInformation."""
-    slug = models.SlugField('Slug', default="")
+    slug = models.SlugField('Slug', default="", max_length=200)
     name = models.CharField(verbose_name="Nombre", max_length=150)
     edition = models.ForeignKey(Edition, verbose_name="Edición", on_delete=models.CASCADE)
     course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
