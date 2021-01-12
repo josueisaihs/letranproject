@@ -9,7 +9,7 @@ from django.core import serializers
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation, GroupInformation
 from Docencia.Admision.models import Application
-from Docencia.decorators import isStudentAceptado, isTeacher
+from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
 from Docencia.Plataforma.models import Class, Message
 from Docencia.Index.models import Recurso
 from Docencia.Plataforma.forms import ClassForm
@@ -448,6 +448,8 @@ def adminmessages(req, slug):
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
+@user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def send_message(req):
         if req.is_ajax():
                 message = Message(
@@ -469,6 +471,8 @@ def send_message(req):
         else:
                 return JsonResponse({'response': False})
 
+@user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def update_messages(req):
         if req.is_ajax():
                 edition = Edition.objects.get(
@@ -486,11 +490,15 @@ def update_messages(req):
         else:
                 return JsonResponse({'data': False})
 
+@user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def delete_message(req):
         Message.objects.get(slug=req.POST.get("slug")).delete()
 
         return JsonResponse({"response": True})
 
+@user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def user_message(req):
         if req.is_ajax():
                 user = User.objects.get(pk=req.POST.get('userpk'))

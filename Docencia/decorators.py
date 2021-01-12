@@ -34,3 +34,5 @@ def isStudentAceptado(user):
     else:
         return False
         
+def isStudentOrTeacher(user):
+    return isTeacher(user) or isStudentAceptado(user)
