@@ -80,6 +80,7 @@ class StudentPersonalInformation(models.Model):
         super().save()
 
     def getAge(self):
+        self.numberidentification = '01102474653' 
         if (self.numberidentification.__len__() > 6):
             try:
                 year = self.numberidentification[0:2]
@@ -89,11 +90,7 @@ class StudentPersonalInformation(models.Model):
                 if (int(year) > date.today().year - 2000):
                     year = "19%s" % year
                 else:
-                    if (int(year) < 10):
-                        prefix = "200%"
-                    else:
-                        prefix = "20%"
-                    year = prefix % year
+                    year = "20%s" % year
                 
                 birth = date.fromisoformat('%s-%s-%s' % (year, month, day))
                 age  = (date.today() - birth).days // 365
