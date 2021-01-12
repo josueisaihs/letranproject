@@ -220,28 +220,28 @@ def messages(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admindashboard(req):    
         index = "active"
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=User.objects.get(username=req.user.username))
-        
-        courses = teacher.getCourses()
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=User.objects.get(username=req.user.username))
+                
+                courses = teacher.getCourses()
 
-        return render(req, TEMPLETE_PATH % "adminindex", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "adminindex", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def admincourse(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "admincurso", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "admincurso", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -288,40 +288,40 @@ def adminclass(request, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def creategroup(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "admingroup", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "admingroup", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def createcomunicate(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "admincomunicado", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "admincomunicado", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def adminrecursos(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "adminrecurso", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "adminrecurso", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -336,6 +336,8 @@ def deleteAdminResource(req, slug, slugclass):
         resource.delete()
         return HttpResponseRedirect('/plataforma/admin/dashboard/curso/recursos/%s' % slugclass)
 
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def uploadfile(req):
         if req.is_ajax():
                 form = RecursoForm(req.POST, files=req.FILES)
@@ -348,6 +350,8 @@ def uploadfile(req):
         else: 
                 return HttpResponseForbidden()
 
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def deletefile(req):
         if req.is_ajax():
                 Recurso.objects.get(req.POST.get("slug")).delete()
@@ -468,8 +472,8 @@ def send_message(req):
                 message.save()
 
                 return JsonResponse({'response': True, 'slug': message.slug})
-        else:
-                return JsonResponse({'response': False})
+        else: 
+                return HttpResponseForbidden()
 
 @user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -487,8 +491,8 @@ def update_messages(req):
                 color = ('text-warning', 'text-info', 'text-white-50', 'text-success')
 
                 return JsonResponse({'data': serializers.serialize('json', messages)})
-        else:
-                return JsonResponse({'data': False})
+        else: 
+                return HttpResponseForbidden()
 
 @user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -508,6 +512,8 @@ def user_message(req):
                         sal = user.username
 
                 return JsonResponse({'response': sal})
+        else: 
+                return HttpResponseForbidden()
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -526,3 +532,5 @@ def apicreategroup(req):
                 group.teachers.set([teacher,])
                 group.save()
                 return JsonResponse({'response': True})
+        else: 
+                return HttpResponseForbidden()

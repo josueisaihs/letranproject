@@ -89,7 +89,11 @@ class StudentPersonalInformation(models.Model):
                 if (int(year) > date.today().year - 2000):
                     year = "19%s" % year
                 else:
-                    year = "20%" % year
+                    if (int(year) < 10):
+                        prefix = "200%"
+                    else:
+                        prefix = "20%"
+                    year = prefix % year
                 
                 birth = date.fromisoformat('%s-%s-%s' % (year, month, day))
                 age  = (date.today() - birth).days // 365
