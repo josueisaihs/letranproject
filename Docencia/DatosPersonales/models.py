@@ -80,7 +80,6 @@ class StudentPersonalInformation(models.Model):
         super().save()
 
     def getAge(self):
-        self.numberidentification = '01102474653' 
         if (self.numberidentification.__len__() > 6):
             try:
                 year = self.numberidentification[0:2]
