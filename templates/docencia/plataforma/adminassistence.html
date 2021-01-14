@@ -1,0 +1,74 @@
+{% extends './admindashboard.html' %}}
+{% load static %}
+{% block dashboard_content %}
+<div class="py-2">
+    <div class="row py-2 g-2">
+        <div class="border-bottom mb-3">
+            <h5>
+                <a href="{% url 'plataforma_admin_course' subject.course.slug %}" class="">
+                    <i class="fas fa-arrow-left"></i>
+                </a> {{ subject.course.name }} / {{ subject.name }} / Asistencia
+            </h5>
+        </div>
+        <div class="col-sm-12">
+            <div class="d-flex my-3">
+                <div class="flex-fill">
+                    <select id="roomclass" class="form-select">
+                        <option value="0" disabled selected>Seleccionar Aula</option>
+                        {% for room in rooms %}
+                            <option value="{{ room.slug }}">{{ room.name|capfirst }}</option>
+                        {% endfor %}
+                    </select>
+                </div>                
+                <div class="border border-danger rounded py-1 px-2 mx-2">
+                    <h6 class="my-auto text-danger">
+                        <span id="inasistenciasTotal">0</span> Inasistencia
+                        <span class="pluralize"></span></h6>
+                </div>
+                <div class="border border-success rounded py-1 px-2 mr-2">
+                    <h6 class="my-auto text-success">
+                        <span id="asistenciasTotal">0</span> Asistencia
+                        <span class="pluralize"></span></h6>
+                </div>
+            </div>
+            
+            {% for enrollment in enrollments %}                
+                <div class="card col-sm-4 {% if enrollment.absence > 3 %}border-danger text-danger{% else %}border-primary{% endif %}">
+                    <div class="card-body">
+                        <h5 class="">{{ enrollment.student.fullname }}<br>
+                            <small>Nombre</small></h5>
+                    </div>                    
+                    {% if enrollment.absence < 4 %}
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-center align-items-center">                            
+                                {% if enrollment.absence > 0 %}
+                                    <div class="border border-danger rounded py-1 px-2 mr-2">
+                                        <h6 class="my-auto text-danger">{{ enrollment.absence }}</h6>
+                                    </div>
+                                {% endif %}
+                                <select id="{{ enrollment.slug }}" class="form-select w-100" data-enrollment="{{ enrollment.slug }}" onchange="assistence(this)">
+                                    <option value="a">Asistencia</option>
+                                    <option value="i">Inasistencia</option>
+                                </select>
+                            </div>                        
+                        </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="alert alert-danger" role="alert">
+                    No hay estudiantes en el grupo. 
+                    <a href="#" class="link-danger">Crear Grupo</a>
+                </div>
+            {% endfor %}         
+        </div>
+    </div>
+</div>
+{% endblock dashboard_content %}
+
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/admindashboard.js' %}"></script>
+{% endblock importScripts %}
+    
+{% block scripts %}
+ const assistenceurl = "{% url 'api_plataforma_admin_assistence' %}"
+{% endblock scripts %}

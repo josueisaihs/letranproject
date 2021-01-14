@@ -38,6 +38,10 @@
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Clases
                             </a>
+                            <a href="{% url 'plataforma_admin_assistence' subject.slug %}" 
+                            class="btn btn-outline-primary btn-sm" type="button">
+                                Asistencia    
+                            </a>
                             <a  href="{% url 'plataforma_adminmessages' subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Mensajes
@@ -49,7 +53,7 @@
         {% endfor %}            
     </div>
 
-    <div class="row py-2 g-2 border-top mt-1">
+    <!-- <div class="row py-2 g-2 border-top mt-1">
         <h3 class="my-1">Grupos</h3>
         <div class="col-sm-4">
             <a href="{% url 'plataforma_admin_crear_grupo' course.slug %}">
@@ -70,7 +74,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a href="#" 
+                            <a href="{% url 'plataforma_admin_grupo' group.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Asistencia
                             </a>
@@ -83,7 +87,7 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </div> -->
 </div>
 {% endblock %}
 

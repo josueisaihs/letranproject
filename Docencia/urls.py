@@ -42,6 +42,7 @@ urlpatterns = [
     path("plataforma/admin/dashboard/curso/comunicado/crear/<slug:slug>", views.plataforma.createcomunicate, name="plataforma_admin_comunicate"),
     path("plataforma/admin/dashboard/curso/grupo/crear/<slug:slug>", views.plataforma.creategroup, name="plataforma_admin_crear_grupo"),
     path("plataforma/admin/dashboard/subject/<slug:slug>", views.plataforma.adminsubject, name="plataforma_admin_subject"),
+    path("plataforma/admin/dashboard/subject/<slug:slug>/assistence", views.plataforma.adminassistence, name="plataforma_admin_assistence"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),
     path("plataforma/admin/dashboard/clase/delete/", views.plataforma.deleteclass, name="plataforma_admin_clase_delete"),
     path("plataforma/admin/dashboard/clase/editar/<slug:slug>", views.plataforma.adminclass_edit, name="plataforma_admin_clase_editar"),
@@ -50,6 +51,8 @@ urlpatterns = [
     path("plataforma/admin/dashboard/comunicado/", views.plataforma.sendmasivemail, name="plataforma_admin_comunicado"),
     path("plataforma/admin/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadTeacherResource, name="plataforma_admin_recurso"),
     path("api/plataforma/admin/dashboard/crear/grupo/", views.plataforma.apicreategroup, name="api_plataforma_admin_crear_grupo"),
+    path("api/plataforma/admin/dashboard/assistence/", views.plataforma.apiassistence, name="api_plataforma_admin_assistence"),
+    path("plataforma/admin/dashboard/grupo/<slug:grupo>", views.plataforma.admingroup, name="plataforma_admin_grupo"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),

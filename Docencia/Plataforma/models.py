@@ -102,6 +102,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 class Enrollment(models.Model):
     """Model definition for Enrollment."""
+    slug = models.SlugField('Slug', default="")
     student = models.ForeignKey("Docencia.StudentPersonalInformation", verbose_name="Estudiante", 
     on_delete=models.CASCADE)
     subject = models.ForeignKey("Docencia.SubjectInformation", verbose_name="Asignatura", 
@@ -116,6 +117,9 @@ class Enrollment(models.Model):
         ), max_length=8, default="En curso"
     )
     attempt = models.PositiveIntegerField(verbose_name="Intentos", default=1)
+    
+    # Cantidad de ausencias
+    absence = models.PositiveSmallIntegerField(verbose_name="Inasistencias", default=0)
 
     def newAttempt(self):
         if self.attempt < 3:
@@ -123,6 +127,20 @@ class Enrollment(models.Model):
             self.save()
         else:
             raise ValidationError('Ha alcanzado el máximo número de intentos')
+    
+    def newAbsence(self):
+        if self.absence < 3:
+            self.absence = self.absence + 1
+            self.save()
+        else:
+            raise ValidationError('Ha alcanzado el máximo número de inasistencias')
+    
+    def setAbsence(self):
+        if self.absence > 0:
+            self.absence = self.absence - 1
+            self.save()
+        else:
+            raise ValidationError('No tiene inasistencias')
 
     class Meta:
         """Meta definition for Enrollment."""
@@ -132,13 +150,143 @@ class Enrollment(models.Model):
 
     def __str__(self):
         """Unicode representation of Enrollment."""
-        return "%s %s %s" % (self.student.fullname(), self.subject, self.edition )
+        return "%s %s %s" % (self.student.fullname(), self.subject.name, self.edition.name)
+
+    def _get_unique_slug(self):
+        slug = slugify("%s" % (self.__str__()))
+        unique_slug = slug
+        num = 1
+        while Enrollment.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
     '''Admin View for Enrollment'''
-    list_display = ('student', 'subject', 'edition', 'status', 'attempt')
+    list_display = ('student', 'subject', 'edition', 'status', 'attempt', 'absence')
     list_filter = ('edition', 'status')
     search_fields = ('student__name', 'student__lastname', 'subject__name', 'subject__course__name')
     ordering = ('student', '-edition')
+    readonly_fields = ('slug',)
 
+
+class Raspberry(models.Model):
+    """Model definition for Raspberry."""
+    name = models.CharField("Nombre", max_length=50, unique=True)
+    slug = models.SlugField("Slug")
+
+    class Meta:
+        """Meta definition for Raspberry."""
+        verbose_name = 'Raspberry'
+        verbose_name_plural = 'Raspberrys'
+
+    def __str__(self):
+        """Unicode representation of Raspberry."""
+        return self.name.__str__()
+
+    def _get_unique_slug(self):
+        slug = slugify("%s" % (self.name))
+        unique_slug = slug
+        num = 1
+        while Raspberry.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+@admin.register(Raspberry)
+class RaspberryAdmin(admin.ModelAdmin):
+    '''Admin View for Raspberry'''
+    list_display = ('name',)
+    readonly_fields = ('slug',)
+    search_fields = ('name',)
+    ordering = ('name',)
+
+
+class RoomClass(models.Model):
+    """Model definition for RoomClass."""
+    name = models.CharField('Nombre', max_length=50)
+    raspberry = models.ForeignKey("Docencia.Raspberry", verbose_name='Raspberry', 
+    on_delete=models.CASCADE)
+    slug = models.SlugField('Slug')
+
+    class Meta:
+        """Meta definition for RoomClass."""
+        unique_together = [('name', 'raspberry')]
+        verbose_name = 'RoomClass'
+        verbose_name_plural = 'RoomClasss'
+
+    def __str__(self):
+        """Unicode representation of RoomClass."""
+        return self.name.__str__()
+
+    def _get_unique_slug(self):
+        slug = slugify("%s" % (self.name))
+        unique_slug = slug
+        num = 1
+        while RoomClass.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+@admin.register(RoomClass)
+class RoomClassAdmin(admin.ModelAdmin):
+    '''Admin View for RoomClass'''
+    list_display = ('name', 'raspberry')
+    readonly_fields = ('slug',)
+    search_fields = ('name', 'raspberry__name')
+    ordering = ('name', 'raspberry__name')
+
+class Assistence(models.Model):
+    """Model definition for Assistence."""
+    enrollment = models.ForeignKey("Docencia.Enrollment", verbose_name='Matrícula', 
+    on_delete=models.CASCADE)
+    roomclass = models.ForeignKey("Docencia.RoomClass", verbose_name='Aula', 
+    on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=1,
+        choices=(
+            ("a", "Asistencia"), 
+            ("i", "Inasistencia"),
+        ),
+        default="a"
+    )
+    datepub = models.DateTimeField('Fecha', auto_now=True)
+
+    class Meta:
+        """Meta definition for Assistence."""
+        unique_together = [('enrollment', 'roomclass', 'datepub')]
+        verbose_name = 'Asistencia'
+        verbose_name_plural = 'Asistencias'
+
+    def __str__(self):
+        """Unicode representation of Assistence."""
+        return "%s - %s - %s" % (self.enrollment.__str__(), self.roomclass.name, self.status)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+@admin.register(Assistence)
+class AssistenceAdmin(admin.ModelAdmin):
+    list_display = ('enrollment', 'roomclass', 'status', 'datepub')
+    list_filter = ('enrollment__subject__course__name', 'status')
+    readonly_fields = ('datepub',)
+    search_fields = ('enrollment__student__name', 'enrollment__student__lastname', 
+    'enrollment__subject__name', 'enrollment__subject__course__name', 'roomclass__name', 
+    'roomclass__raspberry__name')
+    ordering = ('-datepub',)

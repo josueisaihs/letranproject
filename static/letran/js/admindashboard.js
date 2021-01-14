@@ -60,3 +60,34 @@ function sendMail(el){
         console.log("Todo ok")
     }
 }
+
+function assistence(el) {
+    const enrollment = $(el).attr('data-enrollment')
+    $('#roomclass option:selected').each((index, element) => {
+        if ($(element).val() != 0){
+            const roomclass = $(element).val()
+            $(`#${$(el).attr('id')} option:selected`).each((index, element)=>{
+                const status = $(element).val()
+                
+                $.ajax({
+                    type: 'post',
+                    url: assistenceurl,
+                    data: {'enrollment': enrollment, 'roomclass': roomclass, 'status': status},
+                    success: (response)=>{
+                        if (response.response){
+                            
+                        }else{
+                            console.log("ERROR SERVER");
+                        }
+                    },
+                    error: (xhr, errmsg, err)=>{
+                        console.log("ERROR", errmsg.toString(), err.toString());
+                    }
+                })
+            })
+        }else{
+            throw new Error('No se ha seleccionado el Aula')
+        }        
+    });
+    
+}

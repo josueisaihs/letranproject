@@ -10,7 +10,7 @@ from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation, GroupInformation
 from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
-from Docencia.Plataforma.models import Class, Message
+from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass
 from Docencia.Index.models import Recurso
 from Docencia.Plataforma.forms import ClassForm
 from Docencia.Index.forms import RecursoForm
@@ -292,7 +292,7 @@ def creategroup(req, slug):
                 teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
                 course = CourseInformation.objects.get(slug=slug)
 
-                return render(req, TEMPLETE_PATH % "admingroup", locals())
+                return render(req, TEMPLETE_PATH % "admingroups", locals())
         except:
                 messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
@@ -533,4 +533,38 @@ def apicreategroup(req):
                 group.save()
                 return JsonResponse({'response': True})
         else: 
+                return HttpResponseForbidden()
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def admingroup(req, grupo):
+        group = GroupInformation.objects.get(slug=grupo)
+        return render(req, TEMPLETE_PATH % 'admingroup', locals())
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminassistence(req, slug):
+        subject = SubjectInformation.objects.get(slug=slug)
+        enrollments = Enrollment.objects.filter(subject__slug=slug)
+        rooms = RoomClass.objects.all()
+        return render(req, TEMPLETE_PATH % 'adminassistence', locals())
+
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def apiassistence(req):
+        if req.is_ajax():
+                try:
+                        assistence = Assistence.objects.get(enrollment__slug=req.POST.get('enrollment'))
+                        assistence.delete()
+                except ObjectDoesNotExist:
+                        pass
+                assistence = Assistence()
+                assistence.enrollment = Enrollment.objects.get(slug=req.POST.get('enrollment'))                
+                assistence.roomclass = RoomClass.objects.get(slug=req.POST.get('roomclass'))
+                assistence.status = req.POST.get('status')
+                assistence.save()
+
+                return JsonResponse({'response': True})
+        else:
                 return HttpResponseForbidden()
