@@ -9,7 +9,7 @@ from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Edition(models.Model):
-    slug = models.SlugField("Slug")
+    slug = models.SlugField("Slug", max_length=250)
     name = models.CharField("Edición", max_length=50)
     datepub = models.DateField("Fecha Publicación", auto_now=True)
     dateupdate = models.DateField("Última Actualización", auto_now=True)
@@ -63,7 +63,7 @@ class EditionAdmin(admin.ModelAdmin):
 class Section(models.Model):
     # Secciones de la revista  
     edition = models.ForeignKey("SapereAude.Edition", verbose_name='Edición', on_delete=models.CASCADE)
-    slug = models.SlugField('Slug')
+    slug = models.SlugField('Slug', max_length=250)
     name = models.CharField('Nombre', max_length=50)
 
     class Meta:
@@ -147,7 +147,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 
 class Article(models.Model):
-    slug = models.SlugField('Slug')
+    slug = models.SlugField('Slug', max_length=250)
     section = models.ForeignKey("SapereAude.Section", verbose_name='Article', on_delete=models.CASCADE)
     authors = models.ManyToManyField("SapereAude.Author", verbose_name="Autor(es)")
     title = models.CharField('Título', max_length=250)
