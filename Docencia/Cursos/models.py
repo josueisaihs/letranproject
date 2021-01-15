@@ -198,7 +198,7 @@ class CourseInformation(models.Model):
 
     recursos = []
 
-    comunicate = models.TextField(verbose_name="Comunicado (Solo visible en el CAMPUS VIRTUAL)", blank=True, default='')
+    comunicate = CKEditor5Field('Comunicado (CAMPUS VIRTUAL)', config_name='extends', default="")
 
     programa = models.FileField(
         verbose_name="Programa", 
