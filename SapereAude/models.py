@@ -148,7 +148,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
 class Article(models.Model):
     slug = models.SlugField('Slug', max_length=250)
-    section = models.ForeignKey("SapereAude.Section", verbose_name='Article', on_delete=models.CASCADE)
+    section = models.ForeignKey("SapereAude.Section", verbose_name='Sección', on_delete=models.CASCADE)
     authors = models.ManyToManyField("SapereAude.Author", verbose_name="Autor(es)")
     title = models.CharField('Título', max_length=250)
     subtitle = models.CharField('Subtítulo', max_length=250, default="", blank=True)
@@ -156,7 +156,7 @@ class Article(models.Model):
     image = models.ImageField('Imagen', upload_to='static/recurso/%Y/%m/%d/%H/%M/')
     body = CKEditor5Field('Cuerpo', config_name='extends', default="<p>Sin texto</p>")
     datepub = models.DateField('Publicación', auto_now=True)
-    dateupdate = models.DateField('Publicación', auto_now=True)
+    dateupdate = models.DateField('Última Actualización', auto_now=True)
 
     class Meta:
         """Meta definition for MODELNAME."""

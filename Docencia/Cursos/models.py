@@ -198,6 +198,8 @@ class CourseInformation(models.Model):
 
     recursos = []
 
+    comunicate = models.TextField(verbose_name="Comunicado (Solo visible en el CAMPUS VIRTUAL)", blank=True, default='')
+
     programa = models.FileField(
         verbose_name="Programa", 
         upload_to=os.path.join('media', 'static', 'cursos', 'programas'), 
@@ -269,7 +271,7 @@ class CourseInformationAdmin(admin.ModelAdmin):
     fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
                 "description", "yearMin", "yearMax", "haveApplication", 
                 "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", 
-                "reglamento", "schedules", "starts", "slug", "minCredict", "duration"]
+                "reglamento", "schedules", "starts", "slug", "minCredict", "duration", 'comunicate']
     ordering = ["area", "name", "capacity", "openregistre"]
     search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
     readonly_fields = ('slug',)

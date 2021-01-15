@@ -108,7 +108,7 @@ def subject(req, slug):
                                 for recurso in Recurso.objects.filter(courses=app.course.pk):
                                         app.course.recursos.append(recurso)
                                         del recurso
-                        
+                                        
                         for subject in SubjectInformation.objects.filter(slug=slug):
                                         subject.classes = []
                                         for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('-datepub'):
