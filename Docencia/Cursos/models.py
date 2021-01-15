@@ -377,7 +377,7 @@ class SubjectInformationAdmin(admin.ModelAdmin):
     fields = ["name", "teachers", "course", "description", "credicts", "showCredicts", 
     "needBallot", "slug", "active", "mode"]
     ordering = ["name", "course", "credicts"]
-    search_fields = ["name", "course__name", "course__name__area__name"]
+    search_fields = ["name", "course__name", "course__area__name"]
     list_filter = ["showCredicts", "active", "mode", "needBallot", "course__area"]
     list_display = ["name", "course", "credicts", "showCredicts", "needBallot"]
     readonly_fields = ["slug",]

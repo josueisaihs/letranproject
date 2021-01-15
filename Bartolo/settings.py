@@ -304,17 +304,17 @@ CKEDITOR_5_CONFIGS = {
     },
     'extends': {
         'blockToolbar': [
-            'paragraph', 'heading1', 'heading2', 'heading3',
+            'paragraph', 'heading1', 'heading2', 'heading3', 'heading4', 'heading5', 'heading6',
             '|',
             'bulletedList', 'numberedList',
             '|',
             'blockQuote', 'imageUpload'
         ],
-        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+        'toolbar': ['heading', '|', 'outdent', 'indent', 'alignment', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
         'code','subscript', 'superscript', 'highlight', '|',
                     'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
                     'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
-                    'insertTable', '|', 'exportPdf'],
+                    'insertTable'],
         'image': {
             'toolbar': ['imageTextAlternative', 'imageTitle', '|', 'imageStyle:alignLeft', 'imageStyle:full',
                         'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side'],
@@ -349,7 +349,10 @@ CKEDITOR_5_CONFIGS = {
                 { 'model': 'heading5', 'view': 'h5', 'title': 'Heading 5', 'class': 'ck-heading_heading5' },
                 { 'model': 'heading6', 'view': 'h6', 'title': 'Heading 6', 'class': 'ck-heading_heading6' }
             ]
-        }
+        },
+        'alignment': {
+            'options': [ 'left', 'right', 'center', 'justify' ]
+        },
     }
 }
 
