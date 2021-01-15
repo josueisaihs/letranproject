@@ -111,7 +111,8 @@ def subject(req, slug):
                                         
                         for subject in SubjectInformation.objects.filter(slug=slug):
                                         subject.classes = []
-                                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('-datepub'):
+                                        for clase in Class.objects.filter(subject=subject.pk, 
+                                        datepub__lte=datetime.today()).order_by('-datepub'):
                                                 subject.classes.append(clase)
 
                         return render(req, TEMPLETE_PATH % "subject", locals())

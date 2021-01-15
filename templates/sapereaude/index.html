@@ -25,10 +25,13 @@
                         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative" data-aos="{% if forloop.counter|divisibleby:'2' %}flip-left{% else %}flip-right{% endif %}" data-aos-delay="{{ forloop.counter|add:'3' }}00" data-aos-duration="500">
                             <div class="col p-4 d-flex flex-column position-static">
                                 <strong class="d-inline-block mb-2 text-primary" data-aos="fade-down" data-aos-delay="{{ forlooper|add:'4' }}00" data-aos-duration="500">{{ article.section.name }}</strong>
-                                <h3 class="mb-0" data-aos="fade-up" data-aos-delay="{{ forlooper|add:'4' }}50" data-aos-duration="500">{{ article.title }}</h3>
+                                <h3 class="mb-0" data-aos="fade-up" data-aos-delay="{{ forlooper|add:'4' }}50" data-aos-duration="500">{{ article.title|truncatechars:20 }}</h3>
                                 <div class="mb-1 text-muted" data-aos="fade-up" data-aos-delay="{{ forlooper|add:'5' }}00" data-aos-duration="500">{{ article.datepub|naturalday|capfirst }}</div>
-                                <p class="card-text mb-auto text-wrap" data-aos="fade-up" data-aos-delay="{{ forlooper|add:'5' }}50" data-aos-duration="500">{{ article.abstract|truncatechars:100 }}</p>
-                                <a data-aos="fade-up" data-aos-delay="{{ forlooper|add:'6' }}00" data-aos-duration="500" href="{% url 'article' edition.slug article.slug %}" class="stretched-link">Continue leyendo <i class="fas fa-long-arrow-alt-right"></i></a>
+                                <p class="card-text mb-auto text-wrap">{{ article.abstract|truncatechars:100 }}</p>
+                                <a href="{% url 'article' edition.slug article.slug %}" 
+                                class="stretched-link">
+                                    Continue leyendo <i class="fas fa-long-arrow-alt-right"></i>
+                                </a>
                             </div>
                             <div class="col-auto d-none d-lg-block img-container" data-aos="flip-right" data-aos-delay="{{ forlooper|add:'5' }}50" data-aos-duration="500">
                                 <img class="high-news-img bd-placeholder-img img-filter" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
