@@ -22,10 +22,16 @@
                         </div>
                     </a>
                 </div>
+            {% empty %}
+                <div class="alert alert-danger" role="alert">
+                    ¡Ups! No hay clases a mostrar
+                </div>
             {% endfor %}
         </div>
     </div>
-    <a href="{% url 'plataforma_messages' clase.subject.slug %}" class="float">
-        <i class="fa fa-comments"></i>
-    </a>
+    {% if clase %}
+        <a href="{% url 'plataforma_messages' clase.subject.slug %}" class="float">
+            <i class="fa fa-comments"></i>
+        </a>
+    {% endif %}
 {% endblock%}
