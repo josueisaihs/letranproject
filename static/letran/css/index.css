@@ -193,7 +193,7 @@ a:hover {
   color: #555;
 }
 
-.header::before,
+/* .header::before,
 .header-min::before {
   content: "";
   position: absolute;
@@ -202,7 +202,7 @@ a:hover {
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.62);
-}
+} */
 
 .registarse {
   background-position: center center;
