@@ -151,7 +151,7 @@ class Article(models.Model):
     section = models.ForeignKey("SapereAude.Section", verbose_name='Article', on_delete=models.CASCADE)
     authors = models.ManyToManyField("SapereAude.Author", verbose_name="Autor(es)")
     title = models.CharField('Título', max_length=250)
-    subtitle = models.CharField('Subtítulo', max_length=250)
+    subtitle = models.CharField('Subtítulo', max_length=250, default="", blank=True)
     abstract = models.TextField("Resumen")
     image = models.ImageField('Imagen', upload_to='static/recurso/%Y/%m/%d/%H/%M/')
     body = CKEditor5Field('Cuerpo', config_name='extends', default="<p>Sin texto</p>")
