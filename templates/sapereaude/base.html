@@ -7,6 +7,24 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sapere Aude</title>
+        <!-- Meta -->
+    {% comment %} <meta property="og:site_name" content="Centro Fray Bartolomé de las Casas · Revista Sapere Aude">
+    <meta name="description" content="">
+    <meta name="author" content="Josué Isai Hernández Sánchez">
+    <meta property="og:title" content="Sapere Aude"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://bartolo.org{% block metaurl %}{% endblock metaurl %}"/>
+    <meta property="og:image" content="https://bartolo.org/media/"/>
+    <meta property="og:description" content="{% block metadescription %}{% endblock %}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@bartoloOP" />
+    <meta name="twitter:title" content="{% block twittertitle%}{% endblock %}" />
+    <meta name="twitter:text:title" content="Centro Fray Bartolomé de las Casas" />
+    <meta name="twitter:description" content="{% block tiwtterdescription %}{% endblock %}" />
+    <meta name="twitter:image" content="https://bartolo.org{% block twitterimg%}{% endblock %}" />
+    <meta name="twitter:url" content="https://bartolo.org{% block twitterurl %}{% endblock %}" />
+    <meta name="keywords" content="educa, dominicos, orden de predicadores, educación, idioma, iglesia" />
+    <meta name="facebook-domain-verification" content="0xv537s3gaeqs735a4d0nvzl5o0ww9" />  {% endcomment %}
         <!-- Bootstrap core CSS -->
         <link href="{% static 'letran/sapereaude/css/bootstrap.min.css' %}" rel="stylesheet" />
 
@@ -68,6 +86,7 @@
     </head>
     <body>
         <div class="loader">
+            <img loading="lazy" src="/media/static/image/index/icon/sapereaude.png" width="25%" height="25%">
             <h1 class="titulo">SAPERE AUDE</h1>
             <h6 class="subtitulo">Centro Fray Bartolomé de las Casas</h6>
         </div>
