@@ -8,7 +8,7 @@
             {% ifequal forloop.counter0 0 %}
                 <div class="card text-white shadow mb-4 img-container" 
                 data-aos="flip-left" data-aos-delay="100" data-aos-duration="500">
-                    <img src="{{ article.image.url }}" class="card-img">
+                    <img loading="lazy" src="{{ article.image.url }}" class="card-img">
                     <div class="card-img-overlay align-items-end">
                         <h1 class="card-title" data-aos="fade-down" data-aos-delay="200" data-aos-duration="500">{{ article.title }}</h1>
                         <p class="card-text" data-aos="fade-left" data-aos-delay="300" data-aos-duration="">{{ article.datepub|naturalday|capfirst }} · Por {% for author in article.authors.all %}{% ifequal forloop.counter 1 %}{{ author.fullname }}{% endifequal %}{% endfor %} {% if article.authors.all|length > 1 %}y {% with article.authors.all|length|add:'-1' as rest %}{{ rest|apnumber }} más{% endwith %}{% endif %}</p>
@@ -34,7 +34,7 @@
                                 </a>
                             </div>
                             <div class="col-auto d-none d-lg-block img-container" data-aos="flip-right" data-aos-delay="{{ forlooper|add:'5' }}50" data-aos-duration="500">
-                                <img class="high-news-img bd-placeholder-img img-filter" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
+                                <img loading="lazy" class="high-news-img bd-placeholder-img img-filter" style="object-fit: cover;" src="{{ article.image.url }}" width='200' height='250'/>
                             </div>
                         </div>
                     </div>  
