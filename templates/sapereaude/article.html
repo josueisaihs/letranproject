@@ -25,7 +25,7 @@
                 <i>{{ author.fullname }}</i>
             {% endfor %}</p>
             <div class="img-container img-container-w shadow rounded" data-aos="flip-left" data-aos-delay="1200" data-aos-duration="500">
-                <img  src="{{ article.image.url }}" class="img-fluid img-filter" alt="..."></div>
+                <img loading="lazy" src="{{ article.image.url }}" class="img-fluid img-filter" alt="..."></div>
             <p class="mt-2" data-aos="fade-right-down" data-aos-delay="100" data-aos-duration="500">{{ article.abstract }}</p>
             <hr>
             <div class="ckeditor" data-aos="fade-right-down" data-aos-duration="500" data-aos-delay="200">{{ article.body|safe|linebreaksbr }}</div>
