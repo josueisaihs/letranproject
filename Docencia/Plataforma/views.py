@@ -128,27 +128,27 @@ def subject(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def clase(req, slug):
         user = User.objects.get(username=req.user.username)
+        # try:
+        student = StudentPersonalInformation.objects.get(user=user.pk)
         try:
-                student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+        except ObjectDoesNotExist:
+                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
 
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                for app in apps:
-                        app.course.subjects = []
-                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                app.course.subjects.append(subject)
+        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+        for app in apps:
+                app.course.subjects = []
+                for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                        subject.classes = []
+                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                subject.classes.append(clase)
+                        app.course.subjects.append(subject)
 
-                clase = Class.objects.get(slug=slug)
-                return render(req, TEMPLETE_PATH % "clase", locals())
-        except:
-                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+        clase = Class.objects.get(slug=slug)
+        return render(req, TEMPLETE_PATH % "clase", locals())
+        # except:
+        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 def recursos(req, slug):
         user = User.objects.get(username=req.user.username)
