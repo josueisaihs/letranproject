@@ -5,7 +5,7 @@
         <h5><a href="{% url 'plataforma_subject' clase.subject.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }}</h5>
     </div>    
     <small class="text-muted">{{ clase.datepub|date:"D d M y" }}</small>
-    <div class="ckeditor row">
+    <div class="ckeditor row" data-classname="{{ clase.slug }}">
         {{ clase.classbody|safe }}
     </div>
     <div class="row m-2 g-2 border-top">
