@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'captcha',
     'Docencia',
     'SapereAude',
+    'Pagary',
     'easy_thumbnails',
     'debug_toolbar',
     'background_task',

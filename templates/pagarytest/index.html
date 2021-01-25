@@ -1,0 +1,362 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumo Eléctrico</title>
+
+    <link rel="shortcut icon" href="/img/pagary_logo.svg" />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="CALCULAR PRECIO DE LA CARGA VEHÍCULO ELÉCTRICO · POR PAGARY">
+    <meta name="twitter:site" content="@josueisaihs">
+    <meta name="twitter:title" content="Calculador Consumo">
+    <meta name="twitter:description" content="Calcula el consumo de tu vehículo eléctrico y el importe con la nueva tarifa de la UNE">
+    <meta name="twitter:creator" content="@josueisaihs">
+    <!-- Twitter summary card with large image. Al menos estas medidas 280x150px -->
+    <meta name="twitter:image:src" content="">
+
+    <meta property="og:title" content="PAGARY · Calculadora Consumo"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:desscription" content="Calcula el consumo de tu vehículo eléctrico y el importe con la nueva tarifa de la UNE"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" 
+    crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/backdrop.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/shift-away.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'letran/pagary/index.css' %}">
+</head>
+<body>
+    <div class="app">
+        <div class="form p-4" style="display: none;">
+            <h5 class="text-center mb-3 d-flex justify-content-center">
+                <div class="logo align-self-center">
+                    <?xml version="1.0" encoding="utf-8"?>
+                    <!-- Generator: Adobe Illustrator 24.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                    <style type="text/css">
+                        .st0{fill:url(#Trazado_84-4_1_);stroke:#707070;stroke-width:1.2;}
+                        .st1{fill:#FFFFFF;}
+                    </style>
+                    <g id="Grupo_1-4">
+                        <g id="Grupo_34-8">
+                            <g id="P-8">
+                                <g id="Trazado_43-4">
+                                    
+                                        <linearGradient id="Trazado_84-4_1_" gradientUnits="userSpaceOnUse" x1="-1652.7982" y1="-955.412" x2="-1651.5981" y2="-955.412" gradientTransform="matrix(66.86 0 0 76.07 110569.8047 72778.1875)">
+                                        <stop  offset="0" style="stop-color:#E50019"/>
+                                        <stop  offset="1" style="stop-color:#490000"/>
+                                    </linearGradient>
+                                    <path id="Trazado_84-4" class="st0" d="M100.3,145.7l-1.4-1.2c-0.8-0.7-19-16.4-28.5-37.4c-5.8-12.7-9.3-26.3-10.5-40.2
+                                        l-0.1-1.3L61,65c0.8-0.4,20-10.7,39.3-10.7s38.1,10.3,38.9,10.7l1,0.5l0.1,1.1c0,0.7,1,16.4-8.8,37.5s-28.9,39.6-29.7,40.4
+                                        L100.3,145.7z"/>
+                                </g>
+                            </g>
+                        </g>
+                        <path id="Trazado_44-4" class="st1" d="M84.4,65.6c0,0,33.8-5.5,38.7,11.6c1.4,5.9-8.8,13.7-23.7,13.7c0,0,14.3-3.8,16.2-9.9
+                            s-4.5-11.8-15.2-11.5c-3.7,0.1-9.1,0.9-9.1,0.9s-0.8,13.1-2.5,24.1c-1.1,6.8-2.6,13.5-4.4,20.1V65.6z"/>
+                    </g>
+                    </svg>
+                </div> 
+                <div class="align-self-center">
+                    Precio de Carga · Vehículo Eléctrico
+                </div>
+            </h5>
+
+            <!-- Autetificarse con Facebook -->
+            <div id="authfacebook" class="fadeIn">
+                <div class="d-flex justify-content-center">
+                    <button class="loginBtn loginBtn--facebook" onclick="logIn()">
+                        Login with Facebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Agragar provincia de Origen -->
+            <div id="datospersonales" class="fadeOut">
+                <div class="d-flex justify-content-center">
+                    <div class="form-floating">
+                        <select class="form-select" id="dpProvincia" onchange="selectProvincia()">
+                            <option disabled selected>Provincia</option>
+                            <option value="la_habana">La Habana</option>
+                            <option value="pinar_del_rio">Pinar del Río</option>
+                            <option value="artmisa">Artemisa</option>
+                            <option value="mayabeque">Mayabeque</option>
+                            <option value="matanzas">Matanzas</option>
+                            <option value="cienfuegos">Cienfuegos</option>
+                            <option value="villa_clara">Villa Clara</option>
+                            <option value="santi_spiritus">Santi Spiritus</option>
+                            <option value="ciego_de_avila">Ciego de Ávila</option>
+                            <option value="camaguey">Camagüey</option>
+                            <option value="las_tunas">Las Tunas</option>
+                            <option value="granma">Granma</option>
+                            <option value="holguin">Holguín</option>
+                            <option value="santiago_de_cuba">Santiago de Cuba</option>
+                            <option value="guantanamo">Guantánamo</option>
+                            <option value="isla_de_la_juventud">Isla de la Juventud</option>
+                        </select> 
+                        <label for="dpProvincia">Provincia</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Saber si tiene o no moto electrica -->
+            <div id="inicio" class="p-4 fadeOut">
+                <p class="text-center">¿Tienes un vehículo eléctrico?</p>
+                <div class="d-grid gap-2 col-lg-6 col-md-6 col-8 mx-auto">
+                    <button type="button" id="btnPositivo" class="btn btn-outline-primary btn-block" onclick="addMotoUser(true)">
+                        Sí, tengo
+                    </button>
+                    <button type="button" id="btnNegativo" class="btn btn-outline-light btn-block mt-1" onclick="addMotoUser(false)">
+                        No, aún no
+                    </button>
+                </div>               
+            </div>
+
+            <form id="calcularForm" class="needs-validation fadeOut" novalidate>
+                <div class="d-flex">
+                    <div class="align-self-center">
+                       
+                    </div>
+                    <div class="align-self-center">
+                    </div>
+                    <div class="align-self-center">
+                        
+                    </div>                        
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="inputEnergy" value="185" placeholder="" max="10000" min="1" required>
+                    <label for="inputEnergy">Consumo Mensual</label>
+                    <!-- <div id="energyHelp" class="form-text">¿Cuánta energía consume mensualmente?</div> -->
+                    <div class="invalid-feedback"></div>                
+                </div> 
+
+                <div>
+                    <hr>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
+                        <div class="form-floating">                
+                            <select id="tipoVE" class="form-select">
+                                <option disabled selected>Seleccionar</option>
+                                <option value="moto">Moto</option>
+                                <option value="ebike">Bicicleta</option>
+                                <option value="auto">Automóvil</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <label for="tipoVE">Tipo de Vehículo</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
+                        <div class="form-floating">
+                            <select id="marcaVE" class="form-select">
+                                <option disabled selected>Seleccionar</option>
+                                <option value="pagary">Pagary</option>
+                                <option value="unico">Unico</option>
+                                <option value="ava">Ava</option>
+                                <option value="mishozuki">Mishozuki</option>
+                                <option value="harris">Harris</option>
+                                <option value="unizuki">Unizuki</option>
+                                <option value="bls">BLS</option>
+                                <option value="bucatti">Bucatti</option>
+                                <option value="caribe">Caribe</option>
+                                <option value="minerva">Minerva</option>
+                                <option value="nippon">Nippon</option>
+                                <option value="citroen">Citröen</option>
+                                <option value="nissan">Nissan</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <label for="marcaVE">Marca del Vehículo</label>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="inputTimes" value="10" placeholder="" max="40" min="1" required>
+                            <label for="inputTimes">Cantidad de Cargas</label>
+                            <!-- <div id="energyHelp" class="form-text">¿Cuántas veces carga o cargará la EMoto en el mes?</div> -->
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="inputVoltage" value="72" placeholder="" max="72" min="24" required>
+                            <label for="inputVoltage">Tensión Batería</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 mb-3">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="inputCurrent" value="28" placeholder="" max="100" min="10" required>
+                            <label for="inputCurrent">Carga Eléctrica</label>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3 d-none">
+                        <input type="number" class="form-control" id="inputEfficience" value="0.8" placeholder="" max="1.0" min="0.1" step="0.1" required>
+                        <label for="inputEfficience">Eficiencia del Cargador</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center">
+                        <div class="form-check mb-3 form-switch d-none">
+                            <input class="form-check-input" type="checkbox" value="" id="checkHadEbike" checked>
+                            <label class="form-check-label" for="checkHadEbike"><span style="font-size: .8rem;">¿Tienes un Vehículo Eléctrico?</span></label>
+                        </div>
+                        <button type="btn" id="btnCalcular" class="btn btn-primary ml-auto positon-absolute align-self-end">
+                            Calcular <i class="fas fa-arrow-right"></i>
+                        </button>                    
+                    </div>
+                </div>
+            </form>
+
+            <div id="response" class="p-4 fadeOut">
+                <div id="response_calc">
+                    <div class="form-check mb-3 form-switch">
+                        <input class="form-check-input" type="checkbox" value="" id="checkTokW">
+                        <label class="form-check-label" for="checkTokW">En kWh</label>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="text-center">
+                            <h5 class="text-white"><span class="unidad_dinero">$</span> <span id="counter">0</span> <span class="unidad_kW"></span></h5>
+                            <small class="text-white">Total <i id="id_total" class="fas fa-info-circle text-white"></i></small>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="text-primary"><span class="unidad_dinero">$</span> <span id="counter_Vivienda">0</span> <span class="unidad_kW"></span></h5>
+                            <small class="text-primary">Vivienda <i id="id_vivienda" class="fas fa-info-circle text-primary"></i></small>
+                        </div>
+                        <div class="positon-absolute align-self-end text-center" style="color: rgb(0, 124, 204) !important;">
+                            <h5 class=""><span class="unidad_dinero">$</span> <span id="counter_EMotoCons">0</span> <span class="unidad_kW"></span></h5>
+                            <small class="">Vehículo <i id="id_ve" class="fas fa-info-circle text-primary"></i></small>
+                        </div>
+                    </div>
+                </div>
+                <canvas class="my-3" id="mychart"></canvas>
+                <div class="d-grid gap-2 col-8 col-md-6 col-lg-4 mx-auto">
+                    <button type="btn" id="btnReCalcular" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-arrow-left"></i> Recalcular
+                    </button>
+                </div>
+            </div>
+
+            <div class="drop drop1">
+                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.cls-1{fill:#fff;}</style></defs><title>LOGO_VERSIONES</title><path id="Trazado_6-4" data-name="Trazado 6-4" class="cls-1" d="M150.09,189.44l-7.68,14.4h4.84l1.29-2.58,1.66-3.06,2.74-5.32,2.79,5.32,1.67,3.06,1.39,2.58h4.78l-7.79-14.4Z"/><path id="Trazado_7-4" data-name="Trazado 7-4" class="cls-1" d="M93.93,189.44l-7.68,14.4h4.83l1.29-2.58L94,198.2l2.74-5.32,2.8,5.32,1.66,3.06,1.39,2.58h4.78l-7.78-14.4Z"/><path class="cls-1" d="M182.7,95.64l-.13-1.92-1.68-.94c-.8-.44-19.87-10.9-39.58-10.9s-39.19,10.45-40,10.89l-2,1.1.21,2.31a124.27,124.27,0,0,0,10.68,40.72c9.63,21.28,28.07,37.21,28.85,37.88l2.44,2.09,2.3-2.23c.83-.8,20.29-19.69,30-40.81C183.64,112.51,182.74,96.32,182.7,95.64Zm-42.13,24.24s14.3-3.85,16.18-9.93-4.52-11.8-15.17-11.48c-3.71.11-9.1.91-9.1.91s-.81,13.05-2.54,24.1a177.3,177.3,0,0,1-4.41,20.12V94.67s33.8-5.49,38.74,11.56C165.71,112.13,155.49,119.88,140.57,119.88Z"/><path class="cls-1" d="M206.88,189.43l4.76,5.89,4.93-5.89h5.12l-8,9.46v5h-4.33v-5.09l-7.72-9.33Z"/><path id="Trazado_5-4" data-name="Trazado 5-4" class="cls-1" d="M186,189.43H173.5v3.49h10.63c.65,0,2-.11,2.42.75a2.67,2.67,0,0,1,0,2c-.48.71-1.83.65-2.42.65H173.5v7.47h4.35v-3.76h6c.54,0,1.77,0,2.25.44s.44,1.66.44,3.33h4.34v-1.07c0-1.18.16-3.28-1.18-4.14a8.33,8.33,0,0,0-1.18-.43c1-.38,1.88-.65,2.25-2,.33-1.07.27-4.35-.59-5.48-1-1.34-2.67-1.24-4.23-1.24Z"/><path class="cls-1" d="M133.88,194.38a6.18,6.18,0,0,0-.54-3.23c-1-1.66-3.43-1.72-4.51-1.72h-7.2c-1.23,0-3.75,0-5,1.24s-1.18,3.17-1.18,4.41V198c0,1.51,0,3.34,1.23,4.62s3.39,1.18,4.46,1.18h7.57c.59,0,3.33-.05,4.3-1.07s1-3.22,1-4.09v-3.06h-9.83v2.9h5.43a2.17,2.17,0,0,1-.16,1.18c-.44.7-1.57.59-2.05.59H122.6c-.7,0-1.82.11-2.41-.75a12.86,12.86,0,0,1-.06-5.59c.59-1.12,1.72-1,3.49-1h3.76c1.39,0,2.09-.11,2.2,1.45Z"/><path class="cls-1" d="M61.49,189.43v3.49h9.13c1.56,0,2.68,0,3.16.92a3.92,3.92,0,0,1,0,2.25c-.48.75-1.5.7-2.15.7H61.49v7h4.35v-3.55h7.25c1.88,0,3.49.22,4.73-1.88a9.4,9.4,0,0,0,.05-6.94c-1.24-2.09-4.08-2-5.43-2H61.49Z"/></svg>
+            </div>             
+            <div class="drop drop2">
+                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.cls-1{fill:#fff;}</style></defs><title>LOGO_VERSIONES</title><path id="Trazado_6-4" data-name="Trazado 6-4" class="cls-1" d="M150.09,189.44l-7.68,14.4h4.84l1.29-2.58,1.66-3.06,2.74-5.32,2.79,5.32,1.67,3.06,1.39,2.58h4.78l-7.79-14.4Z"/><path id="Trazado_7-4" data-name="Trazado 7-4" class="cls-1" d="M93.93,189.44l-7.68,14.4h4.83l1.29-2.58L94,198.2l2.74-5.32,2.8,5.32,1.66,3.06,1.39,2.58h4.78l-7.78-14.4Z"/><path class="cls-1" d="M182.7,95.64l-.13-1.92-1.68-.94c-.8-.44-19.87-10.9-39.58-10.9s-39.19,10.45-40,10.89l-2,1.1.21,2.31a124.27,124.27,0,0,0,10.68,40.72c9.63,21.28,28.07,37.21,28.85,37.88l2.44,2.09,2.3-2.23c.83-.8,20.29-19.69,30-40.81C183.64,112.51,182.74,96.32,182.7,95.64Zm-42.13,24.24s14.3-3.85,16.18-9.93-4.52-11.8-15.17-11.48c-3.71.11-9.1.91-9.1.91s-.81,13.05-2.54,24.1a177.3,177.3,0,0,1-4.41,20.12V94.67s33.8-5.49,38.74,11.56C165.71,112.13,155.49,119.88,140.57,119.88Z"/><path class="cls-1" d="M206.88,189.43l4.76,5.89,4.93-5.89h5.12l-8,9.46v5h-4.33v-5.09l-7.72-9.33Z"/><path id="Trazado_5-4" data-name="Trazado 5-4" class="cls-1" d="M186,189.43H173.5v3.49h10.63c.65,0,2-.11,2.42.75a2.67,2.67,0,0,1,0,2c-.48.71-1.83.65-2.42.65H173.5v7.47h4.35v-3.76h6c.54,0,1.77,0,2.25.44s.44,1.66.44,3.33h4.34v-1.07c0-1.18.16-3.28-1.18-4.14a8.33,8.33,0,0,0-1.18-.43c1-.38,1.88-.65,2.25-2,.33-1.07.27-4.35-.59-5.48-1-1.34-2.67-1.24-4.23-1.24Z"/><path class="cls-1" d="M133.88,194.38a6.18,6.18,0,0,0-.54-3.23c-1-1.66-3.43-1.72-4.51-1.72h-7.2c-1.23,0-3.75,0-5,1.24s-1.18,3.17-1.18,4.41V198c0,1.51,0,3.34,1.23,4.62s3.39,1.18,4.46,1.18h7.57c.59,0,3.33-.05,4.3-1.07s1-3.22,1-4.09v-3.06h-9.83v2.9h5.43a2.17,2.17,0,0,1-.16,1.18c-.44.7-1.57.59-2.05.59H122.6c-.7,0-1.82.11-2.41-.75a12.86,12.86,0,0,1-.06-5.59c.59-1.12,1.72-1,3.49-1h3.76c1.39,0,2.09-.11,2.2,1.45Z"/><path class="cls-1" d="M61.49,189.43v3.49h9.13c1.56,0,2.68,0,3.16.92a3.92,3.92,0,0,1,0,2.25c-.48.75-1.5.7-2.15.7H61.49v7h4.35v-3.55h7.25c1.88,0,3.49.22,4.73-1.88a9.4,9.4,0,0,0,.05-6.94c-1.24-2.09-4.08-2-5.43-2H61.49Z"/></svg>
+            </div>          
+            <!-- <div class="drop drop3"></div> -->
+        </div>
+
+        <div class="loader">
+            <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 283.46 283.46"><defs><style>.cls-1{fill:#fff;}</style></defs><title>LOGO_VERSIONES</title><path id="Trazado_6-4" data-name="Trazado 6-4" class="cls-1" d="M150.09,189.44l-7.68,14.4h4.84l1.29-2.58,1.66-3.06,2.74-5.32,2.79,5.32,1.67,3.06,1.39,2.58h4.78l-7.79-14.4Z"/><path id="Trazado_7-4" data-name="Trazado 7-4" class="cls-1" d="M93.93,189.44l-7.68,14.4h4.83l1.29-2.58L94,198.2l2.74-5.32,2.8,5.32,1.66,3.06,1.39,2.58h4.78l-7.78-14.4Z"/><path class="cls-1" d="M182.7,95.64l-.13-1.92-1.68-.94c-.8-.44-19.87-10.9-39.58-10.9s-39.19,10.45-40,10.89l-2,1.1.21,2.31a124.27,124.27,0,0,0,10.68,40.72c9.63,21.28,28.07,37.21,28.85,37.88l2.44,2.09,2.3-2.23c.83-.8,20.29-19.69,30-40.81C183.64,112.51,182.74,96.32,182.7,95.64Zm-42.13,24.24s14.3-3.85,16.18-9.93-4.52-11.8-15.17-11.48c-3.71.11-9.1.91-9.1.91s-.81,13.05-2.54,24.1a177.3,177.3,0,0,1-4.41,20.12V94.67s33.8-5.49,38.74,11.56C165.71,112.13,155.49,119.88,140.57,119.88Z"/><path class="cls-1" d="M206.88,189.43l4.76,5.89,4.93-5.89h5.12l-8,9.46v5h-4.33v-5.09l-7.72-9.33Z"/><path id="Trazado_5-4" data-name="Trazado 5-4" class="cls-1" d="M186,189.43H173.5v3.49h10.63c.65,0,2-.11,2.42.75a2.67,2.67,0,0,1,0,2c-.48.71-1.83.65-2.42.65H173.5v7.47h4.35v-3.76h6c.54,0,1.77,0,2.25.44s.44,1.66.44,3.33h4.34v-1.07c0-1.18.16-3.28-1.18-4.14a8.33,8.33,0,0,0-1.18-.43c1-.38,1.88-.65,2.25-2,.33-1.07.27-4.35-.59-5.48-1-1.34-2.67-1.24-4.23-1.24Z"/><path class="cls-1" d="M133.88,194.38a6.18,6.18,0,0,0-.54-3.23c-1-1.66-3.43-1.72-4.51-1.72h-7.2c-1.23,0-3.75,0-5,1.24s-1.18,3.17-1.18,4.41V198c0,1.51,0,3.34,1.23,4.62s3.39,1.18,4.46,1.18h7.57c.59,0,3.33-.05,4.3-1.07s1-3.22,1-4.09v-3.06h-9.83v2.9h5.43a2.17,2.17,0,0,1-.16,1.18c-.44.7-1.57.59-2.05.59H122.6c-.7,0-1.82.11-2.41-.75a12.86,12.86,0,0,1-.06-5.59c.59-1.12,1.72-1,3.49-1h3.76c1.39,0,2.09-.11,2.2,1.45Z"/><path class="cls-1" d="M61.49,189.43v3.49h9.13c1.56,0,2.68,0,3.16.92a3.92,3.92,0,0,1,0,2.25c-.48.75-1.5.7-2.15.7H61.49v7h4.35v-3.55h7.25c1.88,0,3.49.22,4.73-1.88a9.4,9.4,0,0,0,.05-6.94c-1.24-2.09-4.08-2-5.43-2H61.49Z"/></svg>
+        </div>
+    </div>
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <div class="toast bg-dark d-flex align-items-center p-2 rounded" role="alert" data-bs-animation="true" data-bs-autohide="true" data-delay="10000">
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+    <script defer type="text/javascript" src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script defer src="{% static 'letran/pagary/init.js' %}"></script>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"
+      integrity="sha384-DBjhmceckmzwrnMMrjI7BvG2FmRuxQVaTfFYHgfnrdfqMhxKt445b7j3KBQLolRl"
+      crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var loader = document.querySelector('.loader')
+        var form = document.querySelector(".form")
+
+        window.addEventListener('load', ()=>{
+            loader.classList.add('listo')            
+            setTimeout(()=>{
+                form.style.display = 'block'
+                loader.parentElement.removeChild(loader)
+            }, 1000)
+        })
+
+        var exports = {};
+        var toastError = new bootstrap.Toast(document.querySelector('.toast'));
+
+        tippy('#id_total', {
+            content: 'Total del Importe($) o Consumo(kWh)',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#id_ve', {
+            content: 'Importe($) o Consumo(kWh) del Vehículo Eléctrico',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#id_vivienda', {
+            content: 'Importe($) o Consumo(kWh) del la Vivienda',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#inputEnergy', {
+            content: 'Energía consumida mensual (La puede encontrar en el Aviso de Consumo de la UNE)',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#inputTimes', {
+            content: 'Cantidad de veces que carga el Vehículo Eléctrico al mes',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#inputCurrent', {
+            content: 'La Carga Eléctrica de su batería (Ej: 28Ah, 35Ah, 40Ah)',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#inputEfficience', {
+            content: 'La eficiencia de su cargador (Ej: 0.8 o 80%)',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+        tippy('#inputVoltage', {
+            content: 'Tensión (Voltage) de la Batería (Ej: 48V, 60V, 72V)',
+            delay: [500, 250],
+            animation:'shift-away',
+            inertia: true,
+            animateFill: true,
+        });
+
+
+    </script>
+    
+    <script defer data-main="{% static 'letran/pagary/index.js' %}" src="{% static 'letran/pagary/require.js' %}"></script>
+</body>
+</html>

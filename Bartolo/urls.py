@@ -40,6 +40,7 @@ urlpatterns = [
     # Aplicacion
     path('docencia/', include('Docencia.urls')),
     path('sapereaude/', include('SapereAude.urls')),
+    path('pagary/', include('Pagary.urls')),
     path('', include('Docencia.urls')),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
     
