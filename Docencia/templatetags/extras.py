@@ -10,3 +10,7 @@ def device_is_mobile(request):
         return True if MOBILE_AGENT_RE.match(request.META['HTTP_USER_AGENT']) else False
     except:
         return False
+
+@register.filter
+def teacher(value, arg):
+    return value.filter(teachers__id=arg)
