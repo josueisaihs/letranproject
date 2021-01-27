@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, HttpResponse
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse, redirect
 from django.contrib import messages as messagesdj
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -128,27 +128,27 @@ def subject(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def clase(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
         try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
 
-        apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-        for app in apps:
-                app.course.subjects = []
-                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                        subject.classes = []
-                        for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                subject.classes.append(clase)
-                        app.course.subjects.append(subject)
+                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
+                for app in apps:
+                        app.course.subjects = []
+                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                app.course.subjects.append(subject)
 
-        clase = Class.objects.get(slug=slug)
-        return render(req, TEMPLETE_PATH % "clase", locals())
-        # except:
-        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+                clase = Class.objects.get(slug=slug)
+                return render(req, TEMPLETE_PATH % "clase", locals())
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 def recursos(req, slug):
         user = User.objects.get(username=req.user.username)
@@ -277,13 +277,47 @@ def adminclass(request, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                                return HttpResponseRedirect('/plataforma/admin/dashboard/subject/%s' % slug)
+                                return redirect('plataforma_admin_subject', slug)
                 else:
                         form = ClassForm()
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
         except:
                 messagesdj.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminclass_edit(req, slug):
+        user = User.objects.get(username=req.user.username)
+        try:
+                edit = True
+                class_edit = Class.objects.get(slug=slug)
+                subject = SubjectInformation.objects.get(pk=class_edit.subject.pk)
+                print("Dentro")
+                if req.method == "POST":
+                        print("En el post")
+                        form = ClassForm(req.POST, instance=class_edit)
+                        if form.is_valid():
+                                print("Valido")
+                                class_ = form.save()
+
+                                recursos = []
+                                for filename in form.cleaned_data['recursosjson']['name']:
+                                        recursos.append(Recurso.objects.get(name=filename))
+                                if recursos.__len__() > 0:
+                                        class_.resources.set(recursos)
+                                else:
+                                        class_.resources.clear()
+                        return redirect('plataforma_admin_subject', subject.slug)
+                else:
+                        print("Cargando Get")
+                        form = ClassForm(instance=class_edit)
+                return render(req, TEMPLETE_PATH % "adminclass", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+        
+        return render(req, TEMPLETE_PATH % "adminclass", locals())
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -359,34 +393,6 @@ def deletefile(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
-
-@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
-@login_required(login_url="/login/", redirect_field_name="next")
-def adminclass_edit(request, slug):
-        user = User.objects.get(username=request.user.username)
-        try:
-                edit = True
-                class_edit = Class.objects.get(slug=slug)
-                subject = SubjectInformation.objects.get(pk=class_edit.subject.pk)
-                if request.method == "POST":
-                        form = ClassForm(request.POST, instance=class_edit)
-                        if form.is_valid():
-                                class_ = form.save()
-
-                                recursos = []
-                                for filename in form.cleaned_data['recursosjson']['name']:
-                                        recursos.append(Recurso.objects.get(name=filename))
-                                if recursos.__len__() > 0:
-                                        class_.resources.set(recursos)
-                                else:
-                                        class_.resources.clear()
-                                return HttpResponseRedirect('/plataforma/admin/dashboard/subject/%s' % slug)
-                else:
-                        form = ClassForm(instance=class_edit)
-                return render(request, TEMPLETE_PATH % "adminclass", locals())
-        except:
-                messagesdj.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")

@@ -35,8 +35,6 @@ $(document).ready(function(){
                         $(".form-file").removeClass("invisible");
                         $(".form-upload").addClass("invisible");
 
-                        console.log(response)
-
                         if (response.response){
                             $(".file-name").html("Archivo...");
                             let atag = `<a class="d-inline-flex border px-2 rounded m-1" role="button" data-name="${curfiles[0].name}" onclick="$(this).remove();removeFile('${curfiles[0].name}', ${curfiles[0].size});">
@@ -91,6 +89,7 @@ $(document).ready(function(){
         e.preventDefault();
         const data = window.editors[0].getData();
         $("#id_classbody").html(data);
+
 
         $("#id_classform").submit();
     });
@@ -177,7 +176,7 @@ function removeClass(slug){
         data: {"slug": slug},
         success: function (response) {
             if (response.response){
-                window.location = urlindex;
+                window.location = urlsubject;
             }
         },
         error: (xhr, errmsg, err)=>{
