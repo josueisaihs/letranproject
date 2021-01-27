@@ -1,0 +1,69 @@
+{% extends './admindashboard.html' %}
+{% load thumbnail %}
+{% block dashboard_content %}
+    <div class="">
+        <div class="row py-2 g-2">
+            <div class="border-bottom mb-3">
+                <h5>
+                    <a href="{% url 'plataforma_admin_course' course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ course.name }} / Estudiantes
+                </h5>
+            </div>
+
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">¡Atención!</h4>
+                <p>El CFBC <strong>NO SE HACE RESPONSABLE</strong> del uso inadecuado y/o no autorizado de los datos proporcionados.</p>
+                <hr>
+                <p class="mb-0">Usted puede ver estos datos porque tiene un cargo administrativo o es coordinador del curso {{ course.name }}. En caso de error reportarlo al Rectorado del CFBC.</p>
+            </div>
+            
+            {% for application in applications %}
+                <div class="col-sm-4">
+                    <div class="card text-center h-100">
+                        <div class="card-header">
+                            <h5 class="card-title justify-content-center align-items-center">
+                                {{ application.student.fullname }} 
+                            </h5>
+                        </div>
+                        <div class="card-body justify-content-center align-items-center">
+                           
+                            <div class="row g-1">
+                                {% ifnotequal application.student.gender "n"  %}
+                                    <div class="col-sm-12 col-md-4 cool-lg-4">    
+                                        <p>
+                                            {% ifequal application.student.gender "m" %} 
+                                                Masculino
+                                            {% endifequal %}
+                                            {% ifequal application.student.gender "f" %} 
+                                                Femenino
+                                            {% endifequal %}
+                                                
+                                            <br><small class="text-secondary">Género</small>
+                                        </p>
+                                    </div>
+                                {% endifnotequal %}
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <p>{{ application.student.getAge }}<br><small class="text-secondary">Edad</small></p>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <p>{{ application.student.nacionality }}<br><small class="text-secondary">Nacionalidad</small></p>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <p>{{ application.student.phone }}<br><small class="text-secondary">Teléfono</small></p>
+                                </div>
+                                <div class="col-sm-12 col-md-4 col-lg-4">
+                                    <p>{{ application.student.cellphone }}<br><small class="text-secondary">Móvil</small></p>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="card-footer text-muted">
+                            <button class="btn btn-outline-primary btn-sm">
+                                <i class="far fa-paper-plane"></i> Notificar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock dashboard_content %}

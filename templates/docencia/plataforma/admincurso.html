@@ -26,6 +26,15 @@
                 </div>
             </a>
         </div>
+        <div class="col-sm-4">
+            <a href="{% url 'plataforma_admin_studentslist' course.slug %}">
+                <div class="card text-center h-100 ">
+                    <div class="card-body">
+                        <h5 class="card-title align-middle"><i class="fas fa-users"></i> Estudiantes</h5>                        
+                    </div>
+                </div>
+            </a>
+        </div>
         {% for subject in course.getSubjects|teacher:teacher.pk %}                
             <div class="col-sm-4">
                 <div class="card text-center h-100">

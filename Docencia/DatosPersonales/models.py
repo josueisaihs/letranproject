@@ -78,6 +78,9 @@ class StudentPersonalInformation(models.Model):
         except IntegrityError:
             pass
         super().save()
+    
+    def getAddress(self):
+        return "%s, %s, %s" % (self.street, self.city, self.state)
 
     def getAge(self):
         if (self.numberidentification.__len__() > 6):
