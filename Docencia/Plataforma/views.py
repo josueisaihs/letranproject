@@ -287,18 +287,34 @@ def adminclass(request, slug):
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
-def adminclass_edit(req, slug):
-        user = User.objects.get(username=req.user.username)
+def adminclass_edit(request, slug):
+        user = User.objects.get(username=request.user.username)
         try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+                try:
+                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
+                except ObjectDoesNotExist:
+                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
+                
+                courses = []
+                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
+                for pk in coursespk_:
+                        course = CourseInformation.objects.get(pk=pk)
+                        course.subjects = []
+                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
+                        for subject in subjects:
+                                subject.classes = []
+                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
+                                        subject.classes.append(clase)
+                                course.subjects.append(subject)
+                        courses.append(course)
+
                 edit = True
                 class_edit = Class.objects.get(slug=slug)
-                subject = SubjectInformation.objects.get(pk=class_edit.subject.pk)
-                print("Dentro")
-                if req.method == "POST":
-                        print("En el post")
-                        form = ClassForm(req.POST, instance=class_edit)
+                subject = SubjectInformation.objects.get(slug=class_edit.subject.slug)                
+                if request.method == "POST":
+                        form = ClassForm(request.POST, instance=class_edit)
                         if form.is_valid():
-                                print("Valido")
                                 class_ = form.save()
 
                                 recursos = []
@@ -308,16 +324,13 @@ def adminclass_edit(req, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                        return redirect('plataforma_admin_subject', subject.slug)
+                                return HttpResponseRedirect('/plataforma/admin/dashboard/')
                 else:
-                        print("Cargando Get")
                         form = ClassForm(instance=class_edit)
-                return render(req, TEMPLETE_PATH % "adminclass", locals())
+                return render(request, TEMPLETE_PATH % "adminclass", locals())
         except:
-                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                messages.error(request, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
-        
-        return render(req, TEMPLETE_PATH % "adminclass", locals())
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")

@@ -131,10 +131,9 @@
         {{ form.subject }}
         {{ form.recursosjson }}
         
+        <input type="submit" id="id_salvar" class="btn btn-primary mt-3" value="Salvar" >
         {% if edit %}
-            <button type="button" class="btn btn-danger mt-3" onclick="removeClass('{{ class_edit.slug }}')">Eliminar</button>
-        {% else %}
-            <input type="submit" id="id_salvar" class="btn btn-primary mt-3" value="Salvar" >
+            <button type="button" class="btn btn-danger mt-3" onclick="removeClass('{{ class_edit.slug }}')">Eliminar</button>            
         {% endif %}
             
     </form>
