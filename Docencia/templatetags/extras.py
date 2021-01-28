@@ -3,6 +3,8 @@ import re
 
 register = template.Library()
 
+from Docencia.Cursos.models import CourseInformation
+
 @register.simple_tag
 def device_is_mobile(request):
     try:
@@ -14,3 +16,7 @@ def device_is_mobile(request):
 @register.filter
 def teacher(value, arg):
     return value.filter(teachers__id=arg)
+
+@register.simple_tag
+def adminTeacher(courseSlug, teacherPk):
+    return CourseInformation.objects.filter(slug=courseSlug, adminteachers__id=teacherPk).exists()

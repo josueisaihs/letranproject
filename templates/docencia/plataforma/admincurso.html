@@ -26,15 +26,20 @@
                 </div>
             </a>
         </div>
-        <div class="col-sm-4">
-            <a href="{% url 'plataforma_admin_studentslist' course.slug %}">
-                <div class="card text-center h-100 ">
-                    <div class="card-body">
-                        <h5 class="card-title align-middle"><i class="fas fa-users"></i> Estudiantes</h5>                        
+        
+        {% adminTeacher course.slug teacher.pk as isAdminTeacher %}
+        {% if isAdminTeacher %}
+            <div class="col-sm-4">
+                <a href="{% url 'plataforma_admin_studentslist' course.slug %}">
+                    <div class="card text-center h-100 ">
+                        <div class="card-body">
+                            <h5 class="card-title align-middle"><i class="fas fa-users"></i> Estudiantes</h5>                        
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        {% endif %}
+        
         {% for subject in course.getSubjects|teacher:teacher.pk %}                
             <div class="col-sm-4">
                 <div class="card text-center h-100">
