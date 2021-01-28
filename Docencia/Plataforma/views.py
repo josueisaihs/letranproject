@@ -290,25 +290,6 @@ def adminclass(request, slug):
 def adminclass_edit(request, slug):
         user = User.objects.get(username=request.user.username)
         try:
-                teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-                
-                courses = []
-                coursespk_ = SubjectInformation.objects.filter(teachers=teacher.pk).order_by('course').values_list('course', flat=True).distinct()
-                for pk in coursespk_:
-                        course = CourseInformation.objects.get(pk=pk)
-                        course.subjects = []
-                        subjects = SubjectInformation.objects.filter(teachers=teacher.pk, course=course.pk)
-                        for subject in subjects:
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                course.subjects.append(subject)
-                        courses.append(course)
-
                 edit = True
                 class_edit = Class.objects.get(slug=slug)
                 subject = SubjectInformation.objects.get(slug=class_edit.subject.slug)                
@@ -324,7 +305,7 @@ def adminclass_edit(request, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                                return HttpResponseRedirect('/plataforma/admin/dashboard/')
+                                return redirect('plataforma_admin_subject', slug)
                 else:
                         form = ClassForm(instance=class_edit)
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
