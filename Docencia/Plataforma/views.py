@@ -15,7 +15,7 @@ from Docencia.Index.models import Recurso
 from Docencia.Plataforma.forms import ClassForm
 from Docencia.Index.forms import RecursoForm
 
-from Docencia.tasks import enviar_comunicado
+from Docencia.tasks import enviar_comunicado, enviar_notification
 
 from datetime import datetime
 import mimetypes
@@ -223,7 +223,6 @@ def admindashboard(req):
         index = "active"
         try:
                 teacher = TeacherPersonalInformation.objects.get(user=User.objects.get(username=req.user.username))
-                
                 courses = teacher.getCourses()
 
                 return render(req, TEMPLETE_PATH % "adminindex", locals())
@@ -235,14 +234,14 @@ def admindashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admincourse(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "admincurso", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "admincurso", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -587,3 +586,24 @@ def adminstudentslist(req, slug):
         applications = Application.objects.filter(edition=edition, course__slug=slug)
 
         return render(req, TEMPLETE_PATH % "adminstudents", locals())
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminnotification(req, slug, pk):
+        user = User.objects.get(username=req.user.username)
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+
+        course = CourseInformation.objects.get(slug=slug)
+        student = Application.objects.get(student__pk=pk).student
+
+        return render(req, TEMPLETE_PATH % "adminnotification", locals())
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def sendnotificationmail(req):
+        if req.is_ajax():
+                enviar_notification(req.POST.get('subject'), req.POST.get('body'), req.POST.get('email'))
+
+                return JsonResponse({'response': True})
+        else:
+                return HttpResponseForbidden()

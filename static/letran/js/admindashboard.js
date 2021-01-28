@@ -61,6 +61,41 @@ function sendMail(el){
     }
 }
 
+function sendNotificationMail(el){
+    const email = $("#sendmail_subject").attr('data-student');
+    const subject = $("#sendmail_subject").val().toString();
+    const body = $("#sendmail_body").val().toString();
+
+    $(el).prop("disabled", true);
+    $(el).children("div.spinner-border").removeClass("invisible");
+
+    if (email !== "none" && subject.length > 5 && body.length > 15){
+        $.ajax({
+            type: "post",
+            url: notificationurl, 
+            data: {"email": email, "subject": subject, "body": body},
+            success: function (response) {
+                if (response.response){
+                    $(el).prop("disabled", false);
+                    $(el).children("div.spinner-border").addClass("invisible");
+                    console.log("Todo ok")
+
+                    $("#sendmail_subject").val("")
+                    $("#sendmail_body").val("")
+
+                    location.href = urlstudentslist
+                }
+            },
+            error: (xhr, errmsg, err)=>{
+                console.log("ERROR", errmsg.toString(), err.toString());
+            }
+        });
+    }else{
+        $(el).prop("disabled", false);
+        $(el).children("div.spinner-border").addClass("invisible");
+    }
+}
+
 function assistence(el) {
     const enrollment = $(el).attr('data-enrollment')
     $('#roomclass option:selected').each((index, element) => {

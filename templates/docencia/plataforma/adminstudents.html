@@ -37,7 +37,6 @@
                                             {% ifequal application.student.gender "f" %} 
                                                 Femenino
                                             {% endifequal %}
-                                                
                                             <br><small class="text-secondary">Género</small>
                                         </p>
                                     </div>
@@ -57,9 +56,9 @@
                             </div>                            
                         </div>
                         <div class="card-footer text-muted">
-                            <button class="btn btn-outline-primary btn-sm">
+                            <a href="{% url 'plataforma_admin_notification' course.slug application.student.pk %}" class="btn btn-outline-primary btn-sm">
                                 <i class="far fa-paper-plane"></i> Notificar
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

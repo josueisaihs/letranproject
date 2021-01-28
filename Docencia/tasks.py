@@ -190,3 +190,11 @@ def enviar_comunicado(edition_pk, course_pk, subject, body):
             to=[app.student.email]
         )
         email.send(fail_silently=False)
+
+@background(schedule=10)
+def enviar_notification(subject, body, studentMail):
+    email = EmailMessage(
+        "CAMPUS VIRTUAL. %s" % subject,
+        "%s\n\nNo conteste este correo electrónico",
+        bcc=["desarrollo@bartolo.org", "centrofbc@bartolo.org", studentMail]
+    )
