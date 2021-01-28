@@ -305,7 +305,7 @@ def adminclass_edit(request, slug):
                                         class_.resources.set(recursos)
                                 else:
                                         class_.resources.clear()
-                                return redirect('plataforma_admin_subject', slug)
+                                return redirect('plataforma_admin_subject', subject.slug)
                 else:
                         form = ClassForm(instance=class_edit)
                 return render(request, TEMPLETE_PATH % "adminclass", locals())
