@@ -594,7 +594,7 @@ def adminnotification(req, slug, pk):
         teacher = TeacherPersonalInformation.objects.get(user=user.pk)
 
         course = CourseInformation.objects.get(slug=slug)
-        student = Application.objects.get(student__pk=pk).student
+        student = Application.objects.get(student__pk=pk, course=course.pk).student
 
         return render(req, TEMPLETE_PATH % "adminnotification", locals())
 
