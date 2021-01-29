@@ -67,6 +67,7 @@ class Edition(models.Model):
     )
     dateinit = models.DateField(verbose_name="Fecha de Inicio", default=timezone.now)
     dateend = models.DateField(verbose_name="Fecha de Fin", default=date.today() + timedelta(days=180))
+    active = models.BooleanField("Activo", default=False)
 
     class Meta:
         """Meta definition for Edition."""
@@ -77,16 +78,12 @@ class Edition(models.Model):
         """Unicode representation of Edition."""
         return "%s" % self.name
 
-    def get_absolute_url(self):
-        """Return absolute url for Edition."""
-        return reverse('Edition.views.details', args=[str(self.id)])
-
 @admin.register(Edition)
 class EditionAdmin(admin.ModelAdmin):
     '''Admin View for Edition'''    
-    list_display = ('name', 'dateinit', 'dateend')
+    list_display = ('name', 'dateinit', 'dateend', 'active')
     search_fields = ('name',)
-    ordering = ('name',)
+    ordering = ('name', '-dateinit')
 
 
 class Area(models.Model):

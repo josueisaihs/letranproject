@@ -17,6 +17,11 @@ def device_is_mobile(request):
 def teacher(value, arg):
     return value.filter(teachers__id=arg)
 
+@register.filter
+def subject(value, arg):
+    print(10 * ">>", value, arg)
+    return value.get(slug=arg)
+
 @register.simple_tag
 def adminTeacher(courseSlug, teacherPk):
     return CourseInformation.objects.filter(slug=courseSlug, adminteachers__id=teacherPk).exists()

@@ -4,19 +4,19 @@
 <div>
     <div class="row py-2 g-2">
         <div class="border-bottom mb-3">
-            <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ course.name }}</h5>
+            <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
         </div>
-        {% if course.comunicate %}
+        {% if app.course.comunicate %}
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">¡Información Importante!</h4>
-                <p>{{ course.comunicate|safe|linebreaksbr }}</p>
+                <p>{{ app.course.comunicate|safe|linebreaksbr }}</p>
                 <hr>
-                <p class="mb-0"><small>CAMPUS VIRTUAL · Este comunicado es solo visible para los estudiantes de {{ course.name|capfirst }}.</small></p>
+                <p class="mb-0"><small>CAMPUS VIRTUAL · Este comunicado es solo visible para los estudiantes de {{ app.course.name|capfirst }}.</small></p>
             </div>
         {% endif %} 
 
         <div class="col-sm-4">
-            <a href="{% url 'plataforma_recursos' course.slug %}">
+            <a href="{% url 'plataforma_recursos' app.course.slug %}">
                 <div class="card text-center h-100 ">
                     <div class="card-body">
                         <h5 class="card-title align-middle">Recursos</h5>                        
@@ -25,7 +25,7 @@
             </a>
         </div>    
         
-        {% for subject in course.subjects %}
+        {% for subject in app.course.getSubjects %}
             <div class="col-sm-4">
                 <div class="card text-center h-100">
                     <div class="card-body">

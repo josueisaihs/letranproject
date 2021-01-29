@@ -29,24 +29,9 @@ def dashboard(req):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                if apps.__len__() > 0:
-                        for app in apps:
-                                app.course.subjects = []
-                                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                        app.course.subjects.append(subject)
-                                        del subject
-                                del app
-
-                        return render(req, TEMPLETE_PATH % "index", locals())
-                else:
-                        messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-                        return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+               
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                return render(req, TEMPLETE_PATH % "index", locals())
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
@@ -56,31 +41,10 @@ def dashboard(req):
 def curso(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
-                student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                if apps.__len__() > 0:
-                        for app in apps:
-                                app.course.subjects = []
-                                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                        app.course.subjects.append(subject)
-                                        del subject
-                                del app
-                        
-                        course = CourseInformation.objects.get(slug=slug)
-                        course.subjects = []
-                        for subject in SubjectInformation.objects.filter(course=course.pk):
-                                course.subjects.append(subject)
-                                del subject
-
-                        return render(req, TEMPLETE_PATH % "curso", locals())
-                else:
-                        messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-                        return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+                student = StudentPersonalInformation.objects.get(user=user.pk)          
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+                return render(req, TEMPLETE_PATH % "curso", locals())
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
@@ -91,34 +55,9 @@ def subject(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                if apps.__len__() > 0:
-                        for app in apps:
-                                app.course.subjects = []
-                                for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                        app.course.subjects.append(subject)
-                                        del subject
-
-                                app.course.recursos = []
-                                for recurso in Recurso.objects.filter(courses=app.course.pk):
-                                        app.course.recursos.append(recurso)
-                                        del recurso
-                                        
-                        for subject in SubjectInformation.objects.filter(slug=slug):
-                                        subject.classes = []
-                                        for clase in Class.objects.filter(subject=subject.pk, 
-                                        datepub__lte=datetime.today()).order_by('-datepub'):
-                                                subject.classes.append(clase)
-
-                        return render(req, TEMPLETE_PATH % "subject", locals())
-                else:
-                        messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-                        return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                subject = SubjectInformation.objects.get(slug=slug)
+                return render(req, TEMPLETE_PATH % "subject", locals())
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
@@ -130,20 +69,7 @@ def clase(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                try:
-                        edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-                except ObjectDoesNotExist:
-                        edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
-
-                apps = Application.objects.filter(student=student, edition=edition, status="aceptado")
-                for app in apps:
-                        app.course.subjects = []
-                        for subject in SubjectInformation.objects.filter(course=app.course.pk):
-                                subject.classes = []
-                                for clase in Class.objects.filter(subject=subject.pk, datepub__lte=datetime.today()).order_by('datepub'):
-                                        subject.classes.append(clase)
-                                app.course.subjects.append(subject)
-
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
                 clase = Class.objects.get(slug=slug)
                 return render(req, TEMPLETE_PATH % "clase", locals())
         except:

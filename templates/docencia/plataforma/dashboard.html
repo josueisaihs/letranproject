@@ -44,7 +44,7 @@
                                 </li>
                                 <div class="collapse {% ifequal app.course.pk clase.subject.course.pk %}show{% endifequal %}" id="{{ app.course.slug }}">
                                     <ul class="nav flex-column mb-2 ml-2">
-                                    {% for subject_ in app.course.subjects %}                                      
+                                    {% for subject_ in app.course.getSubjects %}                                      
                                         <li class="nav-item">
                                             <a class="nav-link text-capitalize {% ifequal subject_.pk subject.pk  %}active{% endifequal %}" 
                                             href="{% url 'plataforma_subject' subject_.slug %}">
