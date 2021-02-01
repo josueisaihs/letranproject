@@ -502,14 +502,9 @@ def apiassistence(req):
 def adminstudentslist(req, slug):
         user = User.objects.get(username=req.user.username)
         teacher = TeacherPersonalInformation.objects.get(user=user.pk)
-
-        try:
-                edition = Edition.objects.get(dateinit__lte=datetime.today(), dateend__gte=datetime.today())
-        except ObjectDoesNotExist:
-                edition = Edition.objects.filter(dateend__gte=datetime.today()).order_by('dateinit', 'dateend').first()
         
         course = CourseInformation.objects.get(slug=slug)
-        applications = Application.objects.filter(edition=edition, course__slug=slug)
+        applications = Application.objects.filter(edition__active=True, course__slug=slug)
 
         return render(req, TEMPLETE_PATH % "adminstudents", locals())
 

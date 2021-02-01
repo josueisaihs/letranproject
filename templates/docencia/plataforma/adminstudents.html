@@ -5,8 +5,8 @@
         <div class="row py-2 g-2">
             <div class="border-bottom mb-3">
                 <h5>
-                    <a href="{% url 'plataforma_admin_course' course.slug %}" class="">
-                        <i class="fas fa-arrow-left"></i></a> {{ course.name }} / Estudiantes
+                    <a href="{% url 'plataforma_admin_course' application.course.slug %}" class="">
+                        <i class="fas fa-arrow-left"></i></a> {{ application.course.name }} / Estudiantes
                 </h5>
             </div>
 
@@ -14,7 +14,7 @@
                 <h4 class="alert-heading">¡Atención!</h4>
                 <p>El CFBC <strong>NO SE HACE RESPONSABLE</strong> del uso inadecuado y/o no autorizado de los datos proporcionados.</p>
                 <hr>
-                <p class="mb-0">Usted puede ver estos datos porque tiene un cargo administrativo o es coordinador del curso {{ course.name }}. En caso de error reportarlo al Rectorado del CFBC.</p>
+                <p class="mb-0">Usted puede ver estos datos porque tiene un cargo administrativo o es coordinador del curso {{ application.course.name }}. En caso de error reportarlo al Rectorado del CFBC.</p>
             </div>
             
             {% for application in applications %}
@@ -56,7 +56,7 @@
                             </div>                            
                         </div>
                         <div class="card-footer text-muted">
-                            <a href="{% url 'plataforma_admin_notification' course.slug application.student.pk %}" class="btn btn-outline-primary btn-sm">
+                            <a href="{% url 'plataforma_admin_notification' application.course.slug application.student.pk %}" class="btn btn-outline-primary btn-sm">
                                 <i class="far fa-paper-plane"></i> Notificar
                             </a>
                         </div>

@@ -12,7 +12,7 @@ from django.core.validators import MinValueValidator
 from easy_thumbnails.fields import ThumbnailerImageField as ImageField
 
 import os
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from decimal import Decimal
 
 from Docencia.Plataforma.models import Class
@@ -351,6 +351,9 @@ class SubjectInformation(models.Model):
 
     def getClasses(self):
         return Class.objects.filter(subject=self.pk)
+
+    def getCurrentClasses(self):
+        return Class.objects.filter(subject=self.pk, datepub__lte=datetime.today()).order_by('-datepub')
 
     class Meta:
         unique_together= ('name', 'course')
