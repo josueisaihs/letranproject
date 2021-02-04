@@ -191,14 +191,14 @@ def admindashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admincourse(req, slug):
         user = User.objects.get(username=req.user.username)
-        try:
-                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-                course = CourseInformation.objects.get(slug=slug)
+        # try:
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+        course = CourseInformation.objects.get(slug=slug)
 
-                return render(req, TEMPLETE_PATH % "admincurso", locals())
-        except:
-                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+        return render(req, TEMPLETE_PATH % "admincurso", locals())
+        # except:
+        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
