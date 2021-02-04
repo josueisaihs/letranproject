@@ -39,7 +39,7 @@ with open(os.path.join(BASE_DIR, 'students', 'Datos estudiantes DEH.csv'), 'r', 
 
             app.save()
             print("Listo %s %s" % (nombre, apellidos))
-        except:
-            print("Error con %s %s" % (nombre, apellidos))
+        except Exception as e:
+            print("Error con %s %s. %s" % (nombre, apellidos, e))
 
     file.close()
