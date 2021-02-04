@@ -13,7 +13,10 @@ with open(os.path.join(BASE_DIR, 'students', 'Datos estudiantes DEH.csv'), 'r', 
     for line in file.readlines():
         nombre, apellidos, genero, ci, direccion, muncipio, provincia, movil, telefono, email, nacionalidad, ocupacion, grado, titulo = line.split(";")
         try:
-            try:
+            student = StudentPersonalInformation.objects.filter(name=nombre, lastname=apellidos, email=email)
+            if student.__len__() > 0:
+                student = student[0]
+            else:
                 student = StudentPersonalInformation()
                 student.name = nombre
                 student.lastname = apellidos
@@ -31,8 +34,7 @@ with open(os.path.join(BASE_DIR, 'students', 'Datos estudiantes DEH.csv'), 'r', 
                     student.save()
                 except:
                     student.user = User.objects.get(username=email)
-            except:
-                student = StudentPersonalInformation.objects.get(name=nombre, lastname=apellidos, email=email)
+                    student.save()
 
             app = Application()
             app.course = CourseInformation.objects.get(name="Diplomado en Humanismo y Sociedad (Extraordinario)")
