@@ -1,0 +1,42 @@
+{% extends './dashboard.html' %}
+{% load thumbnail %}
+{% load extras %}
+{% load static %}
+{% block dashboard_content %}
+<div>
+    <div class="row py-2 g-2">
+        <div class="border-bottom mb-3">
+            <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
+        </div>
+
+        <div class="alert alert-primary" role="alert">
+            <h5>Seleccione Créditos <span class="badge bg-light text-secondary"><span id="totalSubj">0</span> | <span id="totalEtcs">0</span> ETCS</span></h5>
+            <p>Seleccione las asignaturas que desea cursar en {{ app.course.name }}</p>
+            <small>Esta operación es irreversible</small>
+            <br><hr>
+            <button type="button" id="continuar" class="float-right btn btn-sm btn-outline-primary">
+                Continuar <i class="fas fa-long-arrow-alt-right"></i>
+            </button>
+        </div>
+        
+        {% for subject in app.course.getSubjects|getOptativas %}
+            <div class="col-sm-4">
+                <div class='card text-center h-100'>
+                    <div class="card-body">                        
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" data-subject="{{ subject.name }}" data-etcs="{{ subject.credicts|floatformat }}">
+                        </div>
+                        <h5 class="card-title">{{ subject.name }}</h5>
+                        <small>{{ subject.mode }} | {{ subject.credicts|floatformat }} ETCS</small>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Vacio Por Dios</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/enrollment.js' %}"></script>
+{% endblock importScripts %}

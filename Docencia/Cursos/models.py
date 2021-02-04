@@ -275,49 +275,6 @@ class CourseInformationAdmin(admin.ModelAdmin):
     list_filter = ["sedes", "area", "category", "isService", "haveApplication"]
     list_display = ["name", "area", "category", "isService", "capacity", "haveApplication", "openregistre", "deadline"]
 
-class GroupInformation(models.Model):
-    """Model definition for GroupInformation."""
-    slug = models.SlugField('Slug', default="", max_length=200)
-    name = models.CharField(verbose_name="Nombre", max_length=150)
-    edition = models.ForeignKey(Edition, verbose_name="Edición", on_delete=models.CASCADE)
-    course = models.ForeignKey(CourseInformation, verbose_name="Curso", on_delete=models.CASCADE)
-    teachers = models.ManyToManyField('Docencia.TeacherPersonalInformation', verbose_name="Profesor(s)")
-    students = models.ManyToManyField('Docencia.StudentPersonalInformation', verbose_name="Estudiante(s)", blank=True)
-
-    class Meta:
-        """Meta definition for GroupInformation."""
-        unique_together = [('name', 'edition', 'course')]
-        verbose_name = 'Grupo'
-        verbose_name_plural = 'Cursos - Grupos'
-
-    def _get_unique_slug(self):
-        slug = slugify("%s %s %s" % (self.course.area.name, self.course.name, self.name))
-        unique_slug = slug
-        num = 1
-        while GroupInformation.objects.filter(slug=unique_slug).exists():
-            unique_slug = '{}-{}'.format(slug, num)
-            num += 1
-        return unique_slug
- 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self._get_unique_slug()
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        """Unicode representation of GroupInformation."""
-        return "%s-%s %s" % (self.course, self.edition, self.name)
-
-@admin.register(GroupInformation)
-class GroupInformationAdmin(admin.ModelAdmin):
-    '''Admin View for GroupInformation'''
-    list_display = ('name', 'edition', 'course')
-    list_filter = ('edition', 'course', 'course__area')
-    search_fields = ('name', 'edition__name', 'course__name', 'course__area__name', 'teachers__name', 'teachers__lastname',
-    'students__name', 'students__lastname')
-    ordering = ('name',)
-    readonly_fields = ["slug",]
-
 class SubjectInformation(models.Model):
     # Asignatura
     slug = models.SlugField(max_length=250, default="")
@@ -332,9 +289,9 @@ class SubjectInformation(models.Model):
         choices=(
             ("Troncal", "Troncal"),
             ("Obligatoria", "Obligatoria"), 
-            ("Optativa", "Optativas"),
+            ("Optativa", "Optativa"),
             ("Libre Elección", "Libre Elección") 
-        ), default="Obligatioria"
+        ), default="Obligatoria"
     )
     # Certificacion de notas de la asginatura
     needBallot = models.BooleanField(default=False, verbose_name="Boleta de Fin de Estudios")

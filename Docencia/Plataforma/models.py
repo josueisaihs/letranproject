@@ -61,6 +61,18 @@ class Message(models.Model):
     user = models.ForeignKey(User, verbose_name="Usuario", on_delete=models.CASCADE, default=1)
     # body = CKEditor5Field('Cuerpo', config_name='extends')
     body = models.CharField(verbose_name="Mensaje", max_length=180)
+    audio = models.FileField("Audios", 
+        upload_to='static/msg/audios/%Y/%m/%d/%H/%M/', 
+        max_length=100, blank=True)
+    typeMsg = models.CharField(
+        "Tipo", 
+        max_length=50, 
+        choices=(
+            ('Texto', 'Texto'), 
+            ('Audio', 'Audio')
+        ),
+        default="Texto"
+    )
     createdate = models.DateField('Fecha Creación', auto_now=True)
     approved = models.BooleanField("Aprobación", default=True)
 
@@ -174,6 +186,49 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ('student__name', 'student__lastname', 'subject__name', 'subject__course__name')
     ordering = ('student', '-edition')
     readonly_fields = ('slug',)
+
+class GroupInformation(models.Model):
+    """Model definition for GroupInformation."""
+    slug = models.SlugField('Slug', default="", max_length=200)
+    name = models.CharField(verbose_name="Nombre", max_length=150)
+    edition = models.ForeignKey('Docencia.Edition', verbose_name="Edición", on_delete=models.CASCADE)
+    teachers = models.ManyToManyField('Docencia.TeacherPersonalInformation', verbose_name="Profesor(s)")
+    enrollment = models.ManyToManyField('Docencia.Enrollment', verbose_name="Estudiante(s)", blank=True, limit_choices_to={'edition__active': True})
+
+    class Meta:
+        """Meta definition for GroupInformation."""
+        unique_together = [('name', 'edition')]
+        verbose_name = 'Grupo'
+        verbose_name_plural = 'Cursos - Grupos'
+
+    def _get_unique_slug(self):
+        slug = slugify("%s %s %s" % (self.course.area.name, self.course.name, self.name))
+        unique_slug = slug
+        num = 1
+        while GroupInformation.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        """Unicode representation of GroupInformation."""
+        return "%s-%s %s" % (self.course, self.edition, self.name)
+
+@admin.register(GroupInformation)
+class GroupInformationAdmin(admin.ModelAdmin):
+    '''Admin View for GroupInformation'''
+    list_display = ('name', 'edition')
+    list_filter = ('edition',)
+    search_fields = ('name', 'edition__name', 'teachers__name', 'teachers__lastname',
+    'students__name', 'students__lastname')
+    ordering = ('name',)
+    readonly_fields = ["slug",]
+
 
 
 class Raspberry(models.Model):
