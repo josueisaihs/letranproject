@@ -26,7 +26,10 @@ with open(os.path.join(BASE_DIR, 'students', 'Datos estudiantes DEH.csv'), 'r', 
             student.email = email
             student.nacionality = nacionalidad
             student.title = titulo
-            student.save()
+            try:
+                student.save()
+            except:
+                student.user = User.objects.get(username=email)
 
             app = Application()
             app.course = CourseInformation.objects.get(name="Desarrollo Web")
