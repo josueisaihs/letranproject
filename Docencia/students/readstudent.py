@@ -13,26 +13,29 @@ with open(os.path.join(BASE_DIR, 'students', 'Datos estudiantes DEH.csv'), 'r', 
     for line in file.readlines():
         nombre, apellidos, genero, ci, direccion, muncipio, provincia, movil, telefono, email, nacionalidad, ocupacion, grado, titulo = line.split(";")
         try:
-            student = StudentPersonalInformation()
-            student.name = nombre
-            student.lastname = apellidos
-            student.genero = ""
-            student.numberidentification = ci
-            student.street = direccion
-            student.city = muncipio
-            student.state = provincia
-            student.phone = telefono
-            student.cellphone = movil
-            student.email = email
-            student.nacionality = nacionalidad
-            student.title = titulo
             try:
-                student.save()
+                student = StudentPersonalInformation()
+                student.name = nombre
+                student.lastname = apellidos
+                student.genero = ""
+                student.numberidentification = ci
+                student.street = direccion
+                student.city = muncipio
+                student.state = provincia
+                student.phone = telefono
+                student.cellphone = movil
+                student.email = email
+                student.nacionality = nacionalidad
+                student.title = titulo
+                try:
+                    student.save()
+                except:
+                    student.user = User.objects.get(username=email)
             except:
-                student.user = User.objects.get(username=email)
+                student = StudentPersonalInformation.objects.get(name=nombre, lastname=apellidos, email=email)
 
             app = Application()
-            app.course = CourseInformation.objects.get(name="Desarrollo Web")
+            app.course = CourseInformation.objects.get(name="Diplomado en Humanismo y Sociedad (Extraordinario)")
             app.student = student
             app.status = "aceptado"
             app.edition = Edition.objects.get(active=True)
