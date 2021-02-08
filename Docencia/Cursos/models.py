@@ -229,6 +229,9 @@ class CourseInformation(models.Model):
     def getSubjects(self):
         return SubjectInformation.objects.filter(course=self.pk)
 
+    # def getGroups(self):
+    #     return GroupInformation.objects.filter(course=self.pk)
+
     def getRecursos(self):
         return Recurso.objects.filter(courses=self.pk)
 
