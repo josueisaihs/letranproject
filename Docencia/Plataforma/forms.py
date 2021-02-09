@@ -1,5 +1,5 @@
 from django import forms
-
+from django.core.exceptions import NON_FIELD_ERRORS
 from Docencia.Plataforma.models import Class, HomeWork
 import json
 
@@ -54,4 +54,10 @@ class HomeWorkForm(forms.ModelForm):
                     'accept': 'application/pdf'
                 }
             )
+        }
+
+        error_messages = {
+            NON_FIELD_ERRORS: {
+                'unique_together': "Esta tarea con este Nombre ya existe.",
+            }
         }

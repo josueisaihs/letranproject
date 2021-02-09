@@ -7,6 +7,16 @@
     <div class="row m-2 g-2">
         <form action="." method="post" enctype="multipart/form-data">
             {% csrf_token %}
+            {% if form.errors %}                
+                {% for key, error in form.errors.items %}
+                    {% if key == '__all__' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error | escape }}
+                        </div>
+                    {% endif %}
+                {% endfor %}                    
+            {% endif %}
+
             <div class="mb-3">
                 <label for="id_name" class="form-label">Nombre</label>
                 {% if form.name.errors %}                
