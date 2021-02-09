@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import FileResponse, HttpResponseForbidden, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
+from django.core.paginator import Paginator
 
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation 
 from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
-from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation
+from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation, HomeWork
 from Docencia.Index.models import Recurso
 from Docencia.Plataforma.forms import ClassForm, HomeWorkForm
 from Docencia.Index.forms import RecursoForm
@@ -102,6 +103,7 @@ def homework(req, slug):
         student = StudentPersonalInformation.objects.get(user=user.pk)
         apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
         clase = Class.objects.get(slug=slug)
+        edition = Edition.objects.get(active=True)
 
         if req.method == "POST":
                 form = HomeWorkForm(req.POST, req.FILES)
@@ -605,3 +607,25 @@ def sendnotificationmail(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminhomework(req, slug):
+        user = User.objects.get(username=req.user.username)
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+        subject = SubjectInformation.objects.filter(slug=slug).first()
+
+        try:
+                homeworks = HomeWork.objects.filter(
+                        edition__active=True, 
+                        clase__subject__slug=slug).order_by('-datepub')
+                paginador = Paginator(homeworks, 25)
+
+                page_number = req.GET.get('page')
+                page_obj = paginador.get_page(page_number)
+
+                del homeworks
+        except:
+                messages.error("No hay tareas para mostrar")
+
+        return render(req, TEMPLETE_PATH % "adminhomeworks", locals())

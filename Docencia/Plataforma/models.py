@@ -71,10 +71,11 @@ class HomeWork(models.Model):
         help_text="Máximo tamaño de archivo permitido es 10MB"
     )
     datepub = models.DateTimeField("Fecha", auto_now=True)
+    edition = models.ForeignKey("Docencia.Edition", verbose_name="Edición", on_delete=models.CASCADE, default=1)
 
     class Meta:
         """Meta definition for MODELNAME."""
-        unique_together = ('name', 'clase', 'student')
+        unique_together = ('name', 'clase', 'student', 'edition')
         verbose_name = 'Docencia - Tarea'
         verbose_name_plural = 'Docencia - Tareas'
 
@@ -99,8 +100,8 @@ class HomeWork(models.Model):
 @admin.register(HomeWork)
 class HomeWorkAdmin(admin.ModelAdmin):
     '''Admin View for HomeWork'''
-    list_display = ('name', 'clase', 'student', 'datepub', 'file')
-    list_filter = ('clase__subject__course', 'clase__subject')
+    list_display = ('name', 'clase', 'student', 'datepub', 'file', 'edition')
+    list_filter = ('clase__subject__course', 'clase__subject', 'edition')
     search_fields = ('name', 'clase__name', 'clase__subject__name', 'clase__subject__course__name', 'student__name', 'student__lastname')
     ordering = ('clase__name',)
 

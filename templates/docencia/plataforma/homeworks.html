@@ -59,6 +59,15 @@
                 {% endfor %}                    
             {% endif %}
             {{ form.student }}
+
+            {% if form.edition.errors %}                
+                {% for error in form.edition.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}                    
+            {% endif %}
+            {{ form.edition }}
             <br>
             <input type="submit" class="btn btn-primary"value="Enviar">
         </form>        
@@ -69,4 +78,6 @@
     clase.value = {{ clase.pk }}
     var student = document.querySelector('#id_student')
     student.value = {{ student.pk }}
+    var edition = document.querySelector('#id_edition')
+    edition.value = {{ edition.pk }}
 {% endblock scripts %}

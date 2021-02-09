@@ -44,6 +44,7 @@ urlpatterns = [
     path("plataforma/admin/dashboard/curso/comunicado/crear/<slug:slug>/", views.plataforma.createcomunicate, name="plataforma_admin_comunicate"),
     path("plataforma/admin/dashboard/curso/grupo/crear/<slug:slug>/", views.plataforma.creategroup, name="plataforma_admin_crear_grupo"),
     path("plataforma/admin/dashboard/subject/<slug:slug>/", views.plataforma.adminsubject, name="plataforma_admin_subject"),
+    path("plataforma/admin/dashboard/subject/<slug:slug>/homework/", views.plataforma.adminhomework, name="plataforma_admin_homework"),
     path("plataforma/admin/dashboard/subject/<slug:slug>/assistence/", views.plataforma.adminassistence, name="plataforma_admin_assistence"),
     path("plataforma/admin/dashboard/<slug:slug>/clase/crear/", views.plataforma.adminclass, name="plataforma_admin_clase"),
     path("plataforma/admin/dashboard/clase/delete/", views.plataforma.deleteclass, name="plataforma_admin_clase_delete"),
