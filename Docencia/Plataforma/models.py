@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from Docencia.validators import valid_extension, valid_size
 
 class Class(models.Model):
     """Model definition for Class."""
@@ -51,6 +52,58 @@ class ClassAdmin(admin.ModelAdmin):
     search_fields = ('subject__course__name', 'subject__course__sede__name', 'subject__name', 'subject__course__area__name')
     ordering = ('-uploaddate',)
     readonly_fields = ('uploaddate', 'slug')
+
+class HomeWork(models.Model):
+    slug = models.SlugField("Slug", max_length=500)
+    name = models.CharField("Nombre", max_length=250, default="Tarea 1")
+    clase = models.ForeignKey("Docencia.Class", 
+        verbose_name="Clase", 
+        on_delete=models.CASCADE
+    )
+    student = models.ForeignKey("Docencia.StudentPersonalInformation", 
+        verbose_name="Estudiante", 
+        on_delete=models.CASCADE
+    )
+    file = models.FileField("Archivo", 
+        upload_to='static/homework/%Y/%m/%d/%H/%M/', 
+        max_length=1000,
+        validators=[valid_extension, valid_size],
+        help_text="Máximo tamaño de archivo permitido es 10MB"
+    )
+    datepub = models.DateTimeField("Fecha", auto_now=True)
+
+    class Meta:
+        """Meta definition for MODELNAME."""
+        unique_together = ('name', 'clase', 'student')
+        verbose_name = 'Docencia - Tarea'
+        verbose_name_plural = 'Docencia - Tareas'
+
+    def __str__(self):
+        """Unicode representation of MODELNAME."""
+        return "%s %s" % (self.clase, self.student)
+    
+    def _get_unique_slug(self):
+        slug = slugify("%s %s %s %s %s" % (self.name, self.student.name, self.student.lastname, self.clase.subject.name, self.clase.name))
+        unique_slug = slug
+        num = 1
+        while HomeWork.objects.filter(slug=unique_slug).exists():
+            unique_slug = '{}-{}'.format(slug, num)
+            num += 1
+        return unique_slug
+ 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self._get_unique_slug()
+        super().save(*args, **kwargs)
+
+@admin.register(HomeWork)
+class HomeWorkAdmin(admin.ModelAdmin):
+    '''Admin View for HomeWork'''
+    list_display = ('name', 'clase', 'student', 'datepub', 'file')
+    list_filter = ('clase__subject__course', 'clase__subject')
+    search_fields = ('name', 'clase__name', 'clase__subject__name', 'clase__subject__course__name', 'student__name', 'student__lastname')
+    ordering = ('clase__name',)
+
 
 class Message(models.Model):
     """Model definition for MODELNAME."""

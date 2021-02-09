@@ -5,6 +5,14 @@
         <h5><a href="{% url 'plataforma_subject' clase.subject.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }}</h5>
     </div>    
     <small class="text-muted">{{ clase.datepub|date:"D d M y" }}</small>
+    
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">¡NUEVO!</h4>
+        <p>Puedes enviarle tu tarea directamente al Profe desde <a target="_blank" href="{% url 'plataforma_homework' clase.slug %}">aquí</a></p>
+        <hr>
+        <p class="mb-0">Por ahora, solo se permiten archivos <strong>PDF</strong> de <strong>10MB o más</strong>.</p>
+    </div>
+
     <div class="ckeditor row" data-classname="{{ clase.slug }}">
         {{ clase.classbody|safe }}
     </div>

@@ -32,6 +32,7 @@ urlpatterns = [
     path("plataforma/dashboard/curso/<slug:slug>/enrollment/", views.plataforma.enrollment, name="plataforma_enrollment"),
     path("plataforma/dashboard/subject/<slug:slug>", views.plataforma.subject, name="plataforma_subject"),
     path("plataforma/dashboard/clase/<slug:slug>", views.plataforma.clase, name="plataforma_clase"),
+    path("plataforma/dashboard/clase/<slug:slug>/homework/", views.plataforma.homework, name="plataforma_homework"),
     path("plataforma/dashboard/recursos/<slug:slug>", views.plataforma.recursos, name="plataforma_recursos"),
     path("plataforma/dashboard/clase/recurso/<slug:slug>", views.plataforma.downloadResource, name="plataforma_recurso"),
     #Plataforma Profesores

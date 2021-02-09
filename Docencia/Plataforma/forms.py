@@ -1,6 +1,6 @@
 from django import forms
 
-from Docencia.Plataforma.models import Class
+from Docencia.Plataforma.models import Class, HomeWork
 import json
 
 
@@ -29,4 +29,29 @@ class ClassForm(forms.ModelForm):
                 'class': 'form-control datetimepicker-input',
                 'data-target': '#id_datepub_div',
             })
+        }
+
+class HomeWorkForm(forms.ModelForm):
+    class Meta:
+        model = HomeWork
+        fields = ('name', 'clase', 'student', 'file')
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'required': True
+            }),
+            'clase': forms.HiddenInput(attrs={
+                'value': '0'
+            }),
+            'student': forms.HiddenInput(attrs={
+                'value': '0'
+            }),
+            'file': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Seleccione un archivo',
+                    'autofocus': 'on',
+                    'accept': 'application/pdf'
+                }
+            )
         }

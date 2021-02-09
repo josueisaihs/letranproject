@@ -12,7 +12,7 @@ from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
 from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation
 from Docencia.Index.models import Recurso
-from Docencia.Plataforma.forms import ClassForm
+from Docencia.Plataforma.forms import ClassForm, HomeWorkForm
 from Docencia.Index.forms import RecursoForm
 
 from Docencia.tasks import enviar_comunicado, enviar_notification
@@ -93,6 +93,29 @@ def clase(req, slug):
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def homework(req, slug):
+        user = User.objects.get(username=req.user.username)
+        # try:
+        student = StudentPersonalInformation.objects.get(user=user.pk)
+        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+        clase = Class.objects.get(slug=slug)
+
+        if req.method == "POST":
+                form = HomeWorkForm(req.POST, req.FILES)
+                if form.is_valid():
+                        form.save()
+
+                        return redirect('plataforma_clase', slug)
+        else:
+                form = HomeWorkForm()                
+
+        return render(req, TEMPLETE_PATH % "homeworks", locals())
+        # except:
+        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 def recursos(req, slug):
         user = User.objects.get(username=req.user.username)
