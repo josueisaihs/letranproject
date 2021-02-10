@@ -1,0 +1,83 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="border-bottom mb-3">
+        <h5><a href="{% url 'plataforma_clase' clase.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }} / Enviar Tarea</h5>
+    </div>
+    <div class="row m-2 g-2">
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}                
+                {% for key, error in form.errors.items %}
+                    {% if key == '__all__' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error | escape }}
+                        </div>
+                    {% endif %}
+                {% endfor %}                    
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="id_name" class="form-label">Nombre</label>
+                {% if form.name.errors %}                
+                    {% for error in form.name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+                {{ form.name }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_file" class="form-label">Busca el archivo</label>
+                {% if form.file.errors %}                
+                    {% for error in form.file.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+                {{ form.file }}
+                <div id="emailHelp" class="form-text">{{ form.file.help_text }}</div>
+            </div>
+            
+            {% if form.clase.errors %}                
+                {% for error in form.clase.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}                    
+            {% endif %}
+            {{ form.clase }}
+
+            {% if form.student.errors %}                
+                {% for error in form.student.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}                    
+            {% endif %}
+            {{ form.student }}
+
+            {% if form.edition.errors %}                
+                {% for error in form.edition.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}                    
+            {% endif %}
+            {{ form.edition }}
+            <br>
+            <input type="submit" class="btn btn-primary"value="Enviar">
+        </form>        
+    </div>
+{% endblock dashboard_content %}
+{% block scripts %}
+    var clase = document.querySelector('#id_clase')
+    clase.value = {{ clase.pk }}
+    var student = document.querySelector('#id_student')
+    student.value = {{ student.pk }}
+    var edition = document.querySelector('#id_edition')
+    edition.value = {{ edition.pk }}
+{% endblock scripts %}

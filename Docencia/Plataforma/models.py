@@ -72,6 +72,8 @@ class HomeWork(models.Model):
     )
     datepub = models.DateTimeField("Fecha", auto_now=True)
     edition = models.ForeignKey("Docencia.Edition", verbose_name="Edición", on_delete=models.CASCADE, default=1)
+    observations = models.TextField("Observaciones", default="")
+    note = models.PositiveSmallIntegerField("Nota", default=2)
 
     class Meta:
         """Meta definition for MODELNAME."""
@@ -100,7 +102,7 @@ class HomeWork(models.Model):
 @admin.register(HomeWork)
 class HomeWorkAdmin(admin.ModelAdmin):
     '''Admin View for HomeWork'''
-    list_display = ('name', 'clase', 'student', 'datepub', 'file', 'edition')
+    list_display = ('name', 'clase', 'student', 'datepub', 'file', 'edition', 'note')
     list_filter = ('clase__subject__course', 'clase__subject', 'edition')
     search_fields = ('name', 'clase__name', 'clase__subject__name', 'clase__subject__course__name', 'student__name', 'student__lastname')
     ordering = ('clase__name',)

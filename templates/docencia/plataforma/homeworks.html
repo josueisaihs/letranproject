@@ -1,83 +1,80 @@
-{% extends './dashboard.html' %}
-{% load static %}
+{% extends './admindashboard.html' %}}
+{% load thumbnail %}
+{% load extras %}
 {% block dashboard_content %}
     <div class="border-bottom mb-3">
-        <h5><a href="{% url 'plataforma_clase' clase.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }} / Enviar Tarea</h5>
+        <h5>
+            <a href="{% url 'plataforma_curso' app.course.slug %}" class="">
+                <i class="fas fa-arrow-left"></i></a> {{ app.course.name }} / Mis Tareas
+        </h5>
     </div>
-    <div class="row m-2 g-2">
-        <form action="." method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% if form.errors %}                
-                {% for key, error in form.errors.items %}
-                    {% if key == '__all__' %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error | escape }}
-                        </div>
-                    {% endif %}
-                {% endfor %}                    
-            {% endif %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm justify-content-center">
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page=1{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-angle-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Tareas {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                </a>
+            </li>
+            <li class="page-item {% if page_obj.has_next %}{% else %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.paginator.num_pages }}{% endif %}" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-angle-double-right"></i></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-            <div class="mb-3">
-                <label for="id_name" class="form-label">Nombre</label>
-                {% if form.name.errors %}                
-                    {% for error in form.name.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error|escape }}
-                        </div>
-                    {% endfor %}                    
-                {% endif %}
-                {{ form.name }}
-            </div>
+    {% if messages%}
+        {% for message in messages %}                                        
+            {% ifequal message.level 40 %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endifequal %}
+                
+        {% endfor %}
+    {% endif %}
 
-            <div class="mb-3">
-                <label for="id_file" class="form-label">Busca el archivo</label>
-                {% if form.file.errors %}                
-                    {% for error in form.file.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error|escape }}
-                        </div>
-                    {% endfor %}                    
-                {% endif %}
-                {{ form.file }}
-                <div id="emailHelp" class="form-text">{{ form.file.help_text }}</div>
-            </div>
-            
-            {% if form.clase.errors %}                
-                {% for error in form.clase.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error|escape }}
-                    </div>
-                {% endfor %}                    
-            {% endif %}
-            {{ form.clase }}
-
-            {% if form.student.errors %}                
-                {% for error in form.student.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error|escape }}
-                    </div>
-                {% endfor %}                    
-            {% endif %}
-            {{ form.student }}
-
-            {% if form.edition.errors %}                
-                {% for error in form.edition.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ error|escape }}
-                    </div>
-                {% endfor %}                    
-            {% endif %}
-            {{ form.edition }}
-            <br>
-            <input type="submit" class="btn btn-primary"value="Enviar">
-        </form>        
-    </div>
+    {% if page_obj %}
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>Asignatura</th>
+                        <th>Clase</th>
+                        <th>Tarea</th>
+                        <th>Fecha</th>
+                        <!-- <th>Nota</th> -->
+                        <th>Archivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hw in page_obj %}
+                        <tr>
+                            <td>{{ hw.clase.subject.name|capfirst }}</td>
+                            <td>{{ hw.clase.name|capfirst }}</td>
+                            <td>{{ hw.name|capfirst }}</td>
+                            <td>{{ hw.datepub }}</td>
+                            <!-- <td>{{ hw.note }}</td> -->
+                            <td><a target="_blank" href="{{ hw.file.url }}" class="btn btn-outline-dark btn-sm w-100">
+                                <i class="fas fa-file-download"></i> {{ hw.name }}</a>
+                            </td>                            
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
 {% endblock dashboard_content %}
-{% block scripts %}
-    var clase = document.querySelector('#id_clase')
-    clase.value = {{ clase.pk }}
-    var student = document.querySelector('#id_student')
-    student.value = {{ student.pk }}
-    var edition = document.querySelector('#id_edition')
-    edition.value = {{ edition.pk }}
-{% endblock scripts %}
