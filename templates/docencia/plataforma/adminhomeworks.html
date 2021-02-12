@@ -1,6 +1,5 @@
 {% extends './admindashboard.html' %}}
-{% load thumbnail %}
-{% load extras %}
+{% load thumbnail extras static %}
 {% block dashboard_content %}
     <div class="border-bottom mb-3">
         <h5>
@@ -56,6 +55,7 @@
                         <th>Clase</th>
                         <th>Fecha</th>
                         <th>Archivo</th>
+                        <th>Nota</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,10 +67,41 @@
                             <td><a target="_blank" href="{{ hw.file.url }}" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="fas fa-file-download"></i> {{ hw.name }}</a>
                             </td>
+                            <td>
+                                <select name="nota" id="id_nota_{{ hw.pk }}" class="form-select" data-hw="{{ hw.pk }}">
+                                    <option value="0" {% if hw.note == 2 %}selected{% endif %} disabled>Seleccionar Nota</option>
+                                    <option {% if hw.note == 3 %}selected{% endif %} value="3">3</option>
+                                    <option {% if hw.note == 4 %}selected{% endif %} value="4">4</option>
+                                    <option {% if hw.note == 5 %}selected{% endif %} value="5">5</option>
+                                </select>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     {% endif %}
+    <div id="id_toast" class="toast fixed-top my-5 mx-2" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <strong class="mr-auto"><i class="fa fa-check fa-lg mr-2"></i> ¡Nota Enviada!</strong>
+            <small class="">Ahora</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            Se ha actualizado la nota del estudiante
+        </div>
+    </div> 
 {% endblock dashboard_content %}
+
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/adminhomework.js' %}"></script>
+{% endblock importScripts %}
+
+
+{% block scripts %}
+    const urlnote = "{% url 'api_plataforma_admin_homework' %}"
+{% endblock scripts %}
+    
+    

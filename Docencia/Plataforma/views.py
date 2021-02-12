@@ -652,3 +652,15 @@ def adminhomework(req, slug):
                 messages.error("No hay tareas para mostrar")
 
         return render(req, TEMPLETE_PATH % "adminhomeworks", locals())
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def apiadminhomework(req):
+        if req.is_ajax():
+                hw = HomeWork.objects.get(pk=req.POST.get('hw'))
+                hw.note = req.POST.get('note')
+                hw.save()
+
+                return JsonResponse({'response': True})
+        else:
+                return HttpResponseForbidden()
