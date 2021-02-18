@@ -36,7 +36,7 @@
         {% empty %}
             <div class="alert alert-primary" role="alert">
                 <h5>¡Activar mi Matrícula!</h5>
-                <p>A continuación se le matriculará en {{ app.course.getSubjects|length }} asignatura{{ app.course.getSubjects|length|pluralize:"s" }}</p>
+                <p>A continuación se le matriculará en {{ app.course.getSubjects|length }} asignatura{{ app.course.getSubjects|pluralize:"s" }}</p>
                 <small>Esta operación es irreversible</small>
                 <br><hr>
                 <button type="button" id="continuar" class="float-right btn btn-sm btn-outline-primary">
