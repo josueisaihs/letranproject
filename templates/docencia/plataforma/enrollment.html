@@ -8,16 +8,18 @@
         <div class="border-bottom mb-3">
             <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
         </div>
-
-        <div class="alert alert-primary" role="alert">
-            <h5>Seleccione Créditos <span class="badge bg-light text-secondary"><span id="totalSubj">0</span> | <span id="totalEtcs">0</span> ETCS</span></h5>
-            <p>Seleccione las asignaturas que desea cursar en {{ app.course.name }}</p>
-            <small>Esta operación es irreversible</small>
-            <br><hr>
-            <button type="button" id="continuar" class="float-right btn btn-sm btn-outline-primary">
-                Continuar <i class="fas fa-long-arrow-alt-right"></i>
-            </button>
-        </div>
+        
+        {% if app.course.getSubjects|getOptativas|length > 0 %}
+            <div class="alert alert-primary" role="alert">
+                <h5>Seleccione Créditos <span class="badge bg-light text-secondary"><span id="totalSubj">0</span> | <span id="totalEtcs">0</span> ETCS</span></h5>
+                <p>Seleccione las asignaturas que desea cursar en {{ app.course.name }}</p>
+                <small>Esta operación es irreversible</small>
+                <br><hr>
+                <button type="button" id="continuar" class="float-right btn btn-sm btn-outline-primary">
+                    Continuar <i class="fas fa-long-arrow-alt-right"></i>
+                </button>
+            </div>
+        {% endif %}
         
         {% for subject in app.course.getSubjects|getOptativas %}
             <div class="col-sm-4">
@@ -32,7 +34,15 @@
                 </div>
             </div>
         {% empty %}
-            <p>Vacio Por Dios, jeje</p>
+            <div class="alert alert-primary" role="alert">
+                <h5>¡Activar mi Matrícula!</h5>
+                <p>A continuación se le matriculará en {{ app.course.getSubjects|length }} asignatura{{ app.course.getSubjects|length|pluralize:"s" }}</p>
+                <small>Esta operación es irreversible</small>
+                <br><hr>
+                <button type="button" id="continuar" class="float-right btn btn-sm btn-outline-primary">
+                    Continuar <i class="fas fa-long-arrow-alt-right"></i>
+                </button>
+            </div>
         {% endfor %}
     </div>
 </div>
@@ -44,5 +54,7 @@
 {% block scripts %}
     const urlenrollment = '{% url "api_plataforma_enrollment" %}';
     const urlcourse = "{% url 'plataforma_curso' app.course.slug  %}";
+    const disabled = {% if app.course.getSubjects|getOptativas|length > 0 %}true{% else %}false{% endif %}
+    const course = "{{ app.course.slug }}"
 {% endblock scripts %}
     

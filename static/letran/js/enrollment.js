@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#continuar").prop('disabled', true)
+    $("#continuar").prop('disabled', disabled)
 
     $(".form-check-input").change(function (e) { 
         e.preventDefault();
@@ -45,7 +45,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: urlenrollment,
-            data: {"datos[]": subjects},
+            data: {"datos[]": subjects, "course": course},
             success: function (response) {
                 if (response.response){
                     console.log("Perfecto")

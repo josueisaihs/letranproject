@@ -238,8 +238,7 @@ def apienrollment(req):
 
                         enrollment.save()
                 
-                coursepk = SubjectInformation.objects.get(pk=subjectpk).course.pk
-                for subject in SubjectInformation.objects.filter(Q(mode="Obligatoria") | Q(mode="Troncal"), course = coursepk):
+                for subject in SubjectInformation.objects.filter(Q(mode="Obligatoria") | Q(mode="Troncal"), course__slug = req.POST.get('course')):
                         enrollment = Enrollment()
                         enrollment.edition = edition
                         enrollment.subject = subject
