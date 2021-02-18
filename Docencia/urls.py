@@ -30,6 +30,7 @@ urlpatterns = [
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
     path("plataforma/dashboard/curso/<slug:slug>", views.plataforma.curso, name="plataforma_curso"),
     path("plataforma/dashboard/curso/<slug:slug>/enrollment/", views.plataforma.enrollment, name="plataforma_enrollment"),
+    path("api/plataforma/dashboard/enrollment/", views.plataforma.apienrollment, name="api_plataforma_enrollment"),
     path("plataforma/dashboard/curso/<slug:slug>/homeworks/", views.plataforma.homeworks, name="plataforma_homeworks"),
     path("plataforma/dashboard/subject/<slug:slug>", views.plataforma.subject, name="plataforma_subject"),
     path("plataforma/dashboard/clase/<slug:slug>", views.plataforma.clase, name="plataforma_clase"),

@@ -30,13 +30,28 @@ $(document).ready(function () {
     });
 
     // todo: Terminar que los cursos elegidos se envíen por post al Enrollment y continuar a la siguiente página
-    $.ajax({
-        type: "POST",
-        url: "url",
-        data: "data",
-        dataType: "dataType",
-        success: function (response) {
-            
-        }
+    $("#continuar").on("click", function () {
+        subjects = []
+
+        document.querySelectorAll(".form-check-input").forEach(element => {            
+            if ($(element).prop('checked')){
+                subjects.push($(element).attr('data-subject-pk'))
+            }            
+        });
+
+        console.log(subjects)
+        subjects = JSON.stringify(subjects)
+
+        $.ajax({
+            type: "POST",
+            url: urlenrollment,
+            data: {"datos[]": subjects},
+            success: function (response) {
+                if (response.response){
+                    console.log("Perfecto")
+                    location.href = urlcourse
+                }
+            }
+        });
     });
 });

@@ -35,20 +35,20 @@
             </a>
         </div>
         
-        {% for subject in app.course.getSubjects %}
+        {% for enrollment in enrollments %}
             <div class="col-sm-4">
                 <div class="card text-center h-100">
                     <div class="card-body">
-                        <h5 class="card-title">{{ subject.name }}</h5>
-                        <small>{{ subject.mode }}</small>
+                        <h5 class="card-title">{{ enrollment.subject.name }}</h5>
+                        <small>{{ enrollment.subject.mode }}</small>
                     </div>
                     <div class="card-footer">
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a href="{% url 'plataforma_subject' subject.slug %}" 
+                            <a href="{% url 'plataforma_subject' enrollment.subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Clases
                             </a>
-                            <a href="{% url 'plataforma_messages' subject.slug %}" 
+                            <a href="{% url 'plataforma_messages' enrollment.subject.slug %}" 
                             type="button" class="btn btn-outline-primary btn-sm">
                                 Mensajes 
                                 <!-- <span class="badge bg-danger">10</span> -->

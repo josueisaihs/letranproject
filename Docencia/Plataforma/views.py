@@ -6,6 +6,7 @@ from django.http import FileResponse, HttpResponseForbidden, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation 
@@ -20,6 +21,7 @@ from Docencia.tasks import enviar_comunicado, enviar_notification
 
 from datetime import datetime
 import mimetypes
+from json import loads
 
 TEMPLETE_PATH = "docencia/plataforma/%s.html"
 
@@ -37,36 +39,35 @@ def dashboard(req):
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
-# @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
-# @login_required(login_url="/login/", redirect_field_name="next")
-# def curso(req, slug):
-#         user = User.objects.get(username=req.user.username)
-#         # try:
-#         student = StudentPersonalInformation.objects.get(user=user.pk)
-#         enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True)
-#         print(enrollments)
-#         if enrollments.__len__() > 0:
-#                 apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-#                 app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-#                 return render(req, TEMPLETE_PATH % "curso", locals())
-#         else:
-#                 return redirect('plataforma_enrollment', slug)
-#         # except:
-#         #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-#         #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
-
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def curso(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-                app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-                return render(req, TEMPLETE_PATH % "curso", locals())
+                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True)
+                if enrollments.__len__() > 0:
+                        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                        app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+                        return render(req, TEMPLETE_PATH % "curso", locals())
+                else:
+                        return redirect('plataforma_enrollment', slug)
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+
+# @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+# @login_required(login_url="/login/", redirect_field_name="next")
+# def curso(req, slug):
+#         user = User.objects.get(username=req.user.username)
+#         try:
+#                 student = StudentPersonalInformation.objects.get(user=user.pk)
+#                 apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+#                 app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+#                 return render(req, TEMPLETE_PATH % "curso", locals())
+#         except:
+#                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+#                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -99,25 +100,25 @@ def clase(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def homework(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
-        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-        clase = Class.objects.get(slug=slug)
-        edition = Edition.objects.get(active=True)
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                clase = Class.objects.get(slug=slug)
+                edition = Edition.objects.get(active=True)
 
-        if req.method == "POST":
-                form = HomeWorkForm(req.POST, req.FILES)
-                if form.is_valid():
-                        form.save()
+                if req.method == "POST":
+                        form = HomeWorkForm(req.POST, req.FILES)
+                        if form.is_valid():
+                                form.save()
 
-                        return redirect('plataforma_clase', slug)
-        else:
-                form = HomeWorkForm()                
+                                return redirect('plataforma_clase', slug)
+                else:
+                        form = HomeWorkForm()                
 
-        return render(req, TEMPLETE_PATH % "homework", locals())
-        # except:
-        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+                return render(req, TEMPLETE_PATH % "homework", locals())
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -212,14 +213,44 @@ def messages(req, slug):
 @login_required(login_url="/login/", redirect_field_name="next")
 def enrollment(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)          
-        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-        app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-        return render(req, TEMPLETE_PATH % "enrollment", locals())
-        # except:
-        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")      
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)          
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+                return render(req, TEMPLETE_PATH % "enrollment", locals())
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")      
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def apienrollment(req):
+        user = User.objects.get(username=req.user.username)
+        if req.is_ajax():
+                edition = Edition.objects.get(active=True)
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                
+                for subjectpk in loads(req.POST.get('datos[]')):
+                        enrollment = Enrollment()
+                        enrollment.edition = edition
+                        enrollment.subject = SubjectInformation.objects.get(pk=subjectpk)
+                        enrollment.student = student
+
+                        enrollment.save()
+                
+                coursepk = SubjectInformation.objects.get(pk=subjectpk).course.pk
+                for subject in SubjectInformation.objects.filter(Q(mode="Obligatoria") | Q(mode="Troncal"), course = coursepk):
+                        enrollment = Enrollment()
+                        enrollment.edition = edition
+                        enrollment.subject = subject
+                        enrollment.student = student
+
+                        enrollment.save()
+                
+                return JsonResponse({'response': True})
+
+        else:
+                return HttpResponseForbidden()
 
 # ******************* Profesores **********************************
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
@@ -239,14 +270,14 @@ def admindashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def admincourse(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
-        course = CourseInformation.objects.get(slug=slug)
+        try:
+                teacher = TeacherPersonalInformation.objects.get(user=user.pk)                
+                course = CourseInformation.objects.get(slug=slug)
 
-        return render(req, TEMPLETE_PATH % "admincurso", locals())
-        # except:
-        #         messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
+                return render(req, TEMPLETE_PATH % "admincurso", locals())
+        except:
+                messagesdj.error(req, "Ha ocurrido un error interno o este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/admin/dashboard/")
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
