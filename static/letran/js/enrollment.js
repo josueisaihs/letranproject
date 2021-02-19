@@ -52,6 +52,9 @@ $(document).ready(function () {
                     console.log(urlcourse)
                     location.href = urlcourse
                 }
+            },
+            error: (xhr, errmsg, err)=>{
+                console.log(err, errmsg);
             }
         });
     });
