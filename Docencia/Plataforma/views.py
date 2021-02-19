@@ -247,7 +247,6 @@ def apienrollment(req):
                         enrollment.save()
                 
                 return JsonResponse({'response': True})
-
         else:
                 return HttpResponseForbidden()
 

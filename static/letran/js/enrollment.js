@@ -39,18 +39,20 @@ $(document).ready(function () {
             }            
         });
 
-        console.log(subjects)
-        subjects = JSON.stringify(subjects)
-
         $.ajax({
             type: "POST",
             url: urlenrollment,
-            data: {"datos[]": subjects, "course": course},
+            data: {
+                "datos[]": JSON.stringify(subjects), 
+                "course": course
+            },
             success: function (response) {
                 if (response.response){
                     console.log("Perfecto")
                     console.log(urlcourse)
                     location.href = urlcourse
+                }else{
+                    
                 }
             },
             error: (xhr, errmsg, err)=>{
