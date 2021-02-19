@@ -1,5 +1,5 @@
 {% extends './dashboard.html' %}
-{% load thumbnail %}
+{% load thumbnail humanize %}
 {% block dashboard_content %}
 <div>
     <div class="row py-2 g-2">
@@ -37,23 +37,43 @@
         
         {% for enrollment in enrollments %}
             <div class="col-sm-4">
-                <div class="card text-center h-100">
+                <div class="card text-center h-100 
+                {% if enrollment.absence < 4 %}                    
+                    {% if enrollment.absence == 3 %}
+                        border-danger                        
+                    {% endif %}
+                    {% if enrollment.absence == 2 %}
+                        border-warning                        
+                    {% endif %}                        
+                {% else %}
+                    text-white bg-danger                    
+                {% endif %}
+                    ">
                     <div class="card-body">
                         <h5 class="card-title">{{ enrollment.subject.name }}</h5>
-                        <small>{{ enrollment.subject.mode }}</small>
+                        <small>{{ enrollment.subject.mode }} | 
+                            {% if enrollment.absence > 0 %}                            
+                                {% if enrollment.absence == 1 %}Una{% else %}{{ enrollment.absence|apnumber|capfirst }}{% endif %} inasistencia{{ enrollment.absence|pluralize }}
+                            {% else %}
+                                Sin inasistencias
+                            {% endif %}
+                        </small>
                     </div>
                     <div class="card-footer">
-                        <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a href="{% url 'plataforma_subject' enrollment.subject.slug %}" 
-                            type="button" class="btn btn-outline-primary btn-sm">
-                                Clases
-                            </a>
-                            <a href="{% url 'plataforma_messages' enrollment.subject.slug %}" 
-                            type="button" class="btn btn-outline-primary btn-sm">
-                                Mensajes 
-                                <!-- <span class="badge bg-danger">10</span> -->
-                            </a>
-                        </div>
+                        {% if enrollment.absence < 4 %}
+                            <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                <a class="btn btn-outline-primary btn-sm" href="{% url 'plataforma_subject' enrollment.subject.slug %}" type="button">
+                                    Clases <span class="badge bg-secondary">{{ enrollment.subject.getCurrentClasses|length }}</span>
+                                </a>
+                                <a href="{% url 'plataforma_messages' enrollment.subject.slug %}" 
+                                type="button" class="btn btn-outline-primary btn-sm">
+                                    Mensajes 
+                                    <!-- <span class="badge bg-danger">10</span> -->
+                                </a>
+                            </div>
+                        {% else %}
+                            <p>Ha excedido el número de inasistencias.</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

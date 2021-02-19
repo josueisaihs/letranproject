@@ -31,3 +31,7 @@ def adminTeacher(courseSlug, teacherPk):
 def getOptativas(value):
     return value.filter(Q(mode="Optativa") | Q(mode="Libre Elección"))
 
+@register.filter
+def getObligatorias(value):
+    return value.filter(Q(mode="Obligatoria") | Q(mode="Troncal"))
+

@@ -28,11 +28,11 @@ urlpatterns = [
     path("plataforma/foro/user/",views.plataforma.user_message, name="plataforma_user_message"),
     # Plataforma Estudiantes
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
-    path("plataforma/dashboard/curso/<slug:slug>", views.plataforma.curso, name="plataforma_curso"),
+    path("plataforma/dashboard/curso/<slug:slug>/", views.plataforma.curso, name="plataforma_curso"),
     path("plataforma/dashboard/curso/<slug:slug>/enrollment/", views.plataforma.enrollment, name="plataforma_enrollment"),
     path("api/plataforma/dashboard/enrollment/", views.plataforma.apienrollment, name="api_plataforma_enrollment"),
     path("plataforma/dashboard/curso/<slug:slug>/homeworks/", views.plataforma.homeworks, name="plataforma_homeworks"),
-    path("plataforma/dashboard/subject/<slug:slug>", views.plataforma.subject, name="plataforma_subject"),
+    path("plataforma/dashboard/subject/<slug:slug>/", views.plataforma.subject, name="plataforma_subject"),
     path("plataforma/dashboard/clase/<slug:slug>", views.plataforma.clase, name="plataforma_clase"),
     path("plataforma/dashboard/clase/<slug:slug>/homework/", views.plataforma.homework, name="plataforma_homework"),
     path("plataforma/dashboard/recursos/<slug:slug>", views.plataforma.recursos, name="plataforma_recursos"),
