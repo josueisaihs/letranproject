@@ -49,6 +49,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.response){
                     console.log("Perfecto")
+                    console.log(urlcourse)
                     location.href = urlcourse
                 }
             }
