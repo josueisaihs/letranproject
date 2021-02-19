@@ -31,6 +31,8 @@ $(document).ready(function () {
 
     // todo: Terminar que los cursos elegidos se envíen por post al Enrollment y continuar a la siguiente página
     $("#continuar").on("click", function () {
+        $("#continuar").prop('disabled', true)
+        $(".spinner-grow").removeClass('invisible')
         subjects = []
 
         document.querySelectorAll(".form-check-input").forEach(element => {            
@@ -52,11 +54,12 @@ $(document).ready(function () {
                     console.log(urlcourse)
                     location.href = urlcourse
                 }else{
-                    
+                    $(".spinner-grow").addClass('invisible')
                 }
             },
             error: (xhr, errmsg, err)=>{
                 console.log(err, errmsg);
+                $(".spinner-grow").addClass('invisible')
             }
         });
     });

@@ -43,31 +43,18 @@ def dashboard(req):
 @login_required(login_url="/login/", redirect_field_name="next")
 def curso(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)
-        enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True)
-        if enrollments.__len__() > 0:
-                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-                app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-                return render(req, TEMPLETE_PATH % "curso", locals())
-        else:
-                return redirect('plataforma_enrollment', slug)
-        # except:
-        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
-
-# @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
-# @login_required(login_url="/login/", redirect_field_name="next")
-# def curso(req, slug):
-#         user = User.objects.get(username=req.user.username)
-#         try:
-#                 student = StudentPersonalInformation.objects.get(user=user.pk)
-#                 apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-#                 app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-#                 return render(req, TEMPLETE_PATH % "curso", locals())
-#         except:
-#                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-#                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)
+                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True)
+                if enrollments.__len__() > 0:
+                        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                        app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+                        return render(req, TEMPLETE_PATH % "curso", locals())
+                else:
+                        return redirect('plataforma_enrollment', slug)
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -177,7 +164,6 @@ def recursos(req, slug):
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
-
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def downloadResource(req, slug):
@@ -208,19 +194,18 @@ def messages(req, slug):
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
                 return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")
 
-
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def enrollment(req, slug):
         user = User.objects.get(username=req.user.username)
-        # try:
-        student = StudentPersonalInformation.objects.get(user=user.pk)          
-        apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
-        app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
-        return render(req, TEMPLETE_PATH % "enrollment", locals())
-        # except:
-        #         messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
-        #         return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")      
+        try:
+                student = StudentPersonalInformation.objects.get(user=user.pk)          
+                apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
+                app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
+                return render(req, TEMPLETE_PATH % "enrollment", locals())
+        except:
+                messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
+                return HttpResponseRedirect("/login/?next=/plataforma/dashboard/")      
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
@@ -229,12 +214,8 @@ def apienrollment(req):
         if req.is_ajax():
                 edition = Edition.objects.get(active=True)
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                print("Entro")
-                print(req.POST.get('datos[]'))
-                print(req.POST.get('course'))
 
                 for subjectpk in loads(req.POST.get('datos[]')):
-                        print(subjectpk)
                         enrollment = Enrollment()
                         enrollment.edition = edition
                         enrollment.subject = SubjectInformation.objects.get(pk=subjectpk)
@@ -243,7 +224,6 @@ def apienrollment(req):
                         enrollment.save()
                 
                 for subject in SubjectInformation.objects.filter(Q(mode="Obligatoria") | Q(mode="Troncal"), course__slug = req.POST.get('course')):
-                        print(subject)
                         enrollment = Enrollment()
                         enrollment.edition = edition
                         enrollment.subject = subject
