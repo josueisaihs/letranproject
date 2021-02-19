@@ -170,7 +170,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 class Enrollment(models.Model):
     """Model definition for Enrollment."""
-    slug = models.SlugField('Slug', default="")
+    slug = models.SlugField('Slug', default="", max_length=140)
     student = models.ForeignKey("Docencia.StudentPersonalInformation", verbose_name="Estudiante", 
     on_delete=models.CASCADE)
     subject = models.ForeignKey("Docencia.SubjectInformation", verbose_name="Asignatura", 
