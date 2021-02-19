@@ -229,8 +229,12 @@ def apienrollment(req):
         if req.is_ajax():
                 edition = Edition.objects.get(active=True)
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                
+                print("Entro")
+                print(req.POST.get('datos[]'))
+                print(req.POST.get('course'))
+
                 for subjectpk in loads(req.POST.get('datos[]')):
+                        print(subjectpk)
                         enrollment = Enrollment()
                         enrollment.edition = edition
                         enrollment.subject = SubjectInformation.objects.get(pk=subjectpk)
@@ -239,6 +243,7 @@ def apienrollment(req):
                         enrollment.save()
                 
                 for subject in SubjectInformation.objects.filter(Q(mode="Obligatoria") | Q(mode="Troncal"), course__slug = req.POST.get('course')):
+                        print(subject)
                         enrollment = Enrollment()
                         enrollment.edition = edition
                         enrollment.subject = subject
