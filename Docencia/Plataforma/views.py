@@ -45,12 +45,13 @@ def curso(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True)
+                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True, subject__course__slug=slug)
                 if enrollments.__len__() > 0:
                         apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
                         app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
                         return render(req, TEMPLETE_PATH % "curso", locals())
                 else:
+                        # En caso que no esté matriculado en ninguna asignatura, se redirecciona a la vista para matricula
                         return redirect('plataforma_enrollment', slug)
         except:
                 messagesdj.error(req, "Este usuario no tiene acceso a este servicio")
