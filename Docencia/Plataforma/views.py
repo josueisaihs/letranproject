@@ -119,6 +119,7 @@ def homeworks(req, slug):
         try:
                 homeworks = HomeWork.objects.filter(
                         edition__active=True, 
+                        student=student,
                         clase__subject__course__slug=slug).order_by('-datepub')
                 paginador = Paginator(homeworks, 25)
 
