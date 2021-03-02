@@ -621,7 +621,7 @@ def adminstudentslist(req, slug):
         teacher = TeacherPersonalInformation.objects.get(user=user.pk)
         
         course = CourseInformation.objects.get(slug=slug)
-        applications = Application.objects.filter(edition__active=True, course__slug=slug)
+        applications = Application.objects.filter(edition__active=True, course__slug=slug, status="aceptado")
 
         return render(req, TEMPLETE_PATH % "adminstudents", locals())
 
