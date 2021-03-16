@@ -680,3 +680,8 @@ def apiadminhomework(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
+
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def registro(req, slug):
+        

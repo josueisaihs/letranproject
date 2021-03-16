@@ -189,6 +189,9 @@ class Enrollment(models.Model):
     # Cantidad de ausencias
     absence = models.PositiveSmallIntegerField(verbose_name="Inasistencias", default=0)
 
+    # Notas
+    nota = models.PositiveSmallIntegerField(verbose_name="Nota", default=2)
+
     def newAttempt(self):
         if self.attempt < 3:
             self.attempt = self.attempt + 1
@@ -237,7 +240,7 @@ class Enrollment(models.Model):
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):
     '''Admin View for Enrollment'''
-    list_display = ('student', 'subject', 'edition', 'status', 'attempt', 'absence')
+    list_display = ('student', 'subject', 'edition', 'status', 'attempt', 'absence', "nota")
     list_filter = ('edition', 'status')
     search_fields = ('student__name', 'student__lastname', 'subject__name', 'subject__course__name')
     ordering = ('student', '-edition')
