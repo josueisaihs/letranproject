@@ -690,7 +690,7 @@ def registro(req, slug):
         response['Content-Disposition'] = 'attachment; filename=registro-%s.csv' % slug
 
         # Creamos un escritor CSV usando a HttpResponse como "fichero"
-        writer = csv.writer(response)
+        writer = csv.writer(response, delimiter=';')
         writer.writerow(["Nombre", "Apellidos", "Nota"])
         for enrollment in Enrollment.objects.filter(subject__slug=slug):
                 print(enrollment)
