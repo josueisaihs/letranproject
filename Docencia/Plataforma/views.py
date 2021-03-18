@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import StreamingHttpResponse
 
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation 
@@ -19,6 +20,7 @@ from Docencia.Index.forms import RecursoForm
 
 from Docencia.tasks import enviar_comunicado, enviar_notification
 
+import csv
 from datetime import datetime
 import mimetypes
 from json import loads
@@ -684,4 +686,14 @@ def apiadminhomework(req):
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def registro(req, slug):
-        
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=registro-%s.csv' % slug
+
+        # Creamos un escritor CSV usando a HttpResponse como "fichero"
+        writer = csv.writer(response)
+        for enrollment in Enrollment.objects.filter(subject__slug=slug):
+                print(enrollment)
+                # Nombre, Apellidos
+                writer.writerow([enrollment.student.name, enrollment.student.lastname, 2])
+
+        return response

@@ -287,9 +287,6 @@ class GroupInformationAdmin(admin.ModelAdmin):
     'students__name', 'students__lastname')
     ordering = ('name',)
     readonly_fields = ["slug",]
-
-
-
 class Raspberry(models.Model):
     """Model definition for Raspberry."""
     name = models.CharField("Nombre", max_length=50, unique=True)

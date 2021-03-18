@@ -62,6 +62,7 @@ urlpatterns = [
     path("plataforma/admin/dashboard/curso/<slug:slug>/studentslist/", views.plataforma.adminstudentslist, name="plataforma_admin_studentslist"),
     path("plataforma/admin/dashboard/curso/<slug:slug>/studentslist/<int:pk>/", views.plataforma.adminnotification, name="plataforma_admin_notification"),
     path("api/plataforma/admin/dashboard/curso/notification/", views.plataforma.sendnotificationmail, name="api_plataforma_admin_notification"),
+    path("plataforma/admin/dashboard/subject/<slug:slug>/registro/", views.plataforma.registro, name="plataforma_admin_registro"),
 
     path('admision/dashboard/', views.datospersonales.dashboard, name='admision_dashboard'),
     path('admision/registro/', views.datospersonales.registro, name='admision_registro'),
