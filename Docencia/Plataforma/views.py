@@ -689,7 +689,7 @@ def registro(req, slug):
         user = User.objects.get(username=req.user.username)
         teacher = TeacherPersonalInformation.objects.get(user=user.pk)
         subject = SubjectInformation.objects.filter(slug=slug).first()
-        enrollments = Enrollment.objects.filter(subject__slug=slug, edition__active=True)
+        enrollments = Enrollment.objects.filter(subject__slug=slug, edition__active=True).order_by("student__lastname")
 
         return render(req, TEMPLETE_PATH % "adminregistro", locals())
 
