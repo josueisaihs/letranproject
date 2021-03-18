@@ -22,7 +22,10 @@
                         <td>{{ enrollment.student.lastname }}</td>
                         <td>{{ enrollment.student.name }}</td>
                         <td>
-                            <input class="form-control enrollment_nota" type="number" min=0 max=100 value="{{ enrollment.nota }}" data-enrollment="{{ enrollment.pk }}">                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="">
+                                <input class="form-control" type="number" min=0 max=100 value="{{ enrollment.nota }}" data-enrollment="{{ enrollment.pk }}" disabled>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}                        
