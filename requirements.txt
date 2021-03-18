@@ -15,7 +15,7 @@ dbus-python==1.2.12
 defer==1.0.6
 distro==1.3.0
 distro-info===0.21ubuntu4
-Django==3.0.4
+Django==3.1.6
 django-adminrestrict==2.0.2
 django-bootstrap-form==3.4
 django-jet==1.0.7
