@@ -19,8 +19,8 @@
             <tbody>                    
                 {% for enrollment in enrollments %}
                     <tr>
-                        <td>{{ enrollment.student.name }}</td>
                         <td>{{ enrollment.student.lastname }}</td>
+                        <td>{{ enrollment.student.name }}</td>
                         <td>
                             <input class="form-control enrollment_nota" type="number" min=0 max=100 value="{{ enrollment.nota }}" data-enrollment="{{ enrollment.pk }}">                            
                         </td>
