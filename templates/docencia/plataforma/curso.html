@@ -58,7 +58,7 @@
                                     {% if enrollment.absence == 1 %}Una{% else %}{{ enrollment.absence|apnumber|capfirst }}{% endif %} inasistencia{{ enrollment.absence|pluralize }}
                                 {% else %}
                                     Sin inasistencias
-                                {% endif %}
+                                {% endif %} | {{ enrollment.nota }}
                             </small>
                         </div>
                         <div class="card-footer">

@@ -685,16 +685,22 @@ def apiadminhomework(req):
 
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
-def registro(req, slug):
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename=registro-%s.csv' % slug
+def registro(req, slug):        
+        user = User.objects.get(username=req.user.username)
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+        subject = SubjectInformation.objects.filter(slug=slug).first()
+        enrollments = Enrollment.objects.filter(subject__slug=slug, edition__active=True)
 
-        # Creamos un escritor CSV usando a HttpResponse como "fichero"
-        writer = csv.writer(response, delimiter=';')
-        writer.writerow(["Nombre", "Apellidos", "Nota"])
-        for enrollment in Enrollment.objects.filter(subject__slug=slug):
-                print(enrollment)
-                # Nombre, Apellidos
-                writer.writerow([enrollment.student.name, enrollment.student.lastname, 2])
+        return render(req, TEMPLETE_PATH % "adminregistro", locals())
 
-        return response
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def apiregistro(req):
+        if req.is_ajax():
+                enrollment = Enrollment.objects.get(pk=req.POST.get('enrollment'))
+                enrollment.nota = req.POST.get('note')
+                enrollment.save()
+
+                return JsonResponse({'response': True})
+        else:
+                return HttpResponseForbidden()
