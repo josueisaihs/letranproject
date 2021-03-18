@@ -47,7 +47,7 @@ def curso(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True, subject__course__slug=slug)
+                enrollments = Enrollment.objects.filter(student__pk=student.pk, edition__active=True, subject__course__slug=slug, status='En curso')
                 if enrollments.__len__() > 0:
                         apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
                         app = Application.objects.get(student=student, edition__active=True, status="aceptado", course__slug=slug)
