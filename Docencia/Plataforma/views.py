@@ -691,6 +691,7 @@ def registro(req, slug):
 
         # Creamos un escritor CSV usando a HttpResponse como "fichero"
         writer = csv.writer(response)
+        writer.writerow(["Nombre", "Apellidos", "Nota"])
         for enrollment in Enrollment.objects.filter(subject__slug=slug):
                 print(enrollment)
                 # Nombre, Apellidos
