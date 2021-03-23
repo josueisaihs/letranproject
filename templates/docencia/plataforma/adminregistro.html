@@ -24,7 +24,7 @@
                         <td>{{ enrollment.student.name }}</td>
                         <td>
                             {% for hw in enrollment.getHomeWorks %}
-                                {{ hw.note }} {% if forloop.last %}·{% endif %}
+                                {{ hw.note }} {% if !forloop.last %}·{% endif %}
                             {% empty %}
                                 <small>No hay notas</small>
                             {% endfor %}
