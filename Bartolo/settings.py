@@ -357,27 +357,27 @@ CKEDITOR_5_CONFIGS = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'social.backends.google.GoogleOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
-)
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '376066366575-fvr53t9j57fqhpbdt4tiplbprjcn62qc.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'gKvpCfNxjhxD74FfgHunccA7'
-SOCIAL_AUTH_TWITTER_KEY = 'dNY7kBN9ptV6IUn49lSlkerN0'
-SOCIAL_AUTH_TWITTER_SECRET = 'Gd1SqdmY0tZzD1Rttxusrhm8w5OI2N5pMKHujYCC2dBAT3aRKH'
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.social_auth.associate_by_email',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'social.backends.google.GoogleOAuth2',
+#     'social_core.backends.twitter.TwitterOAuth',
+# )
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '376066366575-fvr53t9j57fqhpbdt4tiplbprjcn62qc.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'gKvpCfNxjhxD74FfgHunccA7'
+# SOCIAL_AUTH_TWITTER_KEY = 'dNY7kBN9ptV6IUn49lSlkerN0'
+# SOCIAL_AUTH_TWITTER_SECRET = 'Gd1SqdmY0tZzD1Rttxusrhm8w5OI2N5pMKHujYCC2dBAT3aRKH'
+# SOCIAL_AUTH_URL_NAMESPACE = 'social'
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.user.get_username',
+#     'social_core.pipeline.social_auth.associate_by_email',
+#     'social_core.pipeline.user.create_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details',
+# )
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

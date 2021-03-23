@@ -5,6 +5,7 @@ import re
 register = template.Library()
 
 from Docencia.Cursos.models import CourseInformation
+from Docencia.Plataforma.models import HomeWork
 
 @register.simple_tag
 def device_is_mobile(request):
@@ -20,7 +21,6 @@ def teacher(value, arg):
 
 @register.filter
 def subject(value, arg):
-    print(10 * ">>", value, arg)
     return value.get(slug=arg)
 
 @register.simple_tag
@@ -34,4 +34,9 @@ def getOptativas(value):
 @register.filter
 def getObligatorias(value):
     return value.filter(Q(mode="Obligatoria") | Q(mode="Troncal"))
+
+''' @register.simple_tag(takes_context=True)
+def getHomeWorks(subjectSlug, studentPk):
+    return HomeWork.objects.filter() '''
+
 

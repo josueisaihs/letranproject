@@ -13,6 +13,7 @@
                 <tr>
                     <th>Apellidos</th>
                     <th>Nombres</th>
+                    <th>Tareas</th>
                     <th>Nota</th>
                 </tr>
             </thead>
@@ -21,6 +22,13 @@
                     <tr>
                         <td>{{ enrollment.student.lastname }}</td>
                         <td>{{ enrollment.student.name }}</td>
+                        <td>
+                            {% for hw in enrollment.getHomeWorks %}
+                                {{ hw.note }} ·
+                            {% empty %}
+                                <small>No hay notas</small>
+                            {% endfor %}
+                        </td>
                         <td>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="">

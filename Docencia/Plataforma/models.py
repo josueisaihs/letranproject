@@ -213,6 +213,13 @@ class Enrollment(models.Model):
         else:
             raise ValidationError('No tiene inasistencias')
 
+    def getHomeWorks(self):
+        return HomeWork.objects.filter(
+            edition__active=True, 
+            clase__subject__slug=self.subject.slug,
+            student=self.student.pk
+            ).order_by('-datepub')
+
     class Meta:
         """Meta definition for Enrollment."""
         unique_together = ('subject', 'student', 'edition')
