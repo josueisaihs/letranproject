@@ -62,6 +62,7 @@
                         <th>Fecha</th>
                         <th>Nota</th>
                         <th>Archivo</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,7 +81,8 @@
                             </td>
                             <td><a target="_blank" href="{{ hw.file.url }}" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="fas fa-file-download"></i> {{ hw.name }}</a>
-                            </td>                            
+                            </td> 
+                            <td><button class="btn btn-danger" data-slug="{{ hw.slug }}"><i class="fas fa-trash-alt"></i></button></td>                           
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -92,3 +94,9 @@
         </div>
     {% endif %}
 {% endblock dashboard_content %}
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/homeworks.js' %}"></script>
+{% endblock importScripts %}
+{% block scripts %}
+    const urldelete = "{% url 'api_plataforma_delete_homework' %}"
+{% endblock scripts %}

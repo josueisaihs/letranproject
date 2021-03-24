@@ -134,6 +134,18 @@ def homeworks(req, slug):
 
         return render(req, TEMPLETE_PATH % "homeworks", locals())
 
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def apideletehomeworks(req):
+        if req.is_ajax():
+                homework = HomeWork.objects.get(slug=req.POST.get("slug"))
+                homework.delete()
+
+                return JsonResponse({'response': True})
+        else:
+                return HttpResponseForbidden()
+
 def recursos(req, slug):
         user = User.objects.get(username=req.user.username)
         try:
