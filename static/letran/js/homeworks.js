@@ -6,7 +6,7 @@ $(document).ready(function () {
                 url: urldelete,
                 data: {'slug': $(element).attr('data-slug')},
                 success: function (response) {
-                    
+                    location.reload()
                 }
             });
         });
