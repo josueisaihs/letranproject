@@ -42,9 +42,12 @@
                     {{ message }}
                 </div>
             {% endifequal %}
-                
         {% endfor %}
     {% endif %}
+
+    <div class="alert alert-warning" role="alert">
+        Las notas se guardan de forma automática. La base de las notas es 10 puntos, aprobado 6 puntos. En <a href="{% url 'plataforma_admin_registro' subject.slug %}">Registro</a> puede chequear el recorrido del estudiante.
+    </div>
 
     {% if page_obj %}
         <div class="table-responsive">
@@ -69,10 +72,13 @@
                             </td>
                             <td>
                                 <select name="nota" id="id_nota_{{ hw.pk }}" class="form-select" data-hw="{{ hw.pk }}">
-                                    <option value="0" {% if hw.note == 2 %}selected{% endif %} disabled>Seleccionar Nota</option>
-                                    <option {% if hw.note == 3 %}selected{% endif %} value="3">3</option>
-                                    <option {% if hw.note == 4 %}selected{% endif %} value="4">4</option>
+                                    <option value="5" {% if hw.note < 5 %}selected{% endif %} disabled>Seleccionar Nota</option>
                                     <option {% if hw.note == 5 %}selected{% endif %} value="5">5</option>
+                                    <option {% if hw.note == 6 %}selected{% endif %} value="6">6</option>
+                                    <option {% if hw.note == 7 %}selected{% endif %} value="7">7</option>
+                                    <option {% if hw.note == 8 %}selected{% endif %} value="7">8</option>
+                                    <option {% if hw.note == 9 %}selected{% endif %} value="7">9</option>
+                                    <option {% if hw.note == 10 %}selected{% endif %} value="7">10</option>
                                 </select>
                             </td>
                         </tr>
@@ -80,6 +86,10 @@
                 </tbody>
             </table>
         </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        No hay tareas para mostrar
+    </div>
     {% endif %}
     <div id="id_toast" class="toast fixed-top my-5 mx-2" data-delay="2000" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header bg-success text-white">

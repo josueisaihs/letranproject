@@ -219,6 +219,9 @@ class Enrollment(models.Model):
             clase__subject__slug=self.subject.slug,
             student=self.student.pk
             ).order_by('-datepub')
+    
+    def getHWAverage(self):
+        return 
 
     class Meta:
         """Meta definition for Enrollment."""

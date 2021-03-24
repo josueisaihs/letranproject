@@ -1,5 +1,5 @@
 {% extends './admindashboard.html' %}}
-{% load thumbnail extras static %}
+{% load thumbnail extras static humanize %}
 {% block dashboard_content %}
     <div class="border-bottom mb-3">
         <h5>
@@ -7,21 +7,34 @@
                 <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}} / Registro
         </h5>
     </div>
+    <div class="alert alert-warning" role="alert">
+        Las notas se guardan de forma automática. La base de las notas es 100 puntos, con aprobado 60 puntos. En <a href="{% url 'plataforma_admin_registro' subject.slug %}">Registro</a> puede chequear el recorrido del estudiante.
+    </div>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
             <thead>
                 <tr>
                     <th>Apellidos</th>
                     <th>Nombres</th>
+                    <th>Matrícula</th>
+                    <th>Inasistencias</th>
                     <th>Tareas</th>
-                    <th>Nota</th>
+                    <th>Ordinaria</th>
                 </tr>
             </thead>
             <tbody>                    
                 {% for enrollment in enrollments %}
-                    <tr>
+                    <tr class="{% if enrollment.absence > 3 %}table-danger{% endif %}">
                         <td>{{ enrollment.student.lastname }}</td>
                         <td>{{ enrollment.student.name }}</td>
+                        <td>{{ enrollment.attempt|ordinal }}</td>
+                        <td>
+                        {% if enrollment.absence > 0 %}
+                            {{ enrollment.absence }}
+                        {% else %}
+                            <small>Sin Inasistencias</small>
+                        {% endif %}
+                        </td>
                         <td>
                             {% for hw in enrollment.getHomeWorks %}
                                 {{ hw.note }} {% if not forloop.last %}·{% endif %}
@@ -30,10 +43,18 @@
                             {% endfor %}
                         </td>
                         <td>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="">
-                                <input class="form-control" type="number" min=0 max=100 value="{{ enrollment.nota }}" data-enrollment="{{ enrollment.pk }}" disabled>
+                        {% if enrollment.absence <= 3 %}
+                            <div class="form-check d-flex">
+                                <input class="form-check-input" type="checkbox" value="" 
+                                {% if enrollment.absence > 3 %}
+                                    disabled
+                                {% endif %}>
+                                <input class="form-control ml-1" type="number" min=0 max=100 value="{{ enrollment.nota }}" data-enrollment="{{ enrollment.pk }}" disabled>
+                                <button class="btn btn-success btn-sm ml-1">Agregar</button>
                             </div>
+                        {% else %}
+                            <small>Invalidado Por Inasistencias</small>
+                        {% endif %}
                         </td>
                     </tr>
                 {% endfor %}                        
