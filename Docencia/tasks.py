@@ -98,14 +98,15 @@ def twittertweet(slug, title, resumen, seccion="noticia"):
 
 @background(schedule=5)
 def facebookposts(slug, title, resumen, seccion="noticia"):
-    tokens = RedesSociales.objects.get(active=True)
-    graph = facebook.GraphAPI(access_token=tokens.facebook_token, version="2.8")
-    graph.put_object(
-        parent_object=tokens.facebook_id, 
-        connection_name='feed',
-        message="%s\n%s...\nLeer más" % (title, resumen),
-        link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, slug)
-    )
+    if tokens.facebook_token.__len__() > 0:
+        tokens = RedesSociales.objects.get(active=True)
+        graph = facebook.GraphAPI(access_token=tokens.facebook_token, version="2.8")
+        graph.put_object(
+            parent_object=tokens.facebook_id, 
+            connection_name='feed',
+            message="%s\n%s...\nLeer más" % (title, resumen),
+            link="https://bartolo.org/%s/%s/?utm_source=facebook-posts&utm_medium=facebook&utm_campaign=crecimiento" % (seccion, slug)
+        )
 
 @background(schedule=5)
 def enviar_evento_suscriptores(pk, title, resumen):
