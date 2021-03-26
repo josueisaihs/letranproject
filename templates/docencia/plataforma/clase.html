@@ -5,13 +5,6 @@
         <h5><a href="{% url 'plataforma_subject' clase.subject.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }}</h5>
     </div>    
     <small class="text-muted">{{ clase.datepub|date:"D d M y" }}</small>
-    
-    <div class="alert alert-success" role="alert">
-        <h4 class="alert-heading">¡NUEVO!</h4>
-        <p>Puedes enviarle tu tarea directamente al Profe desde <a target="_blank" href="{% url 'plataforma_homework' clase.slug %}">aquí</a></p>
-        <hr>
-        <p class="mb-0">Por ahora, solo se permiten archivos <strong>PDF</strong> de <strong>menos de 10MB</strong>.</p>
-    </div>
 
     <div class="ckeditor row" data-classname="{{ clase.slug }}">
         {{ clase.classbody|safe }}
@@ -20,6 +13,9 @@
         <div>
             <button type="button" id="exportpdf" class="btn btn-primary btn-sm"><i class="fas fa-file-download"></i> PDF</button>
         </div>
+        <div>
+            <a class="btn btn-primary btn-sm" target="_blank" href="{% url 'plataforma_homework' clase.slug %}"> Subir Tarea</a>
+        </div>
 
         <div class="col-12">
             <p class="h6">Recursos</p>
@@ -27,7 +23,7 @@
         </div>       
         
         {% for recurso in clase.resources.all %}   
-            <div class="col-12 col-md-6 col-lg-4 p-2">
+            <div class="col-12 col-md-6 col-lg-4 p-2 border">
                 <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}">
                     <i class="far
                 {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
