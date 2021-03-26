@@ -1,6 +1,7 @@
 $(document).ready(function () {
     document.querySelectorAll('.btn').forEach(element => {
         $(element).click(function (e) { 
+            
             $.ajax({
                 type: "post",
                 url: urldelete,

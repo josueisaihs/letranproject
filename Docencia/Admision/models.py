@@ -151,6 +151,7 @@ class Application(models.Model):
                 ("reserva", "En reserva"),
                 ("aceptado", "Aceptado"), 
                 ("denegado", "Denegado"),
+                ("baja", "Baja")
             ), 
         default="espera"
     )
