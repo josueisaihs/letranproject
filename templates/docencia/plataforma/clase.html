@@ -10,10 +10,8 @@
         {{ clase.classbody|safe }}
     </div>
     <div class="row m-2 g-2 border-top">
-        <div>
+        <div class="d-flex">
             <button type="button" id="exportpdf" class="btn btn-primary btn-sm"><i class="fas fa-file-download"></i> PDF</button>
-        </div>
-        <div>
             <a class="btn btn-primary btn-sm" target="_blank" href="{% url 'plataforma_homework' clase.slug %}"><i class="fas fa-file-upload"></i> Tarea</a>
         </div>
 
