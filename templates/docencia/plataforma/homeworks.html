@@ -82,7 +82,13 @@
                             <td><a target="_blank" href="{{ hw.file.url }}" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="fas fa-file-download"></i> {{ hw.name }}</a>
                             </td> 
-                            <td><button class="btn btn-danger" data-slug="{{ hw.slug }}"><i class="fas fa-trash-alt"></i></button></td>                           
+                            <td>
+                                <button class="btn btn-sm btn-danger" data-slug="{{ hw.slug }}">
+                                    <div class="spinner-grow spinner-grow-sm invisible" role="status">
+                                    </div>
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>                           
                         </tr>
                     {% endfor %}
                 </tbody>
