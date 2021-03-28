@@ -135,7 +135,7 @@ def homeworks(req, slug):
         return render(req, TEMPLETE_PATH % "homeworks", locals())
 
 
-@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@user_passes_test(isStudentOrTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def apideletehomeworks(req):
         if req.is_ajax():

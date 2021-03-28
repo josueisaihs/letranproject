@@ -59,6 +59,7 @@
                         <th>Fecha</th>
                         <th>Archivo</th>
                         <th>Nota</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +81,13 @@
                                     <option {% if hw.note == 9 %}selected{% endif %} value="9">9</option>
                                     <option {% if hw.note == 10 %}selected{% endif %} value="10">10</option>
                                 </select>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-danger" data-slug="{{ hw.slug }}">
+                                    <div class="spinner-grow spinner-grow-sm invisible" role="status">
+                                    </div>
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -107,11 +115,11 @@
 
 {% block importScripts %}
     <script defer src="{% static 'letran/js/adminhomework.js' %}"></script>
+    <script defer src="{% static 'letran/js/homeworks.js' %}"></script>
 {% endblock importScripts %}
 
 
 {% block scripts %}
     const urlnote = "{% url 'api_plataforma_admin_homework' %}"
+    const urldelete = "{% url 'api_plataforma_delete_homework' %}"
 {% endblock scripts %}
-    
-    
