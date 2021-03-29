@@ -8,6 +8,7 @@ from django.db.utils import IntegrityError
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
 from django.views.decorators.cache import cache_page
+from django.db.models import Q
 
 from datetime import datetime, date
 from json import loads
@@ -32,16 +33,16 @@ def selectcourse(req):
     user = User.objects.get(username=req.user.username)
     student = StudentPersonalInformation.objects.get(user=user.pk)
 
-    edition = Edition.objects.get(
-            dateinit__lte=datetime.today(), 
-            dateend__gte=datetime.today())
-
-    appls = Application.objects.filter(student=student.pk, edition=edition.pk)
+    appls = Application.objects.filter(student=student.pk, edition__active=True)
+    for appl in appls:
+        courses = courses.exclude(pk=appl.course.pk)
+    
+    appls = Application.objects.filter(student=student.pk, edition_active=False, Q(status="baja" | status="aceptado"))
     for appl in appls:
         courses = courses.exclude(pk=appl.course.pk)
         
-        if len(courses) == 0:
-            messages.warning(req, "Ha aplicado a todos los cursos disponibles")
+    if len(courses) == 0:
+        messages.warning(req, "Ha aplicado a todos los cursos disponibles o no puede aplicar al mismo.")
 
     return render(req, TEMPLETE_PATH % "selectcourse", locals())
 
