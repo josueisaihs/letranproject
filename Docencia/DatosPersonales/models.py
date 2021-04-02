@@ -143,7 +143,7 @@ class StudentPersonalInformation(models.Model):
 @admin.register(StudentPersonalInformation)
 class StudentPersonalInformationAdmin(admin.ModelAdmin):
     fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                "email", "nacionality", "ocupation", "degree", "title", "photocopyID", "photocopyTitle"]
+                "email", "nacionality", "ocupation", "degree", "title", "photocopyID", "photocopyIDenviado", "photocopyTitle", "photocopyTitleenviado"]
     ordering = ["numberidentification", "lastname", "name"]
     search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                 "email", "nacionality", "ocupation", "degree", "title", "user__username"]
