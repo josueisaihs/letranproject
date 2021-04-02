@@ -15,7 +15,7 @@ from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
 from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation, HomeWork
 from Docencia.Index.models import Recurso
-from Docencia.Plataforma.forms import ClassForm, HomeWorkForm
+from Docencia.Plataforma.forms import ClassForm, HomeWorkForm, DocForm
 from Docencia.Index.forms import RecursoForm
 
 from Docencia.tasks import enviar_comunicado, enviar_notification
@@ -34,7 +34,7 @@ def dashboard(req):
         user = User.objects.get(username=req.user.username)
         try:
                 student = StudentPersonalInformation.objects.get(user=user.pk)
-               
+                
                 apps = Application.objects.filter(student=student, edition__active=True, status="aceptado")
                 return render(req, TEMPLETE_PATH % "index", locals())
         except:
@@ -250,6 +250,30 @@ def apienrollment(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def uploadphotocopy(req, tipo):
+        user = User.objects.get(username=req.user.username)
+        student = StudentPersonalInformation.objects.get(user=user.pk)
+        if req.method == "POST":
+                form = DocForm(req.POST, req.FILES)
+                if form.is_valid():
+                        if tipo == "id":
+                                student.photocopyID=req.FILES['doc']
+                                student.photocopyIDenviado = True
+                                student.save()
+                        elif tipo == "title":
+                                student.photocopyTitle=req.FILES['doc']
+                                student.photocopyTitleenviado = True
+                                student.save()
+                        else:
+                                return HttpResponseForbidden()
+                        return redirect('plataforma_dashboard')
+        else:
+                form = DocForm()
+        
+        return render(req, TEMPLETE_PATH % "formdoc", locals())
 
 # ******************* Profesores **********************************
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")

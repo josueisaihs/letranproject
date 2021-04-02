@@ -17,6 +17,53 @@
                 </a>
             </div>
         {% endfor %}
+        <br>
+        
+        <h6 class="border-bottom my-3">Documentos</h6>
+        <p>Necesitamos fotocopias en formato PDF de los siguientes documentos:</p>
+        <div class="col-sm-4">
+            <a href="{% url 'plataforma_photocopia' 'id' %}">
+                <div class="card text-center h-100 
+                {% if student.photocopyIDenviado %}
+                    border-success text-success
+                {% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title">{% if student.photocopyIDenviado %}<i class="fa fas-edit"></i>{% endif %} Documento de Identidad</h5>
+                        <small>Carnet de Identidad, Pasaporte, Cédula de Identidad, ...</small>
+                        
+                    </div>
+                    {% if student.photocopyIDenviado %}
+                        <div class="card-footer">
+                            <small class="text-secondary">Editar</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a href="{% url 'plataforma_photocopia' 'title' %}">
+                <div class="card text-center h-100 
+                {% if student.photocopyTitleenviado %}
+                    border-success text-success
+                {% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title">{% if student.photocopyTitleenviado %}<i class="fa fas-edit"></i>{% endif %} Título Último Nivel</h5>
+                        <small>9no Grado, 12mo Grado, Licenciatura, Ingeniería, ...</small>
+                    </div>
+                    {% if student.photocopyTitleenviado %}
+                        <div class="card-footer">
+                            <small class="text-secondary">Editar</small>
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        <div class="alert alert-info">
+            <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
+                Por ello, sus datos <strong>no se comparten</strong> con terceros y estos documentos solo se utilizan para verificar
+                los datos proporcionados durante el proceso de Admisión.
+            </small>
+        </div>
     </div>
 </div>
 {% endblock dashboard_content %}}

@@ -6,6 +6,7 @@ from django.urls import reverse
 import os
 from datetime import date
 from Docencia.Cursos.models import SubjectInformation, CourseInformation
+from Docencia.validators import valid_extension, valid_size
 
 def eliminarTildes(txt):
         w = (
@@ -45,7 +46,7 @@ class StudentPersonalInformation(models.Model):
 
     degree = models.CharField(verbose_name="Grado Científico", max_length=20,
                               choices=(("Ing.", "Ingeniero"), ("Arq.", "Arquitecto"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
-                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ('Otro', 'Otro'),
+                                       ("Dr.", "Doctor"), ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ('Otro', 'Otro'),
                                        ("Ning.", "Ninguno")),
                               default="Ning.")
     title = models.CharField(verbose_name="Título", max_length=100, blank=True, null=True, default="")
@@ -56,6 +57,15 @@ class StudentPersonalInformation(models.Model):
                                  default="do")
     
     pwd = None
+
+    photocopyID = models.FileField("Foto Copia CI", upload_to='static/iddocuents/%Y/%m/%d/%H/%M/', max_length=1000,
+        validators=[valid_extension, valid_size],
+        help_text="Máximo tamaño de archivo permitido es 10MB", blank=True)
+    photocopyIDenviado = models.BooleanField("Recibido ID", default=False)
+    photocopyTitle = models.FileField("Foto Copia Titulo", upload_to='static/titledocument/%Y/%m/%d/%H/%M/', max_length=1000,
+        validators=[valid_extension, valid_size],
+        help_text="Máximo tamaño de archivo permitido es 10MB", blank=True)
+    photocopyTitleenviado = models.BooleanField("Recibido Title", default=False)
 
     class Meta:
         """Meta definition for StudentPersonalInformation."""
@@ -105,7 +115,7 @@ class StudentPersonalInformation(models.Model):
     def createUser(self):
         """ Crea un usuario con una contraseña cualquiera, despues se cambia"""
 
-        pwd = "123456587";
+        pwd = "123456587"
 
         user = User.objects.create_user(
             username=self.email, 
@@ -132,8 +142,8 @@ class StudentPersonalInformation(models.Model):
 
 @admin.register(StudentPersonalInformation)
 class StudentPersonalInformationAdmin(admin.ModelAdmin):
-    fields = ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                "email", "nacionality", "ocupation", "degree", "title"]
+    fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
+                "email", "nacionality", "ocupation", "degree", "title", "photocopyID", "photocopyTitle"]
     ordering = ["numberidentification", "lastname", "name"]
     search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                 "email", "nacionality", "ocupation", "degree", "title", "user__username"]
@@ -164,7 +174,7 @@ class TeacherPersonalInformation(models.Model):
 
     degree = models.CharField(max_length=20, verbose_name="Grado Científico",
                               choices=(("Ing.", "Ingeniero"), ("Arq.", "Arquitecto"), ("Lic.", "Licenciado"), ("Ms.C.", "Master en Ciencias"),
-                                       ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ("Otro", "Otro"),
+                                       ("Dr.", "Doctor"), ("Dr.C.", "Doctor en Ciencias"), ("PhD.C.", "Postdoctor en Ciencias"), ("Otro", "Otro"),
                                        ("Ning.", "Ninguno")),
                               default="Lic.")
     title = models.CharField(max_length=100, blank=True, null=True, default="", verbose_name="Título")

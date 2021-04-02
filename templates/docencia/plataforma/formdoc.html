@@ -1,0 +1,60 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="border-bottom mb-3">
+        <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> Enviar Documento {{ tipo|capfirst }}</h5>
+    </div>
+    <div class="row m-2 g-2">
+        {% if tipo == "id" and student.photocopyIDenviado or tipo == "title" and student.photocopyTitleenviado %}
+            <div class="alert alert-danger" role="alert">
+                Este documento ya existe. Se sobreescribirá si Envía uno nuevo.
+            </div>
+        {% endif %}
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}                
+                {% for key, error in form.errors.items %}
+                    {% if key == '__all__' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error | escape }}
+                        </div>
+                    {% endif %}
+                {% endfor %}                    
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="id_file" class="form-label">Busca el archivo</label>
+                {% if form.doc.errors %}                
+                    {% for error in form.doc.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+                {{ form.doc }}
+                <div id="emailHelp" class="form-text">{{ form.doc.help_text }}</div>
+            </div>
+            <br>
+            <div class="alert alert-info">
+                <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
+                    Por ello, sus datos <strong>no se comparten</strong> con terceros y estos documentos solo se utilizan para verificar
+                    los datos proporcionados durante el proceso de Admisión. <strong>Al Enviar este documento nos autoriza a utilizarlo 
+                    para extraer su información personal</strong> necesaria para la elaboración de documentos oficiales del CFBC.
+                </small>
+            </div>
+            <div class="mt-4">
+                {{ form.captcha }}
+                {% if form.captcha.errors %}                
+                    {% for error in form.doc.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+            </div>
+            <input type="submit" class="btn btn-primary"value="Enviar">
+        </form>        
+    </div>
+{% endblock dashboard_content %}
+{% block scripts %}
+{% endblock scripts %}

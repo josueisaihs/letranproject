@@ -28,6 +28,7 @@ urlpatterns = [
     path("plataforma/foro/user/",views.plataforma.user_message, name="plataforma_user_message"),
     # Plataforma Estudiantes
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
+    path("plataforma/dashboard/<slug:tipo>/", views.plataforma.uploadphotocopy, name="plataforma_photocopia"),
     path("plataforma/dashboard/curso/<slug:slug>/", views.plataforma.curso, name="plataforma_curso"),
     path("plataforma/dashboard/curso/<slug:slug>/enrollment/", views.plataforma.enrollment, name="plataforma_enrollment"),
     path("api/plataforma/dashboard/enrollment/", views.plataforma.apienrollment, name="api_plataforma_enrollment"),

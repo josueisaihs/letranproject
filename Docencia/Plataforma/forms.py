@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import NON_FIELD_ERRORS
 from Docencia.Plataforma.models import Class, HomeWork
 import json
+from captcha.fields import ReCaptchaField
 
 
 class ClassForm(forms.ModelForm):
@@ -64,3 +65,12 @@ class HomeWorkForm(forms.ModelForm):
                 'unique_together': "Esta tarea con este Nombre ya existe.",
             }
         }
+
+class DocForm(forms.Form):
+    captcha = ReCaptchaField()
+    doc = forms.FileField(widget=forms.FileInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Seleccione un archivo',
+        'autofocus': 'on',
+        'accept': 'application/pdf'
+    }))

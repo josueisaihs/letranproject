@@ -37,7 +37,7 @@ def selectcourse(req):
     for appl in appls:
         courses = courses.exclude(pk=appl.course.pk)
     
-    appls = Application.objects.filter(student=student.pk, edition_active=False, Q(status="baja" | status="aceptado"))
+    appls = Application.objects.filter(Q(status="baja") | Q(status="aceptado"), student=student.pk, edition_active=False)
     for appl in appls:
         courses = courses.exclude(pk=appl.course.pk)
         
