@@ -7,7 +7,7 @@
             <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
         </div>
         
-        {% if not app.paid %}
+        {% if not app.paid and not app.beca %}
             <div class="alert alert-danger">
                 <h5>Pago de Matrícula</h5>
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi aliquid dolorem illo a inventore. 
