@@ -11,7 +11,7 @@
             <div class="col-sm-4">
                 <a href="{% url 'plataforma_curso' app.course.slug %}">
                     <div class="card text-center h-100 
-                    {% if not app.paid %}
+                    {% if not app.paid and not app.beca %}
                         border-danger text-danger
                     {% endif %}">
                         <div class="card-body">
@@ -19,8 +19,8 @@
                         </div>
                         
                         <div class="card-footer">
-                            {% if app.paid %}
-                                <small class="text-secondary">Matrícula Pagada</small>
+                            {% if app.paid or app.beca %}
+                                <small class="text-secondary">{% if app.paid %}Matrícula Pagada{% else %}Exento de Pago{% endif %}</small>
                             {% else %}
                                 <small class="text-danger" href="#">Pagar Matrícula</small>
                             {% endif %}

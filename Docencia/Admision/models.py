@@ -159,6 +159,7 @@ class Application(models.Model):
 
     # Bandera que si el estudiante pago su matricula
     paid = models.BooleanField("Matricula Pagada", default=False)
+    beca = models.BooleanField("Beca", default=False)
 
     answers = []
 
@@ -181,9 +182,9 @@ class Application(models.Model):
     
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ['course', 'edition', 'student', 'appdate', 'status', 'comments', 'paid']
+    list_display = ['course', 'edition', 'student', 'appdate', 'status', 'comments', 'paid', 'beca']
     fields = list_display
-    list_filter = ["edition", "status", "paid"]
+    list_filter = ["edition", "status", "paid", 'beca']
     search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
     readonly_fields = ('appdate', 'comments')
 # <> fin Application
