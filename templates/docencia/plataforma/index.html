@@ -10,9 +10,20 @@
         {% for app in apps %}
             <div class="col-sm-4">
                 <a href="{% url 'plataforma_curso' app.course.slug %}">
-                    <div class="card text-center h-100">
+                    <div class="card text-center h-100 
+                    {% if not app.paid %}
+                        border-danger text-danger
+                    {% endif %}">
                         <div class="card-body">
                             <h5 class="card-title">{{ app.course.name }}</h5>
+                        </div>
+                        
+                        <div class="card-footer">
+                            {% if app.paid %}
+                                <small class="text-secondary">Matrícula Pagada</small>
+                            {% else %}
+                                <small class="text-danger" href="#">Pagar Matrícula</small>
+                            {% endif %}
                         </div>
                     </div>
                 </a>

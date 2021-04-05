@@ -74,3 +74,11 @@ class DocForm(forms.Form):
         'autofocus': 'on',
         'accept': 'application/pdf'
     }))
+
+class PayForm(forms.Form):
+    # captcha = ReCaptchaField()
+    transfernumber = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Numero de Transaccion',
+        'autofocus': 'on',
+    }))

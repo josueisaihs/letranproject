@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from Docencia.validators import valid_extension, valid_size
 
+
 class Class(models.Model):
     """Model definition for Class."""
     slug = models.SlugField(max_length=250, default="")
@@ -411,3 +412,55 @@ class AssistenceAdmin(admin.ModelAdmin):
     'enrollment__subject__name', 'enrollment__subject__course__name', 'roomclass__name', 
     'roomclass__raspberry__name')
     ordering = ('-datepub',)
+
+class EnrollmentPay(models.Model):
+    """Model definition for EnrollmentPay."""
+    app = models.ForeignKey("Docencia.Application", verbose_name="Aplicacion", on_delete=models.CASCADE)
+    transfernumber = models.CharField("Numero Transferencia", max_length=13, unique=True)
+    accept = models.BooleanField(verbose_name="Aceptar Transferencia", default=False)
+
+    class Meta:
+        """Meta definition for EnrollmentPay ."""
+        unique_together = [("app", "transfernumber")]
+        verbose_name = 'Pago Matricula'
+        verbose_name_plural = 'Pagos Matriculas'
+
+    def __str__(self):
+        """Unicode representation of EnrollmentPa."""
+        return "%s %s" % (self.app.stundet, self.app.course)
+
+    def save(self):
+        """Save method for EnrollmentPay ."""
+        pass
+
+@admin.register(EnrollmentPay)
+class EnrollmentPayAdmin(admin.ModelAdmin):
+    '''Admin View for EnrollmentPay'''
+
+    list_display = ('app', 'transfernumber', 'accept')
+    list_filter = ('accept', 'app__course__area', 'app__course', 'app__edition')
+    readonly_fields = ('transfernumber',)
+    search_fields = ('app__student__name', 'app__student__lastname', 'app__course__name')
+    ordering = ('app__student__lastname',)
+
+class AccountNumber(models.Model):
+    """Model definition for AccountNumber."""
+    accountnumber = models.CharField("Numero de Cuenta", max_length=16, unique=True)
+    owner = models.CharField("Propietario", max_length=50)
+
+    class Meta:
+        """Meta definition for AccountNumber."""
+        unique_together = [('accountnumber', 'owner')]
+        verbose_name = 'Numero de Cuenta'
+        verbose_name_plural = 'Numeros de Cuentas'
+
+    def __str__(self):
+        """Unicode representation of AccountNumber."""
+        return "%s %s" % (self.accountnumber, self.owner)
+
+@admin.register(AccountNumber)
+class AccountNumberAdmin(admin.ModelAdmin):
+    '''Admin View for AccountNumber'''
+    list_display = ('owner', 'accountnumber')
+    search_fields = ('owner', 'accountnumber')
+    ordering = ('owner',)

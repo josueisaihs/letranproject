@@ -6,6 +6,19 @@
         <div class="border-bottom mb-3">
             <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
         </div>
+        
+        {% if not app.paid %}
+            <div class="alert alert-danger">
+                <h5>Pago de Matrícula</h5>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi aliquid dolorem illo a inventore. 
+                    Sapiente, quaerat quod. Asperiores placeat, nobis iste veniam excepturi eligendi 
+                    fugiat maiores nulla ex harum dolorem? <a class="btn btn-dark" href="{% url 'plataforma_enrollmentpay' app.course.slug %}">PAGAR AQUI</a>
+                </p>
+                <hr>
+                <small class="mb-0">El proceso de verificacion de la transferencia puede tardar varios dias.</small>
+            </div>
+        {% endif %}
+            
         {% if app.course.comunicate %}
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">¡Información Importante!</h4>

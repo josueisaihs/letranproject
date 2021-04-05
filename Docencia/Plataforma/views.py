@@ -13,9 +13,9 @@ from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation 
 from Docencia.Admision.models import Application
 from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
-from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation, HomeWork
+from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation, HomeWork, EnrollmentPay, AccountNumber
 from Docencia.Index.models import Recurso
-from Docencia.Plataforma.forms import ClassForm, HomeWorkForm, DocForm
+from Docencia.Plataforma.forms import ClassForm, HomeWorkForm, DocForm, PayForm
 from Docencia.Index.forms import RecursoForm
 
 from Docencia.tasks import enviar_comunicado, enviar_notification
@@ -24,6 +24,9 @@ import csv
 from datetime import datetime
 import mimetypes
 from json import loads
+import qrcode as _QR_
+import os
+from io import BytesIO
 
 TEMPLETE_PATH = "docencia/plataforma/%s.html"
 
@@ -274,6 +277,55 @@ def uploadphotocopy(req, tipo):
                 form = DocForm()
         
         return render(req, TEMPLETE_PATH % "formdoc", locals())
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def enrollmentpay(req, slug):
+        user = User.objects.get(username=req.user.username)
+        student = StudentPersonalInformation.objects.get(user=user.pk)
+        account = AccountNumber.objects.order_by("?").first()
+        app = Application.objects.get(
+                student=student, 
+                edition__active=True, 
+                course__slug=slug, 
+                status="aceptado"
+        )
+        
+        if req.method == "POST":
+                form = PayForm(req.POST)
+                if form.is_valid():
+                        try:
+                                enrollmentpay = EnrollmentPay(
+                                        app__pk=app.pk, 
+                                        transfernumber=form.cleaned_data["transfernumber"])
+                                enrollmentpay.save()
+
+                                return redirect('plataforma_dashboard')
+                        except:
+                                return HttpResponseForbidden()
+        else:
+                form = PayForm()
+        return render(req, TEMPLETE_PATH % "enrollmentpay", locals())
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def genQR(req, slug):
+        buffer = BytesIO()
+        qr = _QR_.QRCode(
+            version=1,
+            error_correction=_QR_.constants.ERROR_CORRECT_H,
+            box_size=10,
+            border=0,
+        )
+        qr.add_data("TRANSFERMOVIL_ETECSA,TRANSFERENCIA,%s,59518075," % (slug))
+        qr.make()
+        img = qr.make_image()
+        img.save(buffer)
+        response = HttpResponse(buffer.getbuffer())
+        response['Content-Type'] = 'image/png'
+        response['Cache-Control'] = 'max-age=0'
+
+        return response
 
 # ******************* Profesores **********************************
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
