@@ -280,6 +280,20 @@ def uploadphotocopy(req, tipo):
 
 @user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
+def communicatepay(req, slug):
+        user = User.objects.get(username=req.user.username)
+        student = StudentPersonalInformation.objects.get(user=user.pk)
+        app = Application.objects.get(
+                student=student, 
+                edition__active=True, 
+                course__slug=slug, 
+                status="aceptado"
+        )
+
+        return render(req, TEMPLETE_PATH % "comunicate", locals())
+
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
 def enrollmentpay(req, slug):
         user = User.objects.get(username=req.user.username)
         student = StudentPersonalInformation.objects.get(user=user.pk)

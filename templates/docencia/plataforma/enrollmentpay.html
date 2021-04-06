@@ -2,7 +2,7 @@
 {% load static %}
 {% block dashboard_content %}
     <div class="border-bottom mb-3">
-        <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> Abonar Matricula de {{ app.course.name|capfirst }}</h5>
+        <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name|capfirst }} / Abonar Matrícula </h5>
     </div>
     <div class="row m-2 g-2">
         <div id="v1" class="row mb-2">
@@ -17,10 +17,10 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body pl-4">
-                                <small class="text-secondary">Numero de Cuenta</small>
-                                <h5 class="card-title">{{ account.accountnumber }}</h5>
-                                <small class="text-secondary">Movil a Confirmar</small>
-                                <p class="card-text">+53 5 951 80 75</p>
+                                <small class="text-secondary">Número de Cuenta</small>
+                                <h5 class="card-title"><span id="cardnumber">{{ account.accountnumber }}</span></h5>
+                                <small class="text-secondary">Móvil a Confirmar</small>
+                                <p class="card-text"><span id="telef">+53 5 951 80 75</span></p>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 </small>
             </div>
             <div class="mb-3">
-                <label for="id_transfernumber" class="form-label">Número de la Transaccion</label>
+                <label for="id_transfernumber" class="form-label">Número de la Transacción</label>
                 {% if form.transfernumber.errors %}                
                     {% for error in form.transfernumber.errors %}
                         <div class="alert alert-danger" role="alert">
@@ -59,7 +59,7 @@
             <div class="alert alert-secondary">
                 <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
                     Por ello, sus datos <strong>no se comparten</strong> con terceros solo se utilizan para verificar
-                    los datos proporcionados. <strong>Al Enviar este Numero de Transaccion nos autoriza a utilizarlo 
+                    los datos proporcionados. <strong>Al Enviar este Número de Transacción nos autoriza a utilizarlo 
                     para extraer su información personal</strong> necesaria para su matrícula en el CFBC.
                 </small>
             </div>
@@ -77,5 +77,3 @@
         </form>      
     </div>
 {% endblock dashboard_content %}
-{% block scripts %}
-{% endblock scripts %}

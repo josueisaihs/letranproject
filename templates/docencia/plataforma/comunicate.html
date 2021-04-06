@@ -1,0 +1,39 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="border-bottom mb-3 mt-1">
+        <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class="">
+            <i class="fas fa-arrow-left"></i></a> {{ app.course.name|capfirst }} / Palabras del Rector
+        </h5>
+        
+        <div class="mb-3 p-2">
+            <div class="border-bottom" style="font-size:large;">
+                <p class="fs-2">Estimado Estudiante:</p>
+                <p class="fs-2">
+                    Me pongo en contacto contigo para informarte acerca de los trámites de matrícula que, por razones de la actual situación epidemiológica, no se han podido realizar oportunamente.<br><br>
+                    Nuestro Centro de Estudios no cobra por ninguno de los cursos, ofreciendo así, todos sus servicios de docencia de forma gratuita. No obstante, los gastos de matrícula y secretaría deben ser abonados oportunamente al iniciar cada curso y hacerse formal la admisión en nuestro Centro. Este pago es único y se realiza al iniciar el curso correspondiente.<br><br>
+                    Debido a la actual situación, este proceso no se ha podido llevar a cabo en el tiempo establecido; por ello en estos momentos te estoy solicitando que a través de nuestra plataforma realices el pago de la matrícula con la mayor brevedad posible.<br><br>
+                    En relación con años anteriores y debido al actual modelo de ordenamiento económico se han reajustado los costos de los distintos gastos de secretaría. Contamos con tu comprensión en la solución de este paso que nos ayudará a poder continuar con nuestros servicios de la forma acostumbrada.<br><br>
+                    En el caso de que por alguna razón te veas impedido de poder abonar la cantidad establecida, te pido que te pongas en contacto conmigo a través del correo: <a class="link-secondary pe-auto" target="_blank" href="mailto:rector@bartolo.org?Subject=Solicito%20beca">rector@bartolo.org</a> y solicites una beca de estudios alegando las razones por las cuales la requieres. De ser aprobada tu beca se te informará de las condiciones de la misma. Nuestro Centro de Estudios está comprometido con tu formación y superación académica, por lo que en ningún caso la imposibilidad de abonar el costo de la matrícula puede ser impedimento para el acceso a tus estudios.<br><br>
+                    En este punto nuestro Centro de Estudios apela a tu responsabilidad social y a tu compromiso ético a la hora de abonar tu contribución. Sabemos que es de tu conocimiento el elevado costo de algunos servicios. Con tu aporte, podemos ayudar a que muchos puedan seguir beneficiándose de todas las posibilidades que nuestro Centro ofrece.<br><br>
+                    Con mi afecto,
+                </p>
+                <p class="text-end">Fr. Léster Rafael Zayas Díaz<br><small class="text-secondary">Rector CFBC</small></p>
+            </div>
+            <div class="mt-2">
+                <small class="text-secondary txt"><div class="spinner-grow spinner-grow-sm" role="status"></div> Un minuto de lectura.</small><br>
+                <a role="button" class="btn btn-primary mt-2 invisible" href="{% url 'plataforma_enrollmentpay' app.course.slug %}">
+                     Siguiente <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock dashboard_content %}
+
+{% block scripts %}
+    setTimeout(()=>{
+        $('.btn').removeClass('invisible');
+        $('.txt').remove();
+    }, 45000)
+{% endblock scripts %}
+    

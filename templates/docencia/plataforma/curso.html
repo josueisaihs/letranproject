@@ -10,12 +10,12 @@
         {% if not app.paid and not app.beca %}
             <div class="alert alert-danger">
                 <h5>Pago de Matrícula</h5>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi aliquid dolorem illo a inventore. 
-                    Sapiente, quaerat quod. Asperiores placeat, nobis iste veniam excepturi eligendi 
-                    fugiat maiores nulla ex harum dolorem? <a class="btn btn-dark" href="{% url 'plataforma_enrollmentpay' app.course.slug %}">PAGAR AQUI</a>
+                <p>
+                    Nuestro Centro de Estudios no cobra por ninguno de los cursos, ofreciendo así, todos sus servicios de docencia de forma gratuita. No obstante, los gastos de matrícula y secretaría deben ser abonados oportunamente al iniciar cada curso y hacerse formal la admisión en nuestro Centro. Este pago es único y se realiza al iniciar el curso correspondiente.
+                    <br><br><a class="btn btn-sm btn-dark" href="{% url 'plataforma_communicatepay' app.course.slug %}">Pagar Matrícula</a>
                 </p>
                 <hr>
-                <small class="mb-0">El proceso de verificacion de la transferencia puede tardar varios dias.</small>
+                <small class="mb-0">El proceso de verificación de la transferencia puede tardar varios días.</small>
             </div>
         {% endif %}
             

@@ -29,6 +29,7 @@ urlpatterns = [
     # Plataforma Estudiantes
     path("plataforma/dashboard/", views.plataforma.dashboard, name="plataforma_dashboard"),
     path("plataforma/dashboard/<slug:tipo>/", views.plataforma.uploadphotocopy, name="plataforma_photocopia"),
+    path("plataforma/dashboard/pay/communicate/<slug:slug>/", views.plataforma.communicatepay, name="plataforma_communicatepay"),
     path("plataforma/dashboard/pay/<slug:slug>/", views.plataforma.enrollmentpay, name="plataforma_enrollmentpay"),
     path("plataforma/dashboard/qr/<slug:slug>/", views.plataforma.genQR, name="plataforma_qrgen"),
     path("plataforma/dashboard/curso/<slug:slug>/", views.plataforma.curso, name="plataforma_curso"),
