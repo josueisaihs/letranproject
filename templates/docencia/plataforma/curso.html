@@ -84,11 +84,11 @@
                                     <a class="btn btn-outline-primary btn-sm" href="{% url 'plataforma_subject' enrollment.subject.slug %}" type="button">
                                         Clases <span class="badge bg-secondary">{{ enrollment.subject.getCurrentClasses|length }}</span>
                                     </a>
-                                    <!-- <a href="{% url 'plataforma_messages' enrollment.subject.slug %}" 
+                                    <a href="{% url 'plataforma_messages' enrollment.subject.slug %}" 
                                     type="button" class="btn btn-outline-primary btn-sm">
                                         Mensajes 
-                                         <span class="badge bg-danger">10</span> 
-                                    </a> -->
+                                        <!-- <span class="badge bg-danger">10</span> -->
+                                    </a>
                                 </div>
                             {% else %}
                                 <p>Ha excedido el número de inasistencias.</p>
