@@ -77,6 +77,7 @@ class DocForm(forms.Form):
 
 class PayForm(forms.Form):
     captcha = ReCaptchaField()
+    cardnumber = forms.CharField(widget=forms.HiddenInput())
     transfernumber = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Numero de Transaccion',

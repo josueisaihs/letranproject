@@ -432,10 +432,6 @@ class EnrollmentPay(models.Model):
         """Unicode representation of EnrollmentPa."""
         return "%s %s" % (self.app.stundet, self.app.course)
 
-    def save(self):
-        """Save method for EnrollmentPay ."""
-        pass
-
 @admin.register(EnrollmentPay)
 class EnrollmentPayAdmin(admin.ModelAdmin):
     '''Admin View for EnrollmentPay'''
