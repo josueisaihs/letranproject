@@ -265,14 +265,14 @@ class CourseInformation(models.Model):
 
         if self.price > self.priceReligious:
             self.priceReligious = self.price
-            
+
         super().save(*args, **kwargs)
 
 @admin.register(CourseInformation)
 class CourseInformationAdmin(admin.ModelAdmin):
     fields = ["name", "area", "isService", "category", "image", "capacity", "openregistre", "deadline", 
                 "description", "yearMin", "yearMax", "haveApplication", 
-                "price", "curriculum", "requirements", "adminteachers", "sedes", "programa", 
+                "price", "priceReligious", "curriculum", "requirements", "adminteachers", "sedes", "programa", 
                 "reglamento", "schedules", "starts", "slug", "minCredict", "duration", 'comunicate']
     ordering = ["area", "name", "capacity", "openregistre"]
     search_fields = ["name", "openregistre", "area__name", "sedes__name", "category__name"]
