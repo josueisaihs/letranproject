@@ -62,17 +62,6 @@
                 <div id="emailHelp" class="form-text">{{ form.transfernumber.help_text }}</div>
             </div>
             <br>
-            
-            <div class="mb-3">
-                {{ form.captcha }}
-                {% if form.captcha.errors %}                
-                    {% for error in form.doc.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {{ error|escape }}
-                        </div>
-                    {% endfor %}                    
-                {% endif %}
-            </div>
             <div class="alert alert-secondary">
                 <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
                     Por ello, sus datos <strong>no se comparten</strong> con terceros solo se utilizan para verificar
@@ -88,6 +77,16 @@
                     <li>Número de tarjeta Telebanca</li>
                     <li><strong>Ninguna Contraseña</strong></li>
                 </ul>
+            </div>
+            <div class="">
+                {{ form.captcha }}
+                {% if form.captcha.errors %}                
+                    {% for error in form.doc.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
             </div>
             <input type="submit" class="btn btn-primary"value="Enviar">
         </form>      
