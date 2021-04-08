@@ -417,7 +417,9 @@ class EnrollmentPay(models.Model):
     """Model definition for EnrollmentPay."""
     app = models.ForeignKey("Docencia.Application", verbose_name="Aplicacion", on_delete=models.CASCADE)
     transfernumber = models.CharField("Numero Transferencia", max_length=13, unique=True)
+    monto = models.PositiveIntegerField("Monto", default=0)
     accept = models.BooleanField(verbose_name="Aceptar Transferencia", default=False)
+    datepub = models.DateField('Fecha Creación', auto_now=True)
 
     class Meta:
         """Meta definition for EnrollmentPay ."""
@@ -437,7 +439,7 @@ class EnrollmentPay(models.Model):
 class EnrollmentPayAdmin(admin.ModelAdmin):
     '''Admin View for EnrollmentPay'''
 
-    list_display = ('app', 'transfernumber', 'accept')
+    list_display = ('app', 'transfernumber', 'accept', 'monto', 'datepub')
     list_filter = ('accept', 'app__course__area', 'app__course', 'app__edition')
     readonly_fields = ('transfernumber',)
     search_fields = ('app__student__name', 'app__student__lastname', 'app__course__name')

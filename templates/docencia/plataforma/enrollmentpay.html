@@ -5,11 +5,11 @@
         <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name|capfirst }} / Abonar Matrícula </h5>
     </div>
     <div class="row m-2 g-2">
-        <div id="v1" class="row mb-2">
+        <div id="v1" class="row mb-2 g-2">
             <div class="col-sm-4">
                 <div class="card">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-md-4 d-sm-none d-md-block">
                         <img 
                         src="{% url 'plataforma_qrgen' account.accountnumber %}" 
                         alt="{{ account.accountnumber }}" class="card-img-top img-fluid p-2" 
@@ -56,13 +56,7 @@
                 <div id="emailHelp" class="form-text">{{ form.transfernumber.help_text }}</div>
             </div>
             <br>
-            <div class="alert alert-secondary">
-                <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
-                    Por ello, sus datos <strong>no se comparten</strong> con terceros solo se utilizan para verificar
-                    los datos proporcionados. <strong>Al Enviar este Número de Transacción nos autoriza a utilizarlo 
-                    para extraer su información personal</strong> necesaria para su matrícula en el CFBC.
-                </small>
-            </div>
+            
             <div class="mt-4">
                 {{ form.captcha }}
                 {% if form.captcha.errors %}                
@@ -72,6 +66,22 @@
                         </div>
                     {% endfor %}                    
                 {% endif %}
+            </div>
+            <div class="alert alert-secondary">
+                <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
+                    Por ello, sus datos <strong>no se comparten</strong> con terceros solo se utilizan para verificar
+                    los datos proporcionados. <strong>Al Enviar este Número de Transacción nos autoriza a utilizarlo 
+                    para extraer su información personal</strong> necesaria para su matrícula en el CFBC.
+                </small>
+            </div>
+            <div class="alert alert-danger">
+                Por favor, no envie información sensible, dígase:
+                <ul>
+                    <li>Número de cuenta bancaria</li>
+                    <li>Número de tarjeta magnética</li>
+                    <li>Número de tarjeta Telebanca</li>
+                    <li><strong>Ninguna Contraseña</strong></li>
+                </ul>
             </div>
             <input type="submit" class="btn btn-primary"value="Enviar">
         </form>      

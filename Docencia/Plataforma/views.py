@@ -311,7 +311,9 @@ def enrollmentpay(req, slug):
                         try:
                                 enrollmentpay = EnrollmentPay(
                                         app__pk=app.pk, 
-                                        transfernumber=form.cleaned_data["transfernumber"])
+                                        transfernumber=form.cleaned_data["transfernumber"],
+                                        monto=app.course.price
+                                )
                                 enrollmentpay.save()
 
                                 return redirect('plataforma_dashboard')
