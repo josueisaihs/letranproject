@@ -57,7 +57,6 @@ class ClassAdmin(admin.ModelAdmin):
 class HomeWork(models.Model):
     slug = models.SlugField("Slug", max_length=500)
     name = models.CharField("Nombre", max_length=250, default="Tarea 1")
-    subject = models.ForeignKey("Docencia.SubjectInformation", verbose_name="Asignatura", on_delete=models.CASCADE, default=0)
     clase = models.ForeignKey("Docencia.Class", 
         verbose_name="Clase", 
         on_delete=models.CASCADE
@@ -99,13 +98,12 @@ class HomeWork(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._get_unique_slug()
-        self.subject = self.clase.subject.pk
         super().save(*args, **kwargs)
 
 @admin.register(HomeWork)
 class HomeWorkAdmin(admin.ModelAdmin):
     '''Admin View for HomeWork'''
-    list_display = ('name', 'subject', 'clase', 'student', 'datepub', 'file', 'edition', 'note')
+    list_display = ('name', 'clase', 'student', 'datepub', 'file', 'edition', 'note')
     list_filter = ('clase__subject__course', 'clase__subject', 'edition')
     search_fields = ('name', 'clase__name', 'clase__subject__name', 'clase__subject__course__name', 'student__name', 'student__lastname')
     ordering = ('clase__name',)

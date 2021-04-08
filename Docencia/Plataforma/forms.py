@@ -41,9 +41,6 @@ class HomeWorkForm(forms.ModelForm):
                 'class': 'form-control',
                 'required': True
             }),
-            'subject': forms.HiddenInput(attrs={
-                'value': '0'
-            }),
             'clase': forms.HiddenInput(attrs={
                 'value': '0'
             }),
