@@ -10,9 +10,20 @@
         {% for app in apps %}
             <div class="col-sm-4">
                 <a href="{% url 'plataforma_curso' app.course.slug %}">
-                    <div class="card text-center h-100">
+                    <div class="card text-center h-100 
+                    {% if not app.paid and not app.beca %}
+                        border-danger text-danger
+                    {% endif %}">
                         <div class="card-body">
                             <h5 class="card-title">{{ app.course.name }}</h5>
+                        </div>
+                        
+                        <div class="card-footer">
+                            {% if app.paid or app.beca %}
+                                <small class="text-secondary">{% if app.paid %}Matrícula Pagada{% else %}Exento de Pago{% endif %}</small>
+                            {% else %}
+                                <small class="text-danger" href="#">Pagar Matrícula</small>
+                            {% endif %}
                         </div>
                     </div>
                 </a>
@@ -62,8 +73,23 @@
         <div class="alert alert-info">
             <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
                 Por ello, sus datos <strong>no se comparten</strong> con terceros y estos documentos solo se utilizan para verificar
-                los datos proporcionados durante el proceso de Admisión. Sin estos documentos no se emitirá su Título de Fin de Curso ni su Boleta de Notas.
+                los datos proporcionados durante el proceso de Admisión. Sin estos documentos no se emitirá su 
+                Título de Fin de Curso ni su Boleta de Notas.
             </small>
+        </div>
+        <br>
+
+        <h6 class="border-bottom my-3">Comunidad Religiosa</h6>
+        <p>¿Pertenece a una Comunidad Religiosa?</p>
+        <div class="col-sm-4">
+            <a href="{% url 'plataforma_is_religious' %}">
+                <div class="card text-center h-100 {% if student.isReligious %}border-success text-success{% endif %}">
+                    <div class="card-body">
+                        <h5 class="card-title">{% if student.isReligious %}Sí{% else %}No{% endif %}</h5>
+                        <small>Dominico, Carmelita, Franciscano, ...</small>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 </div>

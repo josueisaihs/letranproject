@@ -1,0 +1,95 @@
+{% extends './dashboard.html' %}
+{% load static %}
+{% block dashboard_content %}
+    <div class="border-bottom mb-3">
+        <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name|capfirst }} / Abonar Matrícula </h5>
+    </div>
+    <div class="row m-2 g-2">
+        <div id="v1" class="row mb-2 g-2">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="col-md-4 d-sm-none d-md-block">
+                        <img 
+                        src="{% url 'plataforma_qrgen' account.accountnumber %}" 
+                        alt="{{ account.accountnumber }}" class="card-img-top img-fluid p-2" 
+                        style="max-height: 200px; max-width: 200px;"> 
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body pl-4">
+                                <small class="text-secondary">Número de Cuenta</small>
+                                <h5 class="card-title"><span id="cardnumber">{{ account.accountnumber }}</span></h5>
+                                <small class="text-secondary">Móvil a Confirmar</small>
+                                <p class="card-text"><span id="telef">+53 5 951 80 75</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="card h-100 text-center">
+                    <div class="card-header">{{ app.course.name }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                        {% if student.isReligious  %}
+                            {{ app.course.priceReligious }}
+                        {% else %}
+                            {{ app.course.price }}
+                        {% endif %}
+                             CUP</h5>
+                        <p class="card-text">Monto</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="alert alert-warning">
+                <small class="text-secondary">
+                    El proceso de validación de la Transacción puede <strong>TARDAR VARIOS DÍAS</strong>.
+                </small>
+            </div>
+            <div class="mb-3">
+                <label for="id_transfernumber" class="form-label">Número de la Transacción</label>
+                {% if form.transfernumber.errors %}                
+                    {% for error in form.transfernumber.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+                {{ form.transfernumber }}
+                <div id="emailHelp" class="form-text">{{ form.transfernumber.help_text }}</div>
+            </div>
+            <br>
+            
+            <div class="mt-4">
+                {{ form.captcha }}
+                {% if form.captcha.errors %}                
+                    {% for error in form.doc.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}                    
+                {% endif %}
+            </div>
+            <div class="alert alert-secondary">
+                <small class="text-secondary">Para nosotros la privacidad de sus datos es importante. 
+                    Por ello, sus datos <strong>no se comparten</strong> con terceros solo se utilizan para verificar
+                    los datos proporcionados. <strong>Al Enviar este Número de Transacción nos autoriza a utilizarlo 
+                    para extraer su información personal</strong> necesaria para su matrícula en el CFBC.
+                </small>
+            </div>
+            <div class="alert alert-danger">
+                Por favor, no envie información sensible, dígase:
+                <ul>
+                    <li>Número de cuenta bancaria</li>
+                    <li>Número de tarjeta magnética</li>
+                    <li>Número de tarjeta Telebanca</li>
+                    <li><strong>Ninguna Contraseña</strong></li>
+                </ul>
+            </div>
+            <input type="submit" class="btn btn-primary"value="Enviar">
+        </form>      
+    </div>
+{% endblock dashboard_content %}

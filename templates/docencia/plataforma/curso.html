@@ -6,6 +6,19 @@
         <div class="border-bottom mb-3">
             <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
         </div>
+        
+        {% if not app.paid and not app.beca %}
+            <div class="alert alert-danger">
+                <h5>Pago de Matrícula</h5>
+                <p>
+                    Nuestro Centro de Estudios no cobra por ninguno de los cursos, ofreciendo así, todos sus servicios de docencia de forma gratuita. No obstante, los gastos de matrícula y secretaría deben ser abonados oportunamente al iniciar cada curso y hacerse formal la admisión en nuestro Centro. Este pago es único y se realiza al iniciar el curso correspondiente.
+                    <br><br><a class="btn btn-sm btn-dark" href="{% url 'plataforma_communicatepay' app.course.slug %}">Pagar Matrícula</a>
+                </p>
+                <hr>
+                <small class="mb-0">El proceso de verificación de la transferencia puede tardar varios días.</small>
+            </div>
+        {% endif %}
+            
         {% if app.course.comunicate %}
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">¡Información Importante!</h4>

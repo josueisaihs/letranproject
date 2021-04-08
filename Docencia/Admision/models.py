@@ -157,6 +157,10 @@ class Application(models.Model):
     )
     comments = models.TextField(verbose_name='Comentarios', default="", blank=True)
 
+    # Bandera que si el estudiante pago su matricula
+    paid = models.BooleanField("Matricula Pagada", default=False)
+    beca = models.BooleanField("Beca", default=False)
+
     answers = []
 
     class Meta:
@@ -169,15 +173,18 @@ class Application(models.Model):
         """Unicode representation of Application."""
         return "%s %s %s" % (self.course, self.edition, self.student)
 
-    def get_absolute_url(self):
-        """Return absolute url for Application."""
-        return reverse('Application.views.details', args=[str(self.id)])
+    def pay(self):
+        if self.status == "aceptado":
+            self.paid = True
+            self.save()
+        else:
+            raise ValueError("Este estudiante no puede pagar porque no es 'Aceptado'.") 
     
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ('course', 'edition', 'student', 'appdate', 'status', 'comments')
+    list_display = ['course', 'edition', 'student', 'appdate', 'status', 'comments', 'paid', 'beca']
     fields = list_display
-    list_filter = ["edition", "status"]
+    list_filter = ["edition", "status", "paid", 'beca']
     search_fields = ['course__name', 'edition__name', 'student__name', 'student__lastname']
     readonly_fields = ('appdate', 'comments')
 # <> fin Application
