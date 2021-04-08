@@ -430,7 +430,7 @@ class EnrollmentPay(models.Model):
 
     def __str__(self):
         """Unicode representation of EnrollmentPa."""
-        return "%s %s" % (self.app.stundet, self.app.course)
+        return "%s %s" % (self.app.student, self.app.course)
 
 @admin.register(EnrollmentPay)
 class EnrollmentPayAdmin(admin.ModelAdmin):
