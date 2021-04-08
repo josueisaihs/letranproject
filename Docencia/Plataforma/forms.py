@@ -35,11 +35,14 @@ class ClassForm(forms.ModelForm):
 class HomeWorkForm(forms.ModelForm):
     class Meta:
         model = HomeWork
-        fields = ('name', 'clase', 'student', 'file', 'edition')
+        fields = ('name', 'subject', 'clase', 'student', 'file', 'edition')
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'required': True
+            }),
+            'subject': forms.HiddenInput(attrs={
+                'value': '0'
             }),
             'clase': forms.HiddenInput(attrs={
                 'value': '0'

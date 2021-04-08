@@ -50,6 +50,7 @@
                 {% endfor %}                    
             {% endif %}
             {{ form.clase }}
+            {{ form.subject }}
 
             {% if form.student.errors %}                
                 {% for error in form.student.errors %}
@@ -76,6 +77,8 @@
 {% block scripts %}
     var clase = document.querySelector('#id_clase')
     clase.value = {{ clase.pk }}
+    var subject = document.querySelector('#id_subject')
+    subject.value = {{ clase.subject.pk }}
     var student = document.querySelector('#id_student')
     student.value = {{ student.pk }}
     var edition = document.querySelector('#id_edition')
