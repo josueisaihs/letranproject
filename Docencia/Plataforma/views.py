@@ -343,6 +343,17 @@ def genQR(req, slug):
 
         return response
 
+@user_passes_test(isStudentAceptado, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def isReligious(req):
+        user = User.objects.get(username=req.user.username)
+        student = StudentPersonalInformation.objects.get(user=user.pk)
+        student.isReligious = not student.isReligious
+        student.save()
+
+        return redirect('plataforma_dashboard')
+
+
 # ******************* Profesores **********************************
 @user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")

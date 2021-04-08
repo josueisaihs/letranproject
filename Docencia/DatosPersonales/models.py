@@ -67,6 +67,8 @@ class StudentPersonalInformation(models.Model):
         help_text="Máximo tamaño de archivo permitido es 10MB", blank=True)
     photocopyTitleenviado = models.BooleanField("Recibido Title", default=False)
 
+    isReligious = models.BooleanField("Religioso", default=False, help_text="Pertenece a Institucion Religiosa")
+
     class Meta:
         """Meta definition for StudentPersonalInformation."""
         unique_together = [('name', 'lastname', 'numberidentification', 'email')]
@@ -143,7 +145,8 @@ class StudentPersonalInformation(models.Model):
 @admin.register(StudentPersonalInformation)
 class StudentPersonalInformationAdmin(admin.ModelAdmin):
     fields = ["user", "name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
-                "email", "nacionality", "ocupation", "degree", "title", "photocopyID", "photocopyIDenviado", "photocopyTitle", "photocopyTitleenviado"]
+                "email", "nacionality", "ocupation", "degree", "title", "photocopyID", "photocopyIDenviado", "photocopyTitle", 
+                "photocopyTitleenviado", "isReligious"]
     ordering = ["numberidentification", "lastname", "name"]
     search_fields =  ["name", "lastname", "gender", "numberidentification", "street", "city", "state", "cellphone", "phone",
                 "email", "nacionality", "ocupation", "degree", "title", "user__username"]
