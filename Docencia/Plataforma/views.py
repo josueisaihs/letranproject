@@ -309,8 +309,13 @@ def enrollmentpay(req, slug):
                 form = PayForm(req.POST)
                 if form.is_valid():
                         try:
+                                if student.isReligious:
+                                        price = app.course.priceReligious
+                                else:
+                                        price = app.course.price
+                                
                                 enrollmentpay = EnrollmentPay(
-                                        app__pk=app.pk, 
+                                        app=app, 
                                         transfernumber=form.cleaned_data["transfernumber"],
                                         monto=app.course.price
                                 )
