@@ -315,6 +315,7 @@ def enrollmentpay(req, slug):
                                         price = app.course.price
                                 
                                 enrollmentpay = EnrollmentPay(
+                                        cardnumber=account,
                                         app=app, 
                                         transfernumber=form.cleaned_data["transfernumber"],
                                         monto=app.course.price
