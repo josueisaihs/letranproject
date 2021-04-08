@@ -35,7 +35,7 @@ class ClassForm(forms.ModelForm):
 class HomeWorkForm(forms.ModelForm):
     class Meta:
         model = HomeWork
-        fields = ('name', 'subject', 'clase', 'student', 'file', 'edition')
+        fields = ('name', 'clase', 'student', 'file', 'edition')
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
