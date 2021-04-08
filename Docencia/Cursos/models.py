@@ -262,6 +262,10 @@ class CourseInformation(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self._get_unique_slug()
+
+        if self.price > self.priceReligious:
+            self.priceReligious = self.price
+            
         super().save(*args, **kwargs)
 
 @admin.register(CourseInformation)
