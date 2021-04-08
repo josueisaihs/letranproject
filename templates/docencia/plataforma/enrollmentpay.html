@@ -78,7 +78,6 @@
                     <li><strong>Ninguna Contraseña</strong></li>
                 </ul>
             </div>
-            {{ form.cardnumber }}
             <div class="mb-2">
                 {{ form.captcha }}
                 {% if form.captcha.errors %}                
@@ -93,7 +92,3 @@
         </form>      
     </div>
 {% endblock dashboard_content %}
-{% block scripts %}
-    var card = document.querySelector('#id_cardnumber')
-    card.value = {{ account.pk }}
-{% endblock scripts %}
