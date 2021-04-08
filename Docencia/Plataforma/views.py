@@ -308,23 +308,23 @@ def enrollmentpay(req, slug):
         if req.method == "POST":
                 form = PayForm(req.POST)
                 if form.is_valid():
-                        # try:
-                        if student.isReligious:
-                                price = app.course.priceReligious
-                        else:
-                                price = app.course.price
-                        
-                        enrollmentpay = EnrollmentPay(
-                                cardnumber=account,
-                                app=app, 
-                                transfernumber=form.cleaned_data["transfernumber"],
-                                monto=app.course.price
-                        )
-                        enrollmentpay.save()
+                        try:
+                                if student.isReligious:
+                                        price = app.course.priceReligious
+                                else:
+                                        price = app.course.price
+                                
+                                enrollmentpay = EnrollmentPay(
+                                        cardnumber=account,
+                                        app=app, 
+                                        transfernumber=form.cleaned_data["transfernumber"],
+                                        monto=price
+                                )
+                                enrollmentpay.save()
 
-                        return redirect('plataforma_dashboard')
-                        # except:
-                        #         return HttpResponseForbidden()
+                                return redirect('plataforma_dashboard')
+                        except:
+                                return HttpResponseForbidden()
         else:
                 form = PayForm()
         return render(req, TEMPLETE_PATH % "enrollmentpay", locals())
