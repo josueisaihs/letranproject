@@ -30,7 +30,13 @@
                 <div class="card h-100 text-center">
                     <div class="card-header">{{ app.course.name }}</div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ app.course.price }} CUP</h5>
+                        <h5 class="card-title">
+                        {% if student.isReligious  %}
+                            {{ app.course.priceReligious }}
+                        {% else %}
+                            {{ app.course.price }}
+                        {% endif %}
+                             CUP</h5>
                         <p class="card-text">Monto</p>
                     </div>
                 </div>

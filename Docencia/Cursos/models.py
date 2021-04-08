@@ -176,6 +176,7 @@ class CourseInformation(models.Model):
     description = models.TextField(max_length=5000, blank=True, verbose_name="Descripión")
     
     price = models.PositiveSmallIntegerField(default=20, verbose_name="Precio")
+    priceReligious = models.PositiveSmallIntegerField(default=20, verbose_name="Precio (Religiosos)", help_text="Precio para la comunidad Religiosa")
     curriculum = models.TextField(max_length=5000, blank=True, verbose_name="Curriculum")
     requirements = models.TextField(max_length=5000, blank=True, verbose_name="Requisitos")
     
