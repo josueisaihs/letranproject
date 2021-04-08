@@ -416,7 +416,7 @@ class AssistenceAdmin(admin.ModelAdmin):
 class EnrollmentPay(models.Model):
     """Model definition for EnrollmentPay."""
     app = models.ForeignKey("Docencia.Application", verbose_name="Aplicacion", on_delete=models.CASCADE)
-    cardnumber = models.ForeignKey("Docencia.AccountNumber", verbose_name="Cuenta Destino", on_delete=models.CASCADE)
+    cardnumber = models.ForeignKey("Docencia.AccountNumber", verbose_name="Cuenta Destino", on_delete=models.CASCADE, default=1)
     transfernumber = models.CharField("Numero Transferencia", max_length=13, unique=True)
     monto = models.PositiveIntegerField("Monto", default=0)
     accept = models.BooleanField(verbose_name="Aceptar Transferencia", default=False)
