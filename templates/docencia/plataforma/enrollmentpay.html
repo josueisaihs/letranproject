@@ -49,7 +49,7 @@
                     El proceso de validación de la Transacción puede <strong>TARDAR VARIOS DÍAS</strong>.
                 </small>
             </div>
-            <div class="mb-3">
+            <div class="mb-2">
                 <label for="id_transfernumber" class="form-label">Número de la Transacción</label>
                 {% if form.transfernumber.errors %}                
                     {% for error in form.transfernumber.errors %}
@@ -78,7 +78,7 @@
                     <li><strong>Ninguna Contraseña</strong></li>
                 </ul>
             </div>
-            <div class="">
+            <div class="mb-2">
                 {{ form.captcha }}
                 {% if form.captcha.errors %}                
                     {% for error in form.doc.errors %}
