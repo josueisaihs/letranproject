@@ -81,4 +81,5 @@ class PayForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'Numero de Transaccion',
         'autofocus': 'on',
+        'pattern': '[A-Za-z0-9]{13}'
     }))
