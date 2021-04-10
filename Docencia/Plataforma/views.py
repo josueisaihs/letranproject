@@ -852,11 +852,11 @@ def adminpay(req):
                                         app.paid = True
                                         app.save()
                                         enrollmentpay.accept = True
-                                        
+
                                         enrollmentpay.save()
                                         enviar_notification(
                                                 subject="Verificado Pago",
-                                                body="El CFBC agradece su pago de las cuotas por administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s." % (app.course.name, enrollmentpay.transfernumber, enrollmentpay.monto),
+                                                body="%s %s, el CFBC agradece su pago de las cuotas administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s." % (app.student.name, app.student.lastname, app.course.name, enrollmentpay.transfernumber, enrollmentpay.monto),
                                                 studentMail="%s"
                                         )
                         

@@ -13,6 +13,7 @@ import requests
 
 def isAdminTeacher(user):
     usermod = User.objects.filter(group__name="Profesores", username=user.username)
+    # usermod = User.objects.filter(group__name="Profesores", username=user.username).intersection(User.objects.filter(group__name="Administración", username=user.username))
     return usermod.__len__() > 0
 
 def isTeacher(user):
