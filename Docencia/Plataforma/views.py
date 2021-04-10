@@ -825,3 +825,47 @@ def apiregistro(req):
                 return JsonResponse({'response': True})
         else:
                 return HttpResponseForbidden()
+
+
+@user_passes_test(isAdminTeacher, login_url="/login/", redirect_field_name="next")
+@login_required(login_url="/login/", redirect_field_name="next")
+def adminpay(req):
+        """ Recibe este mensaje completo
+
+        Banco Metropolitano Ultimas operaciones. 
+ Fecha;Servicio;Operacion;Monto;Moneda;NoTransaccion 
+ 09/04/2021;TRAN;CR;500.00;CUP;MM1005DU9L987  | 
+09/04/2021;TRAN;CR;500.00;CUP;MM1005D319987  | 
+09/04/2021;TRAN;CR;500.00;CUP;MM1005CV68987  | 
+09/04/2021;TRAN;CR;500.00;CUP;MM1005CO84987  | 
+09/04/2021;TRAN;CR;500.00;CUP;MM1005CC3S987  | 
+09/04/2021;TRAN;CR;500.00;CUP;MM1005C48D987  | 
+08/04/2021;TRAN;CR;500.00;CUP;MM1005BJUN987  | 
+08/04/2021;TRAN;CR;250.00;CUP;MM1005BJ3I987  | 
+08/04/2021;TRAN;CR;500.00;CUP;MM1005AVIR987  | 
+08/04/2021;TRAN;CR;500.00;CUP;MM1005APFQ987 |
+        """
+        user = User.objects.get(username=req.user.username)
+        teacher = TeacherPersonalInformation.objects.get(user=user.pk)
+
+        pattern = re.compile("TRAN;CR;[0-9]*.[0-9]*;CUP;[A-Z0-9]{13}")
+        for trans in pattern.findall(txt):
+                code = trans.split(";")
+
+                enrollmentpay = EnrollmentPay.objects.get(
+                        monto=code[2], 
+                        transfernumber=code[4], 
+                        accept=False
+                )
+
+                if enrollmentpay:
+                        app = Application.objects.get(pk=enrollmentpay.app.pk)
+                        app.paid = True
+                        app.save()
+                        enrollmentpay.accept = True
+                        enrollmentpay.save()
+                else:
+
+
+
+        

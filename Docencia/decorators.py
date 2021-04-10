@@ -11,6 +11,10 @@ from datetime import datetime
 
 import requests
 
+def isAdminTeacher(user):
+    usermod = User.objects.filter(group__name="Profesores", username=user.username, group__name="")
+    return usermod.__len__() > 0
+
 def isTeacher(user):
     usermod = User.objects.filter(groups__name="Profesores", username=user.username)
     return usermod.__len__() > 0
