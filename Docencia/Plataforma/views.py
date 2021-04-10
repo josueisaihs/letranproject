@@ -12,20 +12,18 @@ from django.http import StreamingHttpResponse
 from Docencia.DatosPersonales.forms import *
 from Docencia.Cursos.models import CourseInformation, Edition, Sede, SubjectInformation 
 from Docencia.Admision.models import Application
-from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher
+from Docencia.decorators import isStudentAceptado, isTeacher, isStudentOrTeacher, isAdminTeacher
 from Docencia.Plataforma.models import Class, Message, Enrollment, Assistence, RoomClass, GroupInformation, HomeWork, EnrollmentPay, AccountNumber
 from Docencia.Index.models import Recurso
-from Docencia.Plataforma.forms import ClassForm, HomeWorkForm, DocForm, PayForm
+from Docencia.Plataforma.forms import ClassForm, HomeWorkForm, DocForm, PayForm, PayValidatorForm
 from Docencia.Index.forms import RecursoForm
 
-from Docencia.tasks import enviar_comunicado, enviar_notification
+from Docencia.tasks import enviar_comunicado, enviar_notification, enviar_admin
 
-import csv
+import csv, mimetypes, os, re
 from datetime import datetime
-import mimetypes
 from json import loads
 import qrcode as _QR_
-import os
 from io import BytesIO
 
 TEMPLETE_PATH = "docencia/plataforma/%s.html"
@@ -827,45 +825,43 @@ def apiregistro(req):
                 return HttpResponseForbidden()
 
 
-@user_passes_test(isAdminTeacher, login_url="/login/", redirect_field_name="next")
+@user_passes_test(isTeacher, login_url="/login/", redirect_field_name="next")
 @login_required(login_url="/login/", redirect_field_name="next")
 def adminpay(req):
         """ Recibe este mensaje completo
-
-        Banco Metropolitano Ultimas operaciones. 
- Fecha;Servicio;Operacion;Monto;Moneda;NoTransaccion 
- 09/04/2021;TRAN;CR;500.00;CUP;MM1005DU9L987  | 
-09/04/2021;TRAN;CR;500.00;CUP;MM1005D319987  | 
-09/04/2021;TRAN;CR;500.00;CUP;MM1005CV68987  | 
-09/04/2021;TRAN;CR;500.00;CUP;MM1005CO84987  | 
-09/04/2021;TRAN;CR;500.00;CUP;MM1005CC3S987  | 
-09/04/2021;TRAN;CR;500.00;CUP;MM1005C48D987  | 
-08/04/2021;TRAN;CR;500.00;CUP;MM1005BJUN987  | 
-08/04/2021;TRAN;CR;250.00;CUP;MM1005BJ3I987  | 
-08/04/2021;TRAN;CR;500.00;CUP;MM1005AVIR987  | 
-08/04/2021;TRAN;CR;500.00;CUP;MM1005APFQ987 |
         """
         user = User.objects.get(username=req.user.username)
         teacher = TeacherPersonalInformation.objects.get(user=user.pk)
 
-        pattern = re.compile("TRAN;CR;[0-9]*.[0-9]*;CUP;[A-Z0-9]{13}")
-        for trans in pattern.findall(txt):
-                code = trans.split(";")
+        if req.method == "POST":
+                form = PayValidatorForm(req.POST)
+                if form.is_valid():
+                        pattern = re.compile("TRAN;CR;[0-9]*.[0-9]*;CUP;[A-Z0-9]{13}")
+                        for trans in pattern.findall(form.cleaned_data["txt"]):
+                                code = trans.split(";")
 
-                enrollmentpay = EnrollmentPay.objects.get(
-                        monto=code[2], 
-                        transfernumber=code[4], 
-                        accept=False
-                )
+                                enrollmentpays = EnrollmentPay.objects.filter(
+                                        monto=float(code[2]), 
+                                        transfernumber=code[4], 
+                                        accept=False
+                                )
 
-                if enrollmentpay:
-                        app = Application.objects.get(pk=enrollmentpay.app.pk)
-                        app.paid = True
-                        app.save()
-                        enrollmentpay.accept = True
-                        enrollmentpay.save()
-                else:
+                                if enrollmentpays.__len__() > 0:
+                                        enrollmentpay = enrollmentpays.first()
+                                        app = Application.objects.get(pk=enrollmentpay.app.pk)
+                                        app.paid = True
+                                        app.save()
+                                        enrollmentpay.accept = True
+                                        
+                                        enrollmentpay.save()
+                                        enviar_notification(
+                                                subject="Verificado Pago",
+                                                body="El CFBC agradece su pago de las cuotas por administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s." % (app.course.name, enrollmentpay.transfernumber, enrollmentpay.monto),
+                                                studentMail="%s"
+                                        )
+                        
+                        return redirect('plataforma_admin_index')
+        else:
+                form = PayValidatorForm()
 
-
-
-        
+        return render(req, TEMPLETE_PATH % "adminpay", locals())

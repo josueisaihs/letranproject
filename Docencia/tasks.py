@@ -196,6 +196,16 @@ def enviar_comunicado(edition_pk, course_pk, subject, body):
 def enviar_notification(subject, body, studentMail):
     email = EmailMessage(
         "CAMPUS VIRTUAL. %s" % subject,
-        "%s\n\nNo conteste este correo electrónico",
+        "%s\n\nNo conteste este correo electrónico" % body,
         bcc=["desarrollo@bartolo.org", "centrofbc@bartolo.org", studentMail]
     )
+    email.send(fail_silently=False)
+
+@background(schedule=10)
+def enviar_admin(subject, body):
+    email = EmailMessage(
+        "CAMPUS VIRTUAL. PAGO",
+        "%s" % body ,
+        to=["desarrollo@bartolo.org",]
+    )
+    email.send(fail_silently=False)

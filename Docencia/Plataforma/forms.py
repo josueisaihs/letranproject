@@ -83,3 +83,10 @@ class PayForm(forms.Form):
         'autofocus': 'on',
         'pattern': '[A-Za-z0-9]{13}'
     }))
+
+class PayValidatorForm(forms.Form):
+    txt = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'form-control',
+        'placeholder': 'Mensaje de Transfermovil: Ultimas Operaciones',
+        'autofocus': 'on'
+    }))
