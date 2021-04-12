@@ -24,3 +24,5 @@ static/range_filter/
 SapereAude/migrations/
 SapereAude/__pycache__/
 paramiko/
+Blog/migrations/
+Blog/__pycache__/
