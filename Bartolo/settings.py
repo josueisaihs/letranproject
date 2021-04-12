@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'Docencia',
     'SapereAude',
     'Pagary',
+    'Blog',
     'easy_thumbnails',
     'debug_toolbar',
     'background_task',
