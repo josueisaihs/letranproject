@@ -337,7 +337,7 @@ def genQR(req, slug):
             box_size=10,
             border=0,
         )
-        qr.add_data("TRANSFERMOVIL_ETECSA,TRANSFERENCIA,%s,59518075," % (slug))
+        qr.add_data("TRANSFERMOVIL_ETECSA,TRANSFERENCIA,%s,53861204," % (slug))
         qr.make()
         img = qr.make_image()
         img.save(buffer)
@@ -856,7 +856,7 @@ def adminpay(req):
                                         enrollmentpay.save()
                                         enviar_notification(
                                                 subject="Verificado Pago",
-                                                body="%s %s, el CFBC agradece su pago de las cuotas administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s." % (app.student.name, app.student.lastname, app.course.name, enrollmentpay.transfernumber, enrollmentpay.monto),
+                                                body="%s %s, el CFBC agradece su pago de las cuotas administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s CUP." % (app.student.name, app.student.lastname, app.course.name, enrollmentpay.transfernumber, enrollmentpay.monto),
                                                 studentMail="%s"
                                         )
                         
