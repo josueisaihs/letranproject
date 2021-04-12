@@ -11,7 +11,7 @@ from django.contrib.auth.models import User, Group
 class Author(models.Model):
     """Model definition for Author."""
     slug = models.SlugField(max_length=250, default="")
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1, limit_choices_to={'groups': 'Blog Autor'})
     name = models.CharField(_("Nombre"), max_length=50)
     lastname = models.CharField(_("Apellido"), max_length=50)
     grade = models.CharField('Grado Científico', max_length=20,
