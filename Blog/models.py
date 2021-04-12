@@ -110,6 +110,7 @@ class Article(models.Model):
     datepub = models.DateField('Publicación', auto_now=True)
     dateupdate = models.DateField('Última Actualización', auto_now=True)
 
+    topost = models.BooleanField(_("Publicar"), default=False)
     allow = models.BooleanField(_("Permitir"), default=False)
 
     class Meta:
@@ -140,7 +141,7 @@ class Article(models.Model):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'subtitle', 'blog', 'datepub', 'dateupdate')
-    list_filter = ('blog', 'authors__ocupation')
+    list_filter = ('blog', 'authors__ocupation', 'allow', 'topost')
     readonly_fields = ('slug',)
     search_fields = ('title', 'subtitle', 'abstract', 'authors__name', 'authors__lastname', 
     'author__grade', 'blog__name', )
