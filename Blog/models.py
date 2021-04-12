@@ -139,7 +139,6 @@ class Article(models.Model):
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    exclude = ('allow',)
     list_display = ('title', 'subtitle', 'blog', 'datepub', 'dateupdate')
     list_filter = ('blog', 'authors__ocupation')
     readonly_fields = ('slug',)
