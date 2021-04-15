@@ -26,3 +26,5 @@ SapereAude/__pycache__/
 paramiko/
 Blog/migrations/
 Blog/__pycache__/
+LetranPay/migrations/
+LetranPay/__pycache__/

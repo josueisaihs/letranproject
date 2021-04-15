@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'SapereAude',
     'Pagary',
     'Blog',
+    'LetranPay',
     'easy_thumbnails',
     'debug_toolbar',
     'background_task',
