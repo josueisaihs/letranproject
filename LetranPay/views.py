@@ -12,18 +12,23 @@ from Docencia.tasks import enviar_notification
 
 class Enrollments(View):
     def get(self, request, *args, **kwargs):
-        enrollments = serializers.EnrollmentSerializer(serializers.EnrollmentPay.objects.all(), many=True)
-        return JsonResponse(enrollments.data, safe=False)
+        try:
+            enrollments = serializers.EnrollmentSerializer(serializers.EnrollmentPay.objects.all(), many=True)
+            return JsonResponse({"enrollments": enrollments.data, "status": True}, safe=False)
+        except:
+            return JsonResponse({"enrollments": [], "status": False}, safe=False)
 
 @require_POST
 @csrf_exempt
 def checkEnrollmentPay(request):
     transfernumber = request.POST["transfernumber"]
     monto = request.POST["monto"]
-    enrollments = serializers.EnrollmentPay.objects.filter(transfernumber=transfernumber, accept=False, monto=monto)
+    
+    enrollments = serializers.EnrollmentPay.objects.filter(transfernumber=transfernumber, monto=monto)
+
     if enrollments.__len__() > 0:
         enrollment = enrollments.first()
-
+        
         app = Application.objects.get(pk=enrollment.app.pk)
         app.paid = True
         app.save()
@@ -36,10 +41,7 @@ def checkEnrollmentPay(request):
                 body="%s %s, el CFBC agradece su pago de las cuotas administrativas de matrícula en el curso gratuito de %s con la transacción %s y monto de %s CUP." % (app.student.name, app.student.lastname, app.course.name, enrollment.transfernumber, enrollment.monto),
                 studentMail="%s"
         )
-
-        # Mostrando resultado si es valido
-        enrollments = serializers.EnrollmentSerializer(enrollment, many=True)
-
         return JsonResponse([{'status': True},], safe=False)
+
     else:
         return JsonResponse([{'status': False},], safe=False, status=404)
