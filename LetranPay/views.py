@@ -12,11 +12,8 @@ from Docencia.tasks import enviar_notification
 
 class Enrollments(View):
     def get(self, request, *args, **kwargs):
-        try:
-            enrollments = serializers.EnrollmentSerializer(serializers.EnrollmentPay.objects.all(), many=True)
-            return JsonResponse({"enrollments": enrollments.data, "status": True}, safe=False)
-        except:
-            return JsonResponse({"enrollments": [], "status": False}, safe=False)
+        enrollments = serializers.EnrollmentSerializer(serializers.EnrollmentPay.objects.all(), many=True)
+        return JsonResponse(enrollments.data, safe=False)
 
 @require_POST
 @csrf_exempt
