@@ -1,12 +1,14 @@
 {% extends './admindashboard.html' %}}
 {% load thumbnail extras static humanize %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
+            <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}} / Registro
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
-    <div class="border-bottom mb-3">
-        <h5>
-            <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
-                <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}} / Registro
-        </h5>
-    </div>
     <div class="alert alert-warning" role="alert">
         Las notas se guardan de forma automática. La base de las notas es 100 puntos, con aprobado 60 puntos.
     </div>

@@ -1,15 +1,16 @@
 {% extends './admindashboard.html' %}
-{% load thumbnail %}
-{% load static %}
+{% load thumbnail static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_studentslist' course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i></a> {{ course.name }} / Notificación
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
     <div class="">
         <div class="row py-2 g-2">
-            <div class="border-bottom mb-3">
-                <h5>
-                    <a href="{% url 'plataforma_admin_studentslist' course.slug %}" class="">
-                        <i class="fas fa-arrow-left"></i></a> {{ course.name }} / Notificación
-                </h5>
-            </div>
             <div class="">
                 <div class="alert alert-primary mb-3" role="alert">
                     Notificar por Correo Electrónico a <strong>{{ student.fullname }}</strong>

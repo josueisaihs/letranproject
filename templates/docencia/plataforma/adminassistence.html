@@ -1,15 +1,17 @@
 {% extends './admindashboard.html' %}}
 {% load static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_course' subject.course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ subject.course.name }} / {{ subject.name }} / Asistencia
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
 <div class="py-2">
     <div class="row py-2 g-2">
-        <div class="border-bottom mb-3">
-            <h5>
-                <a href="{% url 'plataforma_admin_course' subject.course.slug %}" class="">
-                    <i class="fas fa-arrow-left"></i>
-                </a> {{ subject.course.name }} / {{ subject.name }} / Asistencia
-            </h5>
-        </div>
         <div class="col-sm-12">
             <div class="d-flex my-3">
                 <div class="flex-fill">

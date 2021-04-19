@@ -1,13 +1,14 @@
 {% extends './admindashboard.html' %}
 {% load static %}
-{% block dashboard_content %}
-    <div class="border-bottom">
-        <h5>
-            <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
-                <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
-        </h5>
-    </div>
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
+            <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}}
+    </h5>
+{% endblock header %}
     
+{% block dashboard_content %}    
     {% if edit %}
         <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">¡Atención!</h4>

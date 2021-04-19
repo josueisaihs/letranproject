@@ -1,49 +1,54 @@
 {% extends './admindashboard.html' %}}
-{% load thumbnail %}
-{% load static %}
+{% load thumbnail static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_course' course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ course.name }} / Recursos
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
 <div class="py-2">
     <div class="row py-2 g-2">
-        <div class="border-bottom mb-3">
-            <h5>
-                <a href="{% url 'plataforma_admin_course' course.slug %}" class="">
-                    <i class="fas fa-arrow-left"></i>
-                </a> {{ course.name }} / Recursos
-            </h5>
-        </div>
+        <input class="form-control w-100" type="text" placeholder="Buscar" aria-label="Buscar">
         {% for recurso in course.getRecursos %}
-                <div class="col-sm-4">
-                    <a target="_blank" href="{% url 'plataforma_admin_recurso' recurso.slug %}">               
-                        <div class="card text-center h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="far
-                                    {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
-                                    fa-file-code
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'audio' %}
-                                    fa-file-audio
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'video' %}
-                                    fa-file-video
-                                    {% endif %}
-                                    {% if recurso.tipo == 'imagen' %}
-                                    fa-file-image
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
-                                    fa-file-alt 
-                                    {% endif %}                    
-                                    "></i> {{ recurso.name }}</h5>
-                            </div>
-                            <div class="card-footer">
-                                <a href="{% url 'plataforma_admin_del_recurso' recurso.slug course.slug %}" type="button" class="btn btn-outline-danger btn-sm">
-                                    Eliminar
-                                </a>
-                            </div>
+            <div class="col-sm-4 recourse-container" data-name="{{ recurso.name }}">
+                <a target="_blank" href="{% url 'plataforma_admin_recurso' recurso.slug %}">               
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="far
+                                {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
+                                fa-file-code
+                                {% endif %}                
+                                {% if recurso.tipo == 'audio' %}
+                                fa-file-audio
+                                {% endif %}                
+                                {% if recurso.tipo == 'video' %}
+                                fa-file-video
+                                {% endif %}
+                                {% if recurso.tipo == 'imagen' %}
+                                fa-file-image
+                                {% endif %}                
+                                {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
+                                fa-file-alt 
+                                {% endif %}                    
+                                "></i> {{ recurso.name }}</h5>
                         </div>
-                    </a>
-                </div>            
-            {% endfor %}
+                        <div class="card-footer">
+                            <a href="{% url 'plataforma_admin_del_recurso' recurso.slug course.slug %}" role="button" class="btn btn-outline-danger btn-sm">
+                                Eliminar
+                            </a>
+                        </div>
+                    </div>
+                </a>
+            </div>            
+        {% endfor %}
     </div>
 </div>
 {% endblock dashboard_content %}
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/recursosearch.js' %}"></script>
+{% endblock importScripts %}

@@ -16,7 +16,10 @@
         data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" 
         aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>        
+        </button>    
+        <div class="container-fluid mt-2 text-white">
+            {% block header %}{% endblock header %}
+        </div>    
     </nav>
 
     <div class="container-fluid">
@@ -51,9 +54,6 @@
             </nav>
 
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Hola {{ teacher.name }}</h1>
-                </div>
                  {% if messages %}
                     {% for message in messages %}
                         {% ifequal message.level 40 %}

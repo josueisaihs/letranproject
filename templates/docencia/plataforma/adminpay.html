@@ -1,11 +1,16 @@
-{% extends './admindashboard.html' %}}
+{% extends './admindashboard.html' %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_index' %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>   
+        </a> Comprobar Pagos
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
 <div class="py-2">
     <div class="row py-2 g-2">
-        <div class="border-bottom mb-3">
-            <h5><a href="{% url 'plataforma_admin_index' %}" class="">
-                <i class="fas fa-arrow-left"></i></a> Comprobar Pagos</h5>
-        </div>
         <form class="my-3" action="." method="POST">
             {% csrf_token %}
             {{ form.txt }}

@@ -1,12 +1,14 @@
 {% extends './admindashboard.html' %}}
 {% load thumbnail extras static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}} / Tareas
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
-    <div class="border-bottom mb-3">
-        <h5>
-            <a href="{% url 'plataforma_admin_subject' subject.slug %}" class="">
-                <i class="fas fa-arrow-left"></i></a> {{ subject.course.name }} / {{ subject.name}} / Tareas
-        </h5>
-    </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination pagination-sm justify-content-center">
             <li class="page-item {% if page_obj.has_previous %}{% else %}disabled{% endif %}">

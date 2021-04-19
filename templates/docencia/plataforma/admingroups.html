@@ -1,16 +1,17 @@
 {% extends './admindashboard.html' %}}
-{% load thumbnail %}
-{% load static %}
+{% load thumbnail static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_admin_course' course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ course.name }} / Nuevo Grupo
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
 <div class="py-2">
     <div class="row py-2 g-2">
-        <div class="border-bottom mb-3">
-            <h5>
-                <a href="{% url 'plataforma_admin_course' course.slug %}" class="">
-                    <i class="fas fa-arrow-left"></i>
-                </a> {{ course.name }} / Nuevo Grupo
-            </h5>
-        </div>
         <div class="col-sm-8">
             <input class="form-control" placeholder="Grupo A" id="namenewgroup" data-course="{{ course.slug }}">
             <button type="button" class="btn btn-sm btn-primary mt-1" onclick="createGroup()">
