@@ -1,9 +1,15 @@
 {% extends './dashboard.html' %}
 {% load static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_dashboard' %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> Enviar Documento {{ tipo|capfirst }}
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
-    <div class="border-bottom mb-3">
-        <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> Enviar Documento {{ tipo|capfirst }}</h5>
-    </div>
     <div class="row m-2 g-2">
         {% if tipo == "id" and student.photocopyIDenviado or tipo == "title" and student.photocopyTitleenviado %}
             <div class="alert alert-danger" role="alert">

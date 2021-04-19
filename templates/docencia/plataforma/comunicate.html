@@ -1,5 +1,14 @@
 {% extends './dashboard.html' %}
 {% load static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_curso' app.course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ app.course.name|capfirst }} / Palabras del Rector
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
     <div class="border-bottom mb-3 mt-1">
         <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class="">

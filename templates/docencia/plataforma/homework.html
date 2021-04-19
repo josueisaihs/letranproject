@@ -1,9 +1,15 @@
 {% extends './dashboard.html' %}
 {% load static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_clase' clase.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }} / Enviar Tarea
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
-    <div class="border-bottom mb-3">
-        <h5><a href="{% url 'plataforma_clase' clase.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ clase.subject.course.name }} / {{ clase.subject.name }} / {{ clase.name }} / Enviar Tarea</h5>
-    </div>
     <div class="row m-2 g-2">
         <form action="." method="post" enctype="multipart/form-data">
             {% csrf_token %}

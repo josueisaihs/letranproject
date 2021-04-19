@@ -1,12 +1,17 @@
 {% extends './dashboard.html' %}
 {% load thumbnail humanize %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_dashboard' %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ app.course.name }}
+    </h5>
+{% endblock header %}
+
 {% block dashboard_content %}
 <div>
     <div class="row py-2 g-2">
-        <div class="border-bottom mb-3">
-            <h5><a href="{% url 'plataforma_dashboard' %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name }}</h5>
-        </div>
-        
         {% if not app.paid and not app.beca %}
             <div class="alert alert-danger">
                 <h5>Pago de Matrícula</h5>

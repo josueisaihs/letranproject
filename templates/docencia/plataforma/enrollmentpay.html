@@ -1,9 +1,15 @@
 {% extends './dashboard.html' %}
 {% load static %}
+
+{% block header %}
+    <h5>
+        <a href="{% url 'plataforma_curso' app.course.slug %}" class="link-light">
+            <i class="fas fa-arrow-left"></i>
+        </a> {{ app.course.name|capfirst }} / Abonar Matrícula
+    </h5>
+{% endblock header %}
+    
 {% block dashboard_content %}
-    <div class="border-bottom mb-3">
-        <h5><a href="{% url 'plataforma_curso' app.course.slug %}" class=""><i class="fas fa-arrow-left"></i></a> {{ app.course.name|capfirst }} / Abonar Matrícula </h5>
-    </div>
     <div class="row m-2 g-2">
         <div id="v1" class="row mb-2 g-2">
             <div class="col-sm-4">

@@ -5,8 +5,11 @@
 <div class="py-2">
     <div class="row py-2 g-2">
         <div class="border-bottom mb-3">
-            <h5><a href="{% url 'plataforma_admin_index' %}" class="">
-                <i class="fas fa-arrow-left"></i></a> {{ course.name }}</h5>
+            <h5>
+                <a href="{% url 'plataforma_admin_index' %}" class="">
+                    <i class="fas fa-arrow-left"></i>
+                </a> {{ course.name }}
+            </h5>
         </div>
         <div class="col-sm-4">
             <a href="{% url 'plataforma_admin_recursos' course.slug %}">
@@ -50,15 +53,15 @@
                     <div class="card-footer">
                         <div class="btn-group" role="group" aria-label="">
                             <a href="{% url 'plataforma_admin_subject' subject.slug %}" 
-                            type="button" class="btn btn-outline-primary btn-sm">
+                            role="button" class="btn btn-outline-primary btn-sm">
                                 Clases
                             </a>
                             <a href="{% url 'plataforma_admin_assistence' subject.slug %}" 
-                            class="btn btn-outline-primary btn-sm" type="button">
+                            class="btn btn-outline-primary btn-sm" role="button">
                                 Asistencia    
                             </a>
                             <a  href="{% url 'plataforma_adminmessages' subject.slug %}" 
-                            type="button" class="btn btn-outline-primary btn-sm">
+                            role="button" class="btn btn-outline-primary btn-sm">
                                 Mensajes
                             </a>
                         </div>
