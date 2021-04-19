@@ -1,5 +1,5 @@
 {% extends './dashboard.html' %}
-{% load thumbnail %}
+{% load thumbnail static %}
 
 {% block header %}
     <h5>
@@ -10,36 +10,39 @@
 {% endblock header %}
 
 {% block dashboard_content %}
-    <div>
-        <div class="row py-2 g-2">
-            {% for recurso in course.recursos %}
-                <div class="col-sm-4">
-                    <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}">               
-                        <div class="card text-center">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <i class="far
-                                    {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
-                                    fa-file-code
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'audio' %}
-                                    fa-file-audio
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'video' %}
-                                    fa-file-video
-                                    {% endif %}
-                                    {% if recurso.tipo == 'imagen' %}
-                                    fa-file-image
-                                    {% endif %}                
-                                    {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
-                                    fa-file-alt 
-                                    {% endif %}                    
-                                    "></i> {{ recurso.name }}</h5>
-                            </div>
+    <div class="row py-2 g-2">
+        <input class="form-control w-100" type="text" placeholder="Buscar" aria-label="Buscar">
+        {% for recurso in course.recursos %}
+            <div class="recourse-container col-sm-4" data-name="{{ recurso.name }}">
+                <a target="_blank" href="{% url 'plataforma_recurso' recurso.slug %}">               
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="far
+                                {% if recurso.tipo == 'html' or recurso.tipo == 'css' or recurso.tipo == 'js' or recurso.tipo == 'python' %} 
+                                fa-file-code
+                                {% endif %}                
+                                {% if recurso.tipo == 'audio' %}
+                                fa-file-audio
+                                {% endif %}                
+                                {% if recurso.tipo == 'video' %}
+                                fa-file-video
+                                {% endif %}
+                                {% if recurso.tipo == 'imagen' %}
+                                fa-file-image
+                                {% endif %}                
+                                {% if recurso.tipo == 'documento' or recurso.tipo == 'conferencia' or recurso.tipo == 'programa' or recurso.tipo == 'reglamento' %}
+                                fa-file-alt 
+                                {% endif %}                    
+                                "></i> {{ recurso.name }}</h5>
                         </div>
-                    </a>
-                </div>            
-            {% endfor %}
-        </div>
+                    </div>
+                </a>
+            </div>            
+        {% endfor %}
     </div>
-{% endblock %}}
+{% endblock %}
+
+{% block importScripts %}
+    <script defer src="{% static 'letran/js/recursosearch.js' %}"></script>
+{% endblock importScripts %}
